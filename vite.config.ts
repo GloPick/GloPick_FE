@@ -13,8 +13,16 @@ export default defineConfig({
         replacement: path.resolve(__dirname, 'src/components'),
       },
       {
+        find: '@apis',
+        replacement: path.resolve(__dirname, 'src/apis'),
+      },
+      {
         find: '@assets',
         replacement: path.resolve(__dirname, 'src/assets'),
+      },
+      {
+        find: '@routes',
+        replacement: path.resolve(__dirname, 'src/routes'),
       },
       {
         find: '@pages',
