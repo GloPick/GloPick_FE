@@ -1,5 +1,5 @@
 ---
-name: 이슈 생성 템플릿
+name: issue template
 about: 해당 템플릿을 사용하여 이슈 생성합니다
 title: "[Feat] 이슈 제목 (#이슈 넘버)"
 labels: ''
