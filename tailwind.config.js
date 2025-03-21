@@ -10,10 +10,13 @@ export default {
       colors: {
         primary: '#1F2A44',
         secondary: '#3B82F6',
-        accent: '#4DDDB2',
         background: '#F9FAFB',
         text: '#1A1A1A',
-        muted: '#6B7280',
+        disabled: '#B1B5B9',
+        dark: '#221313',
+
+        white: '#FFFFFF',
+        black: '#000000',
       },
     },
   },
