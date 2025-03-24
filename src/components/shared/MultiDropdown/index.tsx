@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Dropdown from '@/components/Dropdown/index';
-import { MultiDropdownProps } from '@/components/MultiDropdown/types';
+import Dropdown from '@/components/shared/Dropdown/index';
+import { MultiDropdownProps } from '@/components/shared/MultiDropdown/types';
 
 export default function MultiDropdown({ label, items, value = '', onChange }: MultiDropdownProps) {
   const [isCustomInput, setIsCustomInput] = useState(value !== '' && !items.includes(value));
