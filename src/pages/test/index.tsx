@@ -1,5 +1,6 @@
 import { Button } from '@/components/Button';
-import Dropdown from '@/components/Dropdown/Dropdown';
+import Dropdown from '@/components/Dropdown';
+import MultiDropdown from '@/components/MultiDropdown/index';
 import { useState } from 'react';
 
 const Test = () => {
@@ -16,19 +17,19 @@ const Test = () => {
 
       <div className="p-6">
         <Dropdown
-          label="언어 설정"
-          items={['한국어', '영어']}
-          selected={language}
-          onSelect={setLanguage}
-        />
-      </div>
-
-      <div className="p-6">
-        <Dropdown
           label="학력"
           items={['중학교 졸업', '고등학교 졸업', '학사 졸업', '석사 졸업']}
           selected={graduate}
           onSelect={setGraduate}
+        />
+      </div>
+
+      <div className="p-6">
+        <MultiDropdown
+          label="언어 능력"
+          items={['한국어', '영어', '중국어', '일본어']}
+          value={language}
+          onChange={setLanguage}
         />
       </div>
     </div>
