@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { baseStyle, sizeStyle, colorStyle } from './styles';
+import { baseStyle, sizeStyle, colorStyle } from '@/components/Button/styles';
 
 interface ButtonProps {
   text: string;
