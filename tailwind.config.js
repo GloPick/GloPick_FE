@@ -10,13 +10,22 @@ export default {
       colors: {
         primary: '#1F2A44',
         secondary: '#3B82F6',
-        background: '#F9FAFB',
+        background: {
+          basic: '#F9FAFB',
+          gray: '#F3F4F5',
+        },
         text: '#1A1A1A',
         disabled: '#B1B5B9',
         dark: '#221313',
+        placeholder: '#606265',
 
         white: '#FFFFFF',
         black: '#000000',
+        gray: '#E0E5EA',
+        red: '#FF3737',
+      },
+      boxShadow: {
+        inner: 'inset 0 0 0 1px #3B82F6',
       },
     },
   },
