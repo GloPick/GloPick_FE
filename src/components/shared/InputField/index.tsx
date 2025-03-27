@@ -12,9 +12,9 @@ export default function InputField({
   className,
 }: InputFieldProps) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col max-w-md">
       {label && (
-        <label htmlFor={name} className="text-base text-dark mb-3">
+        <label htmlFor={name} className="block mb-1 text-sm text-text">
           {label}
         </label>
       )}

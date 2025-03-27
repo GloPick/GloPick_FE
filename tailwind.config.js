@@ -25,7 +25,7 @@ export default {
         red: '#FF3737',
       },
       boxShadow: {
-        inner: 'inset 0 0 0 1px #3B82F6',
+        inner: 'inset 0 0 0 1px #24ABFF',
       },
     },
   },

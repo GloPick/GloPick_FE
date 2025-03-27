@@ -2,12 +2,14 @@ import Button from '@/components/shared/Button';
 import Dropdown from '@/components/shared/Dropdown';
 import MultiDropdown from '@/components/shared/MultiDropdown';
 import InputField from '@/components/shared/InputField';
+import TextArea from '@/components/shared/TextArea';
 import { useState } from 'react';
 
 const Test = () => {
   const [language, setLanguage] = useState('');
   const [graduate, setGraduate] = useState('');
   const [job, setJob] = useState('');
+  const [memo, setMemo] = useState('');
 
   return (
     <div>
@@ -41,11 +43,16 @@ const Test = () => {
       <div className="p-6">
         <InputField
           name="job"
+          label="직무"
           value={job}
           onChange={(e) => setJob(e.target.value)}
           placeholder="직무를 입력해주세요"
           error={!job ? '직무를 입력해주세요' : ''}
         />
+      </div>
+
+      <div className="p-6">
+        <TextArea value={memo} onChange={setMemo} maxLength={3} placeholder="내용을 입력해주세요" />
       </div>
     </div>
   );
