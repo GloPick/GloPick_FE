@@ -3,6 +3,7 @@ import Dropdown from '@/components/shared/Dropdown';
 import MultiDropdown from '@/components/shared/MultiDropdown';
 import InputField from '@/components/shared/InputField';
 import TextArea from '@/components/shared/TextArea';
+import MultiSelectInput from '@/components/shared/MultiSelectInput';
 import { useState } from 'react';
 
 const Test = () => {
@@ -10,6 +11,7 @@ const Test = () => {
   const [graduate, setGraduate] = useState('');
   const [job, setJob] = useState('');
   const [memo, setMemo] = useState('');
+  const [skills, setSkills] = useState<string[]>([]);
 
   return (
     <div>
@@ -53,6 +55,15 @@ const Test = () => {
 
       <div className="p-6">
         <TextArea value={memo} onChange={setMemo} maxLength={3} placeholder="내용을 입력해주세요" />
+      </div>
+
+      <div className="p-6">
+        <MultiSelectInput
+          label="기술 스택"
+          selected={skills}
+          onChange={setSkills}
+          placeholder="기술을 입력해주세요"
+        />
       </div>
     </div>
   );
