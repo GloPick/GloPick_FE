@@ -11,17 +11,23 @@ export default {
         primary: '#1F2A44',
         secondary: '#3B82F6',
         background: {
-          basic: '#F9FAFB',
+          basic: '#EDEDED',
           gray: '#F3F4F5',
+          darkgray: '#3D3D3D',
         },
+        title: '#3D3D3D',
         text: '#1A1A1A',
+        desc: '#525252',
         disabled: '#B1B5B9',
         dark: '#221313',
         placeholder: '#606265',
 
         white: '#FFFFFF',
         black: '#000000',
-        gray: '#E0E5EA',
+        gray: {
+          1: '#E0E5EA',
+          2: '#696969',
+        },
         red: '#FF3737',
       },
       boxShadow: {

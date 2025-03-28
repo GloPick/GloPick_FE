@@ -10,7 +10,7 @@ export default function Button({
   className,
 }: ButtonProps) {
   const baseStyle =
-    'px-4 py-2 rounded-lg text-sm font-medium transition-all focus:outline-none hover:bg-opacity-80';
+    'px-6 py-3 rounded-sm text-sm transition-all focus:outline-none hover:bg-opacity-80';
 
   const variantStyle = {
     primary: 'bg-primary text-white',
