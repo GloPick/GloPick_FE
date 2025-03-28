@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import { MultiSelectInputProps } from './types';
 
-const MultiSelectInput: React.FC<MultiSelectInputProps> = ({
+export default function MultiSelectInput({
   label,
   selected,
   onChange,
   placeholder = '입력해주세요',
   className,
-}) => {
+}: MultiSelectInputProps) {
   const [input, setInput] = useState('');
   const [isComposing, setIsComposing] = useState(false);
 
@@ -64,6 +64,4 @@ const MultiSelectInput: React.FC<MultiSelectInputProps> = ({
       </div>
     </div>
   );
-};
-
-export default MultiSelectInput;
+}
