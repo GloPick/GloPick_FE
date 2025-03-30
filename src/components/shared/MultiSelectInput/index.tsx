@@ -7,6 +7,7 @@ export default function MultiSelectInput({
   selected,
   onChange,
   placeholder = '입력해주세요',
+  error,
   className,
 }: MultiSelectInputProps) {
   const [input, setInput] = useState('');
@@ -22,6 +23,14 @@ export default function MultiSelectInput({
     }
   };
 
+  const handleBlur = () => {
+    const trimmed = input.trim();
+    if (trimmed && !selected.includes(trimmed)) {
+      onChange([...selected, trimmed]);
+      setInput('');
+    }
+  };
+
   const handleRemove = (item: string) => {
     onChange(selected.filter((val) => val !== item));
   };
@@ -32,7 +41,8 @@ export default function MultiSelectInput({
       <div
         className={clsx(
           'flex flex-wrap gap-2 p-2 rounded-xl bg-background-gray',
-          'focus-within:ring-2 focus-within:ring-primary',
+          'ring-1 ring-transparent shadow-inner',
+          error ? 'shadow-red' : 'shadow-inner',
           className,
         )}
       >
@@ -57,11 +67,13 @@ export default function MultiSelectInput({
           placeholder={placeholder}
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           onCompositionStart={() => setIsComposing(true)}
           onCompositionEnd={() => setIsComposing(false)}
         />
       </div>
+      {error && <span className="text-sm text-red mt-2">{error}</span>}
     </div>
   );
 }
