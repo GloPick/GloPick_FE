@@ -1,12 +1,4 @@
-export interface ResumeData {
-  education: string;
-  experience: string;
-  desiredJob: string;
-  skills: string[];
-  languages: string[];
-  desiredSalary: number;
-  additionalNotes?: string;
-}
+import { ResumeData } from '@/types/resume';
 
 export interface ResumeFormProps {
   initialData?: ResumeData;

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { ResumeData, ResumeFormProps } from './types';
+import { ResumeData } from '@/types/resume';
+import { ResumeFormProps } from './types';
 import { InputField, MultiSelectInput, TextArea, Button } from '../shared';
+import { postResumeProfile } from '@/api/resume';
 
 const ResumeForm: React.FC<ResumeFormProps> = ({ initialData, onSubmit }) => {
   const [form, setForm] = useState<ResumeData>(
@@ -34,10 +36,17 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ initialData, onSubmit }) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
+
+    if (!validateForm()) return;
+
+    try {
+      const response = await postResumeProfile(form);
+      console.log('이력 등록 성공:', response);
       onSubmit(form);
+    } catch (error) {
+      console.error('이력 등록 실패:', error);
     }
   };
 
