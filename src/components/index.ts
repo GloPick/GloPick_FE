@@ -1,2 +1,2 @@
 export * from './shared';
-export * from './resumeForm';
+export * from './resume/ResumeForm';

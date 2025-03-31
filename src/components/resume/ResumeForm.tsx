@@ -51,12 +51,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ initialData, onSubmit }) => {
         placeholder="예: 컴퓨터공학과 학사"
         error={errors.education}
       />
-      {/* <Dropdown
-        name="education"
-        options={EDUCATION_OPTIOIN}
-        placeholder="학력을 선택해주세요"
-        onSelect={(value) => handleChange('education', value)}
-      /> */}
+
       <InputField
         label="경력"
         name="experience"
@@ -65,6 +60,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ initialData, onSubmit }) => {
         placeholder="예: 개발 3년"
         error={errors.experience}
       />
+
       <InputField
         label="희망 직무"
         name="desiredJob"
@@ -73,6 +69,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ initialData, onSubmit }) => {
         placeholder="예: 프론트엔드 개발자"
         error={errors.desiredJob}
       />
+
       <MultiSelectInput
         label="기술 스택"
         selected={form.skills}
@@ -80,6 +77,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ initialData, onSubmit }) => {
         placeholder="기술을 입력해주세요"
         error={errors.skills}
       />
+
       <MultiSelectInput
         label="언어 능력"
         selected={form.languages}
@@ -87,6 +85,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ initialData, onSubmit }) => {
         placeholder="언어를 입력해주세요"
         error={errors.languages}
       />
+
       <InputField
         label="희망 연봉 (만원 단위)"
         name="desiredSalary"
@@ -95,6 +94,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ initialData, onSubmit }) => {
         placeholder="예: 5000"
         error={errors.desiredSalary}
       />
+
       <TextArea
         value={form.additionalNotes || ''}
         onChange={(val) => handleChange('additionalNotes', val)}

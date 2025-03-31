@@ -6,7 +6,7 @@ import {
   TextArea,
   MultiSelectInput,
 } from '@/components/shared';
-import ResumeForm from '@/components/resumeForm';
+import ResumeForm from '@/components/resume/ResumeForm';
 import { useState } from 'react';
 
 const Test = () => {
@@ -15,6 +15,21 @@ const Test = () => {
   const [job, setJob] = useState('');
   const [memo, setMemo] = useState('');
   const [skills, setSkills] = useState<string[]>([]);
+
+  const eduOptions = [
+    { name: '중학교 졸업', value: '중졸' },
+    { name: '고등학교 졸업', value: '고졸' },
+    { name: '대학교 졸업', value: '대졸' },
+    { name: '학사', value: '학사 졸업' },
+    { name: '석사', value: '석사 졸업' },
+  ];
+
+  const langOptions = [
+    { name: '한국어', value: '한국어' },
+    { name: '영어', value: '영어' },
+    { name: '일본어', value: '일본어' },
+    { name: '중국어', value: '중국어' },
+  ];
 
   const handleSubmit = () => {
     console.log('submit');
@@ -32,18 +47,13 @@ const Test = () => {
       </div>
 
       <div className="p-6">
-        <Dropdown
-          label="학력"
-          items={['중학교 졸업', '고등학교 졸업', '학사 졸업', '석사 졸업']}
-          selected={graduate}
-          onSelect={setGraduate}
-        />
+        <Dropdown label="학력" items={eduOptions} selected={graduate} onSelect={setGraduate} />
       </div>
 
       <div className="p-6">
         <MultiDropdown
           label="언어 능력"
-          items={['한국어', '영어', '중국어', '일본어']}
+          items={langOptions}
           value={language}
           onChange={setLanguage}
         />
