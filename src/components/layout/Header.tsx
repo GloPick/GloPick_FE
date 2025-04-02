@@ -25,7 +25,7 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full bg-white shadow-md px-4 py-3 flex justify-between items-center">
+    <header className="w-full bg-transparent shadow-md px-4 py-3 flex justify-between items-center">
       {/* 로고 */}
       <Link to="/home" className="text-xl font-bold text-primary">
         GloPick
