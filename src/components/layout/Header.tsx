@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { X, Menu } from 'lucide-react';
+import { X, Menu, User } from 'lucide-react';
+import { useModalStore } from '@/store/modalStore';
 
 const Header = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const { openModal } = useModalStore();
 
   const navItems = [
     { name: '이력 입력', to: '/resume' },
@@ -47,11 +49,8 @@ const Header = () => {
           </>
         ) : (
           <>
-            <button onClick={() => navigate('/login')} className="hover:text-secondary">
-              로그인
-            </button>
-            <button onClick={() => navigate('/signup')} className="hover:text-secondary">
-              회원가입
+            <button onClick={() => openModal('login')} className="hover:text-secondary">
+              <User size={18} />
             </button>
           </>
         )}
@@ -90,21 +89,12 @@ const Header = () => {
               <>
                 <button
                   onClick={() => {
-                    navigate('/login');
+                    openModal('login');
                     setIsMenuOpen(false);
                   }}
                   className="text-left hover:text-secondary"
                 >
                   로그인
-                </button>
-                <button
-                  onClick={() => {
-                    navigate('/signup');
-                    setIsMenuOpen(false);
-                  }}
-                  className="text-left hover:text-secondary"
-                >
-                  회원가입
                 </button>
               </>
             )}

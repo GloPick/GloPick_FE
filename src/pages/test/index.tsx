@@ -8,6 +8,7 @@ import {
 } from '@/components/shared';
 import ResumeForm from '@/components/resume/ResumeForm';
 import { useState } from 'react';
+import { useModalStore } from '@/store/modalStore';
 
 const Test = () => {
   const [language, setLanguage] = useState('');
@@ -15,6 +16,7 @@ const Test = () => {
   const [job, setJob] = useState('');
   const [memo, setMemo] = useState('');
   const [skills, setSkills] = useState<string[]>([]);
+  const { openModal } = useModalStore();
 
   const eduOptions = [
     { name: '중학교 졸업', value: '중졸' },
@@ -86,6 +88,13 @@ const Test = () => {
       <div className="p-6">
         <h1>Resume Test</h1>
         <ResumeForm onSubmit={handleSubmit} />
+      </div>
+
+      <div className="p-6 flex flex-col">
+        <button className="mb-5" onClick={() => openModal('login')}>
+          로그인
+        </button>
+        <button onClick={() => openModal('signup')}>회원가입</button>
       </div>
     </div>
   );
