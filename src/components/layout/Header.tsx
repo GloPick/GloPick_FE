@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { X, Menu, User } from 'lucide-react';
 import { useModalStore } from '@/store/modalStore';
@@ -6,10 +6,14 @@ import { useAuthStore } from '@/store/authStore';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { logout } = useAuthStore();
+  const { logout, token, user } = useAuthStore();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { openModal } = useModalStore();
+
+  useEffect(() => {
+    setIsLoggedIn(!!token); // token이 있으면 로그인 상태
+  }, [token]);
 
   const navItems = [
     { name: 'FAQ', to: '/faq' },
@@ -19,7 +23,7 @@ const Header = () => {
   const handleLogout = () => {
     logout();
     alert('로그아웃 되었습니다.');
-    navigate('/home');
+    navigate('/main');
   };
 
   return (
@@ -38,7 +42,7 @@ const Header = () => {
         ))}
         {isLoggedIn ? (
           <>
-            <span className="text-gray-800">username님</span>
+            <span className="text-gray-800">{user?.name}님</span>
             <button onClick={handleLogout} className="hover:text-secondary">
               로그아웃
             </button>

@@ -7,7 +7,7 @@ import { useModalStore } from '@/store/modalStore';
 
 export default function LoginForm() {
   const [form, setForm] = useState<LoginData>({ email: '', password: '' });
-  const { setAuth } = useAuthStore();
+  const { login } = useAuthStore();
   const { closeModal } = useModalStore();
 
   const handleChange = (field: keyof LoginData, value: string) => {
@@ -18,12 +18,11 @@ export default function LoginForm() {
     e.preventDefault();
     try {
       const res = await postLogin(form);
-      const { token, email, name } = res.data;
-      setAuth({ token, email, name });
-
-      localStorage.setItem('token', token);
-      alert('로그인에 성공했습니다.');
-      closeModal();
+      if (res.code === 201 && res.data) {
+        login(res.data.token, { name: res.data.name, email: res.data.email });
+        closeModal();
+        alert('로그인 되었습니다.');
+      }
     } catch (err) {
       console.error(err);
       alert('로그인에 실패했습니다. 다시 시도해주세요.');
