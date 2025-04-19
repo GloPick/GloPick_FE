@@ -38,7 +38,7 @@ export default function AuthModal() {
       >
         {/* 이미지 */}
         <div className="hidden md:flex bg-white p-6 items-center justify-center">
-          <img src="/assets/auth__img.png" alt="login visual" className="w-[350px]" />
+          <img src="/assets/auth__svg.svg" alt="login visual" className="w-[350px]" />
         </div>
 
         {/* 폼 영역 */}

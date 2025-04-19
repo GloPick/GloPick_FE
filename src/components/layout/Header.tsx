@@ -2,27 +2,23 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { X, Menu, User } from 'lucide-react';
 import { useModalStore } from '@/store/modalStore';
+import { useAuthStore } from '@/store/authStore';
 
 const Header = () => {
   const navigate = useNavigate();
+  const { logout } = useAuthStore();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const { openModal } = useModalStore();
 
   const navItems = [
-    { name: '이력 입력', to: '/resume' },
-    { name: '후기', to: '/reviews' },
     { name: 'FAQ', to: '/faq' },
-    ...(isLoggedIn
-      ? [
-          { name: '추천 결과', to: '/recommend' },
-          { name: '커뮤니티', to: '/community' },
-        ]
-      : []),
+    ...(isLoggedIn ? [{ name: '커뮤니티', to: '/community' }] : []),
   ];
 
   const handleLogout = () => {
-    // logout();
+    logout();
+    alert('로그아웃 되었습니다.');
     navigate('/home');
   };
 
