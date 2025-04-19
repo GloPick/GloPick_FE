@@ -14,18 +14,66 @@ export default function SignupForm() {
     phone: '',
   });
 
+  const [emailError, setEmailError] = useState('');
+  const [passwordConditionError, setPasswordConditionError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const { openModal, closeModal } = useModalStore();
+
+  const isValidEmail = (email: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const isValidPassword = (password: string) => {
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?]).{8,}$/;
+    return regex.test(password);
+  };
+
+  const formatPhoneNumber = (value: string) => {
+    const onlyNums = value.replace(/\D/g, '');
+    if (onlyNums.length <= 3) return onlyNums;
+    if (onlyNums.length <= 7) return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
+    return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
+  };
+
   const handleChange = (field: keyof SignupData, value: string) => {
     setForm({ ...form, [field]: value });
+
+    if (field === 'email') {
+      if (!isValidEmail(value)) {
+        setEmailError('올바른 이메일 형식이 아닙니다.');
+      } else {
+        setEmailError('');
+      }
+    }
+
+    if (field === 'password') {
+      if (!isValidPassword(value)) {
+        setPasswordConditionError(
+          '비밀번호는 영문, 숫자, 특수문자를 포함한 8자 이상이어야 합니다.',
+        );
+      } else {
+        setPasswordConditionError('');
+      }
+
+      if (form.passwordConfirm && value !== form.passwordConfirm) {
+        setPasswordError('비밀번호가 일치하지 않습니다.');
+      } else {
+        setPasswordError('');
+      }
+    }
+
+    if (field === 'passwordConfirm') {
+      if (form.password && value !== form.password) {
+        setPasswordError('비밀번호가 일치하지 않습니다.');
+      } else {
+        setPasswordError('');
+      }
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (form.password !== form.passwordConfirm) {
-      alert('비밀번호가 일치하지 않습니다.');
-      return;
-    }
 
     try {
       const res = await postSignup(form);
@@ -69,6 +117,7 @@ export default function SignupForm() {
           className="w-full text-sm outline-none"
         />
       </div>
+      {emailError && <p className="text-sm text-red ml-1 mt-1">{emailError}</p>}
 
       {/* 비밀번호 */}
       <div className="flex items-center gap-2 bg-white px-4 py-3 rounded-md shadow-inner border border-gray-200">
@@ -82,6 +131,9 @@ export default function SignupForm() {
           className="w-full text-sm outline-none"
         />
       </div>
+      {passwordConditionError && (
+        <p className="text-sm text-red ml-1 mt-1">{passwordConditionError}</p>
+      )}
 
       {/* 비밀번호 확인 */}
       <div className="flex items-center gap-2 bg-white px-4 py-3 rounded-md shadow-inner border border-gray-200">
@@ -95,6 +147,7 @@ export default function SignupForm() {
           className="w-full text-sm outline-none"
         />
       </div>
+      {passwordError && <p className="text-sm text-red ml-1 mt-1">{passwordError}</p>}
 
       {/* 생년월일 */}
       <div className="flex items-center gap-2 bg-white px-4 py-3 rounded-md shadow-inner border border-gray-200">
@@ -115,7 +168,7 @@ export default function SignupForm() {
           type="tel"
           placeholder="010-1234-5678"
           value={form.phone}
-          onChange={(e) => handleChange('phone', e.target.value)}
+          onChange={(e) => handleChange('phone', formatPhoneNumber(e.target.value))}
           required
           className="w-full text-sm outline-none"
         />
