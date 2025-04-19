@@ -1,14 +1,16 @@
 import { Button } from '@/components/shared';
+import { useModalStore } from '@/store/modalStore';
 import { useNavigate } from 'react-router-dom';
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { openModal } = useModalStore();
 
   const handleClick = (action: 'guest' | 'auth') => {
     if (action === 'guest') {
       navigate('/main');
     } else if (action === 'auth') {
-      navigate('/auth');
+      openModal('signup');
     }
   };
 

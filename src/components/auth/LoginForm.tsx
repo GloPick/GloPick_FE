@@ -4,8 +4,10 @@ import { LoginData } from '@/types/auth';
 import { postLogin } from '@/api/auth';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm() {
+  const navigate = useNavigate();
   const [form, setForm] = useState<LoginData>({ email: '', password: '' });
   const { login } = useAuthStore();
   const { closeModal } = useModalStore();
@@ -22,6 +24,7 @@ export default function LoginForm() {
         login(res.data.token, { name: res.data.name, email: res.data.email });
         closeModal();
         alert('로그인 되었습니다.');
+        navigate('/main');
       }
     } catch (err) {
       console.error(err);
