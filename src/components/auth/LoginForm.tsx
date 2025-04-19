@@ -1,21 +1,37 @@
 import { useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
-import { LoginFormData } from './types';
+import { LoginData } from '@/types/auth';
+import { postLogin } from '@/api/auth';
+import { useAuthStore } from '@/store/authStore';
+import { useModalStore } from '@/store/modalStore';
 
 export default function LoginForm() {
-  const [form, setForm] = useState<LoginFormData>({ email: '', password: '' });
+  const [form, setForm] = useState<LoginData>({ email: '', password: '' });
+  const { setAuth } = useAuthStore();
+  const { closeModal } = useModalStore();
 
-  const handleChange = (field: keyof LoginFormData, value: string) => {
+  const handleChange = (field: keyof LoginData, value: string) => {
     setForm({ ...form, [field]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('로그인 시도:', form);
+    try {
+      const res = await postLogin(form);
+      const { token, email, name } = res.data;
+      setAuth({ token, email, name });
+
+      localStorage.setItem('token', token);
+      alert('로그인에 성공했습니다.');
+      closeModal();
+    } catch (err) {
+      console.error(err);
+      alert('로그인에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 animate-fade-in">
+    <form onSubmit={handleLogin} className="space-y-4 animate-fade-in">
       <h2 className="text-2xl font-semibold text-center mb-2">로그인</h2>
 
       {/* 이메일 */}

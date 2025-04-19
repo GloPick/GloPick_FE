@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { User, Mail, Lock, Calendar, Phone } from 'lucide-react';
-import { SignupFormData } from './types';
+import { SignupData } from '@/types/auth';
 
 export default function SignupForm() {
-  const [form, setForm] = useState<SignupFormData>({
+  const [form, setForm] = useState<SignupData>({
     name: '',
     email: '',
     password: '',
@@ -12,7 +12,7 @@ export default function SignupForm() {
     phone: '',
   });
 
-  const handleChange = (field: keyof SignupFormData, value: string) => {
+  const handleChange = (field: keyof SignupData, value: string) => {
     setForm({ ...form, [field]: value });
   };
 

@@ -9,8 +9,8 @@ export default function Router() {
     <BrowserRouter>
       <Routes>
         {/* 공통 layout 적용 */}
+        <Route index element={<Landing />} />
         <Route path="/" element={<Layout />}>
-          <Route index element={<Landing />} />
           <Route path="/test" element={<Test />} />
           {/* <Route path="/home" element={<Home />} /> */}
         </Route>

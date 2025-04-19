@@ -1,3 +1,12 @@
+export interface PostProfileResponse {
+  code: number;
+  message: string;
+  result: {
+    id: number;
+    createdAt: string;
+  };
+}
+
 // 서버에서 주고받는 이력 데이터
 export interface ResumeData {
   education: string;

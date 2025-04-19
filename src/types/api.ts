@@ -1,9 +1,12 @@
 // 공통 응답 타입
-export interface PostProfileResponse {
+export interface ApiResponse<T> {
   code: number;
   message: string;
-  result: {
-    id: number;
-    createdAt: string;
-  };
+  data: T;
+}
+
+export interface ApiError<T> {
+  code: number;
+  message: string;
+  data: T;
 }
