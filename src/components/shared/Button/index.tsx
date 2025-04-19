@@ -14,7 +14,7 @@ export default function Button({
 
   const variantStyle = {
     primary: 'bg-primary text-white',
-    secondary: 'bg-secondary text-white',
+    secondary: 'bg-gray-2 text-white',
     outline: 'border border-gray-300 text-gray-800 bg-white',
   };
 

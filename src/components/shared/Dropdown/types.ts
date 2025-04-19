@@ -1,6 +1,9 @@
-export interface DropdownProps {
+import { DropdownItem } from '../types';
+
+export interface DropdownProps<T = string> {
   label?: string;
-  items: string[];
-  selected?: string;
-  onSelect: (value: string) => void;
+  name?: string;
+  items: DropdownItem<T>[];
+  selected?: T;
+  onSelect: (value: T) => void;
 }

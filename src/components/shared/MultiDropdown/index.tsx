@@ -3,7 +3,8 @@ import Dropdown from '@/components/shared/Dropdown/index';
 import { MultiDropdownProps } from '@/components/shared/MultiDropdown/types';
 
 export default function MultiDropdown({ label, items, value = '', onChange }: MultiDropdownProps) {
-  const [isCustomInput, setIsCustomInput] = useState(value !== '' && !items.includes(value));
+  const isInitialCustom = value !== '' && !items.some((item) => item.value === value);
+  const [isCustomInput, setIsCustomInput] = useState(isInitialCustom);
 
   const handleSelect = (selected: string) => {
     if (selected === '기타') {
@@ -19,7 +20,7 @@ export default function MultiDropdown({ label, items, value = '', onChange }: Mu
     <div className="w-full max-w-xs">
       <Dropdown
         label={label}
-        items={[...items, '기타']}
+        items={[...items, { name: '기타', value: '기타' }]}
         selected={isCustomInput ? '기타' : value}
         onSelect={handleSelect}
       />
