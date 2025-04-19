@@ -1,4 +1,4 @@
-import { ResumeData } from '@/types/resume';
+import { ResumeData, ResumeResponseData } from '@/types/resume';
 
 export interface ResumeFormProps {
   initialData?: ResumeData;
@@ -7,7 +7,9 @@ export interface ResumeFormProps {
 }
 
 export interface ResumeCardProps {
-  data: ResumeData;
+  data: ResumeResponseData;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export interface ResumeEmptyModalProps {

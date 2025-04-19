@@ -7,8 +7,8 @@ import ResumeCard from '@/components/resume/ResumeCard';
 import ResumeEmptyModal from '@/components/resume/ResumeEmptyModal';
 import Modal from '@/components/layout/Modal';
 import PopularCountryChart from './PopularCountryChart';
-import { ResumeData } from '@/types/resume';
-import { postResume } from '@/api/resume';
+import { ResumeData, ResumeResponseData } from '@/types/resume';
+import { getResume, postResume } from '@/api/resume';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
 
@@ -16,9 +16,10 @@ const Main = () => {
   const { token } = useAuthStore(); // 로그인 여부 확인
   const { openModal } = useModalStore(); // 로그인 모달 제어
 
-  const [resumes, setResumes] = useState<ResumeData[]>([]);
+  const [resumes, setResumes] = useState<ResumeResponseData[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [showResumeList, setShowResumeList] = useState(false);
+  const [showEmptyModal, setShowEmptyModal] = useState(false);
 
   const handleClickAddResume = () => {
     if (!token) {
@@ -30,18 +31,48 @@ const Main = () => {
   };
 
   const handleAddResume = async (data: ResumeData) => {
+    if (!token) return;
+
     try {
       const response = await postResume(data, token);
 
-      if (response.code === 201) {
+      if (response.code === 201 && response.result) {
         alert('이력이 등록되었습니다.');
-        setResumes((prev) => [...prev, data]);
+
+        const newResume: ResumeResponseData = {
+          ...data,
+          _id: response.result.id.toString(),
+          createdAt: response.result.createdAt,
+        };
+
+        setResumes((prev) => [...prev, newResume]);
         setShowForm(false);
       } else {
         alert(response.message || '이력 등록에 실패했습니다.');
       }
     } catch (err) {
       alert('이력 등록 중 오류가 발생했습니다.');
+      console.error(err);
+    }
+  };
+
+  const handleLoadResume = async () => {
+    if (!token) {
+      alert('로그인 후 이용 가능합니다.');
+      openModal('login');
+      return;
+    }
+
+    try {
+      const res = await getResume(token);
+      if (res.code === 200 && res.data.length > 0) {
+        setResumes(res.data);
+        setShowResumeList(true);
+      } else {
+        setShowEmptyModal(true);
+      }
+    } catch (err) {
+      alert('이력 조회 중 오류가 발생했습니다.');
       console.error(err);
     }
   };
@@ -112,7 +143,7 @@ const Main = () => {
           입력한 이력을 불러오거나, 새로운 이력을 추가해 맞춤 추천을 받아보세요.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Button onClick={() => setShowResumeList(true)}>이력 불러오기</Button>
+          <Button onClick={handleLoadResume}>이력 불러오기</Button>
           <Button variant="secondary" onClick={handleClickAddResume}>
             이력 추가하기
           </Button>
@@ -147,16 +178,22 @@ const Main = () => {
       {/* 모달 - 이력 불러오기 */}
       {showResumeList && (
         <Modal onClose={() => setShowResumeList(false)}>
-          {resumes.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
-              {resumes.map((r, i) => (
-                <ResumeCard key={i} data={r} />
+          <div className="p-4">
+            <h2 className="text-xl font-bold mb-4">저장된 이력</h2>
+            <div className="grid gap-4">
+              {resumes.map((resume) => (
+                <ResumeCard key={resume._id} data={resume} />
               ))}
             </div>
-          ) : (
-            <ResumeEmptyModal onClose={() => setShowResumeList(false)} />
-          )}
+          </div>
         </Modal>
+      )}
+
+      {showEmptyModal && (
+        <ResumeEmptyModal
+          onClose={() => setShowEmptyModal(false)}
+          onAddClick={() => setShowForm(true)}
+        />
       )}
     </div>
   );

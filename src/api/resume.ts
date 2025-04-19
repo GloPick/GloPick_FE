@@ -1,5 +1,5 @@
 import { apiInstance } from './index';
-import { ResumeData, PostProfileResponse } from '@/types/resume';
+import { ResumeData, PostProfileResponse, GetProfileResponse } from '@/types/resume';
 
 export const postResume = async (
   data: ResumeData,
@@ -9,6 +9,13 @@ export const postResume = async (
     headers: {
       Authorization: `Bearer ${token}`,
     },
+  });
+  return response.data;
+};
+
+export const getResume = async (token: string): Promise<GetProfileResponse> => {
+  const response = await apiInstance.get('/profile', {
+    headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
 };

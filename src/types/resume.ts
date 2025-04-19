@@ -1,3 +1,18 @@
+export interface ResumeData {
+  education: string;
+  experience: string;
+  desiredJob: string;
+  skills: string[];
+  languages: string[];
+  desiredSalary: number;
+  additionalNotes?: string;
+}
+
+export interface ResumeResponseData extends ResumeData {
+  _id: string;
+  createdAt: string;
+}
+
 export interface PostProfileResponse {
   code: number;
   message: string;
@@ -7,13 +22,8 @@ export interface PostProfileResponse {
   };
 }
 
-// 서버에서 주고받는 이력 데이터
-export interface ResumeData {
-  education: string;
-  experience: string;
-  desiredJob: string;
-  skills: string[];
-  languages: string[];
-  desiredSalary: number;
-  additionalNotes?: string;
+export interface GetProfileResponse {
+  code: number;
+  message: string;
+  data: ResumeResponseData[];
 }

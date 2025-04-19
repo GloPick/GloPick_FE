@@ -1,31 +1,77 @@
 import { ResumeCardProps } from './types';
+import {
+  Pencil,
+  Trash2,
+  Briefcase,
+  GraduationCap,
+  Settings2,
+  Languages,
+  Coins,
+  User2,
+} from 'lucide-react';
 
-const ResumeCard = ({ data }: ResumeCardProps) => {
+const ResumeCard = ({ data, onEdit, onDelete }: ResumeCardProps) => {
   return (
-    <div className="w-full rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
-      <div className="text-lg font-semibold text-primary mb-2">{data.desiredJob}</div>
-      <div className="text-sm text-gray-600 space-y-1">
-        <p>
-          <span className="font-medium text-gray-800">학력:</span> {data.education}
-        </p>
-        <p>
-          <span className="font-medium text-gray-800">경력:</span> {data.experience}
-        </p>
-        <p>
-          <span className="font-medium text-gray-800">기술 스택:</span> {data.skills.join(', ')}
-        </p>
-        <p>
-          <span className="font-medium text-gray-800">언어:</span> {data.languages.join(', ')}
-        </p>
-        <p>
-          <span className="font-medium text-gray-800">희망 연봉:</span>{' '}
-          {data.desiredSalary.toLocaleString()}만원
-        </p>
-        {data.additionalNotes && (
-          <p>
-            <span className="font-medium text-gray-800">기타:</span> {data.additionalNotes}
+    <div className="relative p-5 bg-white rounded-xl shadow-md border border-gray-200 space-y-4">
+      {/* 수정, 삭제 */}
+      <div className="absolute top-3 right-3 flex gap-2">
+        <button onClick={onEdit} className="hover:text-secondary transition">
+          <Pencil size={18} />
+        </button>
+        <button onClick={onDelete} className="hover:text-red transition">
+          <Trash2 size={18} />
+        </button>
+      </div>
+
+      <div className="space-y-2">
+
+        {/* 직무 */}
+        <h3 className="text-xl font-semibold text-primary mb-2 flex items-center gap-2">
+          <Briefcase size={18} className="text-secondary" />
+          {data.desiredJob}
+        </h3>
+
+        <div className="space-y-2 text-sm text-gray-700">
+          {/* 학력 */}
+          <p className="flex items-center gap-2">
+            <GraduationCap size={16} className="text-accent" />
+            {data.education}
           </p>
-        )}
+
+          {/* 경력 */}
+          <p className="flex items-center gap-2">
+            <User2 size={16} className="text-accent" />
+            {data.experience}
+          </p>
+
+          {/* 기술 */}
+          <p className="flex items-start gap-2">
+            <Settings2 size={16} className="text-accent mt-0.5" />
+            <span className="font-medium text-gray-800">기술:</span>
+            <span>{data.skills.join(', ')}</span>
+          </p>
+
+          {/* 언어 */}
+          <p className="flex items-start gap-2">
+            <Languages size={16} className="text-accent mt-0.5" />
+            <span className="font-medium text-gray-800">언어:</span>
+            <span>{data.languages.join(', ')}</span>
+          </p>
+
+          {/* 희망 연봉 */}
+          <p className="flex items-center gap-2">
+            <Coins size={16} className="text-yellow-500" />
+            <span className="font-medium">연봉:</span> {data.desiredSalary.toLocaleString()}만원
+          </p>
+
+          {/* 추가 메모 */}
+          {data.additionalNotes && (
+            <div className="bg-gray-50 rounded-md p-3 text-xs text-gray-600 border mt-4">
+              <p className="font-semibold mb-1">기타 희망사항</p>
+              <p>{data.additionalNotes}</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
