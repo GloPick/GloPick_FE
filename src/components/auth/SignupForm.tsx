@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { User, Mail, Lock, Calendar, Phone } from 'lucide-react';
 import { SignupData } from '@/types/auth';
+import { postSignup } from '@/api/auth';
+import { useModalStore } from '@/store/modalStore';
 
 export default function SignupForm() {
   const [form, setForm] = useState<SignupData>({
@@ -12,11 +14,12 @@ export default function SignupForm() {
     phone: '',
   });
 
+  const { openModal, closeModal } = useModalStore();
   const handleChange = (field: keyof SignupData, value: string) => {
     setForm({ ...form, [field]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (form.password !== form.passwordConfirm) {
@@ -24,7 +27,17 @@ export default function SignupForm() {
       return;
     }
 
-    console.log('회원가입 시도:', form);
+    try {
+      const res = await postSignup(form);
+      if (res.code === 201) {
+        alert('회원가입이 완료되었습니다.');
+        closeModal();
+        openModal('login');
+      }
+    } catch (err) {
+      console.log(err);
+      alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
