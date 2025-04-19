@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { TrendingUp, Globe, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components';
@@ -9,17 +8,42 @@ import ResumeEmptyModal from '@/components/resume/ResumeEmptyModal';
 import Modal from '@/components/layout/Modal';
 import PopularCountryChart from './PopularCountryChart';
 import { ResumeData } from '@/types/resume';
+import { postResume } from '@/api/resume';
+import { useAuthStore } from '@/store/authStore';
+import { useModalStore } from '@/store/modalStore';
 
 const Main = () => {
-  const navigate = useNavigate();
+  const { token } = useAuthStore(); // 로그인 여부 확인
+  const { openModal } = useModalStore(); // 로그인 모달 제어
 
   const [resumes, setResumes] = useState<ResumeData[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [showResumeList, setShowResumeList] = useState(false);
 
-  const handleAddResume = (data: ResumeData) => {
-    setResumes((prev) => [...prev, data]);
-    setShowForm(false);
+  const handleClickAddResume = () => {
+    if (!token) {
+      alert('로그인 후 이용 가능합니다.');
+      openModal('login');
+      return;
+    }
+    setShowForm(true); // 로그인된 경우에만 폼 열기
+  };
+
+  const handleAddResume = async (data: ResumeData) => {
+    try {
+      const response = await postResume(data, token);
+
+      if (response.code === 201) {
+        alert('이력이 등록되었습니다.');
+        setResumes((prev) => [...prev, data]);
+        setShowForm(false);
+      } else {
+        alert(response.message || '이력 등록에 실패했습니다.');
+      }
+    } catch (err) {
+      alert('이력 등록 중 오류가 발생했습니다.');
+      console.error(err);
+    }
   };
 
   return (
@@ -89,7 +113,7 @@ const Main = () => {
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Button onClick={() => setShowResumeList(true)}>이력 불러오기</Button>
-          <Button variant="secondary" onClick={() => setShowForm(true)}>
+          <Button variant="secondary" onClick={handleClickAddResume}>
             이력 추가하기
           </Button>
         </div>
