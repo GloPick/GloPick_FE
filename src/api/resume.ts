@@ -4,6 +4,7 @@ import {
   PostProfileResponse,
   GetProfileResponse,
   DeleteProfileResponse,
+  EditProfileResponse,
 } from '@/types/resume';
 
 export const postResume = async (
@@ -27,6 +28,17 @@ export const getResume = async (token: string): Promise<GetProfileResponse> => {
 
 export const deleteResume = async (id: string, token: string): Promise<DeleteProfileResponse> => {
   const response = await apiInstance.delete(`/profile/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+export const editResume = async (
+  id: string,
+  updatedData: ResumeData,
+  token: string,
+): Promise<EditProfileResponse> => {
+  const response = await apiInstance.put(`/profile/${id}`, updatedData, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;

@@ -16,10 +16,7 @@ export interface ResumeResponseData extends ResumeData {
 export interface PostProfileResponse {
   code: number;
   message: string;
-  result: {
-    id: number;
-    createdAt: string;
-  };
+  data: null;
 }
 
 export interface GetProfileResponse {
@@ -32,4 +29,10 @@ export interface DeleteProfileResponse {
   code: number;
   message: string;
   data: null;
+}
+
+export interface EditProfileResponse {
+  code: number;
+  message: string;
+  data: ResumeResponseData;
 }

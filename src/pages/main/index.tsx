@@ -8,7 +8,7 @@ import ResumeEmptyModal from '@/components/resume/ResumeEmptyModal';
 import Modal from '@/components/layout/Modal';
 import PopularCountryChart from './PopularCountryChart';
 import { ResumeData, ResumeResponseData } from '@/types/resume';
-import { deleteResume, getResume, postResume } from '@/api/resume';
+import { deleteResume, editResume, getResume, postResume } from '@/api/resume';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
 
@@ -17,10 +17,12 @@ const Main = () => {
   const { openModal } = useModalStore(); // 로그인 모달 제어
 
   const [resumes, setResumes] = useState<ResumeResponseData[]>([]);
+  const [editingResume, setEditingResume] = useState<ResumeResponseData | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showResumeList, setShowResumeList] = useState(false);
   const [showEmptyModal, setShowEmptyModal] = useState(false);
 
+  // 이력 추가하기 버튼 클릭
   const handleClickAddResume = () => {
     if (!token) {
       alert('로그인 후 이용 가능합니다.');
@@ -30,32 +32,42 @@ const Main = () => {
     setShowForm(true); // 로그인된 경우에만 폼 열기
   };
 
-  const handleAddResume = async (data: ResumeData) => {
+  // 이력 등록 및 수정 버튼 클릭
+  const handleSubmitResume = async (data: ResumeData) => {
     if (!token) return;
 
     try {
-      const response = await postResume(data, token);
-
-      if (response.code === 201 && response.result) {
-        alert('이력이 등록되었습니다.');
-
-        const newResume: ResumeResponseData = {
-          ...data,
-          _id: response.result.id.toString(),
-          createdAt: response.result.createdAt,
-        };
-
-        setResumes((prev) => [...prev, newResume]);
-        setShowForm(false);
+      if (editingResume) {
+        // 수정
+        const res = await editResume(editingResume._id, data, token);
+        if (res.code === 200) {
+          setResumes((prev) =>
+            prev.map((item) => (item._id === editingResume._id ? res.data : item)),
+          );
+          alert('이력이 수정되었습니다.');
+        }
       } else {
-        alert(response.message || '이력 등록에 실패했습니다.');
+        // 등록
+        const res = await postResume(data, token);
+        if (res.code === 201) {
+          alert('이력이 등록되었습니다.');
+
+          const updated = await getResume(token);
+          if (updated.code === 200) {
+            setResumes(updated.data);
+          }
+        }
       }
     } catch (err) {
-      alert('이력 등록 중 오류가 발생했습니다.');
       console.error(err);
+      alert('저장 중 오류가 발생했습니다.');
+    } finally {
+      setShowForm(false);
+      setEditingResume(null);
     }
   };
 
+  // 이력 불러오기 버튼 클릭
   const handleLoadResume = async () => {
     if (!token) {
       alert('로그인 후 이용 가능합니다.');
@@ -77,6 +89,7 @@ const Main = () => {
     }
   };
 
+  // 이력 삭제 버튼 클릭
   const handleDeleteResume = async (id: string) => {
     if (!token) {
       alert('로그인 후 이용 가능합니다.');
@@ -195,9 +208,18 @@ const Main = () => {
 
       {/* 모달 - 이력 추가 */}
       {showForm && (
-        <Modal onClose={() => setShowForm(false)}>
+        <Modal
+          onClose={() => {
+            setShowForm(false);
+            setEditingResume(null);
+          }}
+        >
           <div className="max-h-[80vh] overflow-y-auto p-4">
-            <ResumeForm onSubmit={handleAddResume} onClose={() => setShowForm(false)} />
+            <ResumeForm
+              initialData={editingResume ?? undefined}
+              onSubmit={handleSubmitResume}
+              onClose={() => setShowForm(false)}
+            />
           </div>
         </Modal>
       )}
