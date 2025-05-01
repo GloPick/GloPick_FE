@@ -8,8 +8,8 @@ export interface ResumeFormProps {
 
 export interface ResumeCardProps {
   data: ResumeResponseData;
-  onEdit?: () => void;
-  onDelete?: () => void;
+  onEdit?: (resume: ResumeResponseData) => void;
+  onDelete?: (id: string) => void;
 }
 
 export interface ResumeEmptyModalProps {

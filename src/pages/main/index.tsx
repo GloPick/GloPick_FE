@@ -8,7 +8,7 @@ import ResumeEmptyModal from '@/components/resume/ResumeEmptyModal';
 import Modal from '@/components/layout/Modal';
 import PopularCountryChart from './PopularCountryChart';
 import { ResumeData, ResumeResponseData } from '@/types/resume';
-import { getResume, postResume } from '@/api/resume';
+import { deleteResume, getResume, postResume } from '@/api/resume';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
 
@@ -73,6 +73,33 @@ const Main = () => {
       }
     } catch (err) {
       alert('이력 조회 중 오류가 발생했습니다.');
+      console.error(err);
+    }
+  };
+
+  const handleDeleteResume = async (id: string) => {
+    if (!token) {
+      alert('로그인 후 이용 가능합니다.');
+    }
+
+    const confirm = window.confirm('이력을 삭제하시겠습니까?');
+    if (!confirm) return;
+
+    if (!token) {
+      alert('로그인 후 이용 가능합니다.');
+      return;
+    }
+
+    try {
+      const res = await deleteResume(id, token);
+      if (res.code === 200) {
+        alert('이력이 삭제되었습니다.');
+        setResumes((prev) => prev.filter((resume) => resume._id !== id));
+      } else {
+        alert(res.message || '이력 삭제에 실패했습니다.');
+      }
+    } catch (err) {
+      alert('이력 삭제 중 오류가 발생했습니다.');
       console.error(err);
     }
   };
@@ -178,11 +205,19 @@ const Main = () => {
       {/* 모달 - 이력 불러오기 */}
       {showResumeList && (
         <Modal onClose={() => setShowResumeList(false)}>
-          <div className="p-4">
+          <div className="p-4 max-h-[80vh] overflow-y-auto">
             <h2 className="text-xl font-bold mb-4">저장된 이력</h2>
             <div className="grid gap-4">
               {resumes.map((resume) => (
-                <ResumeCard key={resume._id} data={resume} />
+                <ResumeCard
+                  key={resume._id}
+                  data={resume}
+                  onEdit={(resume) => {
+                    setEditingResume(resume);
+                    setShowForm(true);
+                  }}
+                  onDelete={handleDeleteResume}
+                />
               ))}
             </div>
           </div>

@@ -67,7 +67,7 @@ const Header = () => {
 
       {/* 모바일 메뉴 */}
       {isMenuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white border-t border-gray-200 md:hidden shadow-md z-10">
+        <div className="absolute top-12 left-0 w-full bg-white border-t border-gray-200 md:hidden shadow-md z-10">
           <nav className="flex flex-col gap-3 p-4 text-sm text-gray-700">
             {navItems.map((item) => (
               <Link

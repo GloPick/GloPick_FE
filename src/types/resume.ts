@@ -27,3 +27,9 @@ export interface GetProfileResponse {
   message: string;
   data: ResumeResponseData[];
 }
+
+export interface DeleteProfileResponse {
+  code: number;
+  message: string;
+  data: null;
+}

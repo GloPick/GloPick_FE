@@ -11,20 +11,27 @@ import {
 } from 'lucide-react';
 
 const ResumeCard = ({ data, onEdit, onDelete }: ResumeCardProps) => {
+  const handleEdit = () => {
+    onEdit?.(data);
+  };
+
+  const handleDelete = () => {
+    onDelete?.(data._id);
+  };
+
   return (
     <div className="relative p-5 bg-white rounded-xl shadow-md border border-gray-200 space-y-4">
       {/* 수정, 삭제 */}
       <div className="absolute top-3 right-3 flex gap-2">
-        <button onClick={onEdit} className="hover:text-secondary transition">
+        <button onClick={handleEdit} className="hover:text-secondary transition">
           <Pencil size={18} />
         </button>
-        <button onClick={onDelete} className="hover:text-red transition">
+        <button onClick={handleDelete} className="hover:text-red transition">
           <Trash2 size={18} />
         </button>
       </div>
 
       <div className="space-y-2">
-
         {/* 직무 */}
         <h3 className="text-xl font-semibold text-primary mb-2 flex items-center gap-2">
           <Briefcase size={18} className="text-secondary" />

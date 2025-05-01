@@ -1,5 +1,10 @@
 import { apiInstance } from './index';
-import { ResumeData, PostProfileResponse, GetProfileResponse } from '@/types/resume';
+import {
+  ResumeData,
+  PostProfileResponse,
+  GetProfileResponse,
+  DeleteProfileResponse,
+} from '@/types/resume';
 
 export const postResume = async (
   data: ResumeData,
@@ -15,6 +20,13 @@ export const postResume = async (
 
 export const getResume = async (token: string): Promise<GetProfileResponse> => {
   const response = await apiInstance.get('/profile', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+export const deleteResume = async (id: string, token: string): Promise<DeleteProfileResponse> => {
+  const response = await apiInstance.delete(`/profile/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
