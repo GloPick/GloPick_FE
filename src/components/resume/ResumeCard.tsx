@@ -9,6 +9,7 @@ import {
   Coins,
   User2,
 } from 'lucide-react';
+import clsx from 'clsx';
 
 const ResumeCard = ({ data, onEdit, onDelete }: ResumeCardProps) => {
   const handleEdit = () => {
@@ -20,7 +21,12 @@ const ResumeCard = ({ data, onEdit, onDelete }: ResumeCardProps) => {
   };
 
   return (
-    <div className="relative p-5 bg-white rounded-xl shadow-md border border-gray-200 space-y-4">
+    <div
+      className={clsx(
+        'relative p-5 bg-white rounded-xl shadow-md border border-gray-200 space-y-4',
+        'animate-fade-in',
+      )}
+    >
       {/* 수정, 삭제 */}
       <div className="absolute top-3 right-3 flex gap-2">
         <button onClick={handleEdit} className="hover:text-secondary transition">

@@ -247,10 +247,15 @@ const Main = () => {
       )}
 
       {showEmptyModal && (
-        <ResumeEmptyModal
-          onClose={() => setShowEmptyModal(false)}
-          onAddClick={() => setShowForm(true)}
-        />
+        <Modal onClose={() => setShowEmptyModal(false)}>
+          <ResumeEmptyModal
+            onClose={() => setShowEmptyModal(false)}
+            onAddClick={() => {
+              setShowEmptyModal(false);
+              setShowForm(true);
+            }}
+          />
+        </Modal>
       )}
     </div>
   );

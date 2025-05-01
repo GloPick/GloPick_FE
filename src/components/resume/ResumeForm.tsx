@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ResumeData } from '@/types/resume';
 import { ResumeFormProps } from './types';
 import { InputField, MultiSelectInput, TextArea, Button } from '../shared';
+import clsx from 'clsx';
 
 const ResumeForm = ({ initialData, onClose, onSubmit }: ResumeFormProps) => {
   const [form, setForm] = useState<ResumeData>(
@@ -46,7 +47,7 @@ const ResumeForm = ({ initialData, onClose, onSubmit }: ResumeFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
+    <form onSubmit={handleSubmit} className={clsx('flex flex-col gap-6 w-full', 'animate-fade-in')}>
       <h2 className="text-xl font-bold text-center mb-4 text-primary">이력 입력하기</h2>
       <InputField
         label="학력"
