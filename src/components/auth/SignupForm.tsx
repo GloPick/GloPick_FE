@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { User, Mail, Lock, Calendar, Phone } from 'lucide-react';
 import { SignupData } from '@/types/auth';
@@ -83,8 +84,11 @@ export default function SignupForm() {
         openModal('login');
       }
     } catch (err) {
-      console.log(err);
-      alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+      if (axios.isAxiosError(err)) {
+        alert(err.response?.data?.message || '회원가입에 실패했습니다.');
+      } else {
+        alert('알 수 없는 오류가 발생했습니다.');
+      }
     }
   };
 

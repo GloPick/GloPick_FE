@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { ResumeData } from '@/types/resume';
 import { ResumeFormProps } from './types';
 import { InputField, MultiSelectInput, TextArea, Button } from '../shared';
-import { postResumeProfile } from '@/api/resume';
+import clsx from 'clsx';
 
-const ResumeForm: React.FC<ResumeFormProps> = ({ initialData, onSubmit }) => {
+const ResumeForm = ({ initialData, onClose, onSubmit }: ResumeFormProps) => {
   const [form, setForm] = useState<ResumeData>(
     initialData || {
       education: '',
@@ -26,7 +26,8 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ initialData, onSubmit }) => {
     if (!form.desiredJob.trim()) newErrors.desiredJob = '희망 직무를 입력해주세요.';
     if (form.skills.length === 0) newErrors.skills = '기술을 1개 이상 입력해주세요.';
     if (form.languages.length === 0) newErrors.languages = '언어를 1개 이상 입력해주세요.';
-    if (form.desiredSalary <= 0) newErrors.desiredSalary = '희망 연봉을 입력해주세요.';
+    if (!form.desiredSalary || form.desiredSalary <= 0)
+      newErrors.desiredSalary = '희망 연봉을 입력해주세요';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -34,24 +35,20 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ initialData, onSubmit }) => {
 
   const handleChange = <T extends keyof ResumeData>(field: T, value: ResumeData[T]) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: '' }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) return;
-
-    try {
-      const response = await postResumeProfile(form);
-      console.log('이력 등록 성공:', response);
-      onSubmit(form);
-    } catch (error) {
-      console.error('이력 등록 실패:', error);
-    }
+    onSubmit?.(form);
+    onClose?.();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
+    <form onSubmit={handleSubmit} className={clsx('flex flex-col gap-6 w-full', 'animate-fade-in')}>
+      <h2 className="text-xl font-bold text-center mb-4 text-primary">이력 입력하기</h2>
       <InputField
         label="학력"
         name="education"
@@ -96,6 +93,7 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ initialData, onSubmit }) => {
       />
 
       <InputField
+        type="number"
         label="희망 연봉 (만원 단위)"
         name="desiredSalary"
         value={form.desiredSalary.toString()}

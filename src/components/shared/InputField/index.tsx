@@ -2,6 +2,7 @@ import { InputFieldProps } from './types';
 import clsx from 'clsx';
 
 export default function InputField({
+  type,
   label,
   name,
   value,
@@ -20,7 +21,7 @@ export default function InputField({
       )}
 
       <input
-        type="text"
+        type={type}
         id={name}
         name={name}
         placeholder={placeholder}
