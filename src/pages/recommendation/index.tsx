@@ -1,32 +1,41 @@
+import { postGPTRecommend } from '@/api/gpt';
 import FlowSteps from '@/components/recommendation/FlowSteps';
 import RecommendationCard from '@/components/recommendation/RecommendationCard';
-import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@/store/authStore';
+import { GPTRecommendData } from '@/types/gpt';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Recommendation = () => {
+  const { id } = useParams();
+  const { token } = useAuthStore();
+  const [recommendations, setRecommendations] = useState<GPTRecommendData[]>([]);
+  // const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      if (!id || !token) {
+        alert('유효하지 않은 접근입니다.');
+        navigate('/main');
+        return;
+      }
+      try {
+        const resopnse = await postGPTRecommend(id, token);
+        setRecommendations(resopnse.data.rankings);
+      } catch (error) {
+        console.log(error);
+        alert('추천 결과를 불러오는데 실패했습니다.');
+      } finally {
+        // setLoading(false);
+      }
+    };
+    fetchRecommendations();
+  }, [id, token, navigate]);
 
   const handleSelectCountry = (country: string) => {
     navigate('/', { state: { selectedCountry: country } });
   };
-
-  // 예시 데이터 (실제로는 GPT 응답을 전달받음)
-  const recommendations = [
-    {
-      country: '캐나다',
-      job: '프론트엔드 개발자',
-      reason: 'React 경험과 영어 능력을 기반으로 북미 시장에 적합합니다.',
-    },
-    {
-      country: '독일',
-      job: '백엔드 엔지니어',
-      reason: 'Node.js 경험이 많고, 유럽 취업 비자 발급이 용이합니다.',
-    },
-    {
-      country: '호주',
-      job: 'UX 디자이너',
-      reason: '다문화 환경에서 디자인 경험을 살릴 수 있습니다.',
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center py-12 px-4 md:px-8">

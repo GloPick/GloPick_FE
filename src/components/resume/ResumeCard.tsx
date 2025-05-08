@@ -8,10 +8,11 @@ import {
   Languages,
   Coins,
   User2,
+  Sparkles,
 } from 'lucide-react';
 import clsx from 'clsx';
 
-const ResumeCard = ({ data, onEdit, onDelete }: ResumeCardProps) => {
+const ResumeCard = ({ data, onEdit, onDelete, onRecommend }: ResumeCardProps) => {
   const handleEdit = () => {
     onEdit?.(data);
   };
@@ -20,21 +21,29 @@ const ResumeCard = ({ data, onEdit, onDelete }: ResumeCardProps) => {
     onDelete?.(data._id);
   };
 
+  const handleRecommend = () => {
+    onRecommend?.(data._id);
+  };
+
   return (
     <div
       className={clsx(
         'relative p-5 bg-white rounded-xl shadow-md border border-gray-200 space-y-4',
-        'animate-fade-in',
+        'hover:shadow-lg transition-shadow duration-200 ease-in-out animate-fade-in',
       )}
     >
       {/* 수정, 삭제 */}
       <div className="absolute top-3 right-3 flex gap-2">
-        <button onClick={handleEdit} className="hover:text-secondary transition">
-          <Pencil size={18} />
-        </button>
-        <button onClick={handleDelete} className="hover:text-red transition">
-          <Trash2 size={18} />
-        </button>
+        {onEdit && (
+          <button onClick={handleEdit} className="hover:text-secondary transition">
+            <Pencil size={18} />
+          </button>
+        )}
+        {onDelete && (
+          <button onClick={handleDelete} className="hover:text-red transition">
+            <Trash2 size={18} />
+          </button>
+        )}
       </div>
 
       <div className="space-y-2">
@@ -86,6 +95,17 @@ const ResumeCard = ({ data, onEdit, onDelete }: ResumeCardProps) => {
           )}
         </div>
       </div>
+
+      {/* 추천받기 버튼 */}
+      {onRecommend && (
+        <button
+          onClick={handleRecommend}
+          className="mt-4 w-full flex items-center justify-center gap-2 text-sm font-semibold text-white bg-primary py-2 px-4 rounded-lg hover:bg-primary/80 transition"
+        >
+          <Sparkles size={16} />
+          이력 기반 추천받기
+        </button>
+      )}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TrendingUp, Globe, BarChart3 } from 'lucide-react';
+import { TrendingUp, Globe, BarChart3, FolderOpen, PlusCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components';
 import ResumeForm from '@/components/resume/ResumeForm';
@@ -11,10 +11,12 @@ import { ResumeData, ResumeResponseData } from '@/types/resume';
 import { deleteResume, editResume, getResume, postResume } from '@/api/resume';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
+import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
   const { token } = useAuthStore(); // 로그인 여부 확인
   const { openModal } = useModalStore(); // 로그인 모달 제어
+  const navigate = useNavigate();
 
   const [resumes, setResumes] = useState<ResumeResponseData[]>([]);
   const [editingResume, setEditingResume] = useState<ResumeResponseData | null>(null);
@@ -177,16 +179,50 @@ const Main = () => {
       </section>
 
       {/* 이력 확인 및 추가 섹션 */}
-      <section className="py-20 px-6 bg-white text-center">
-        <h2 className="text-2xl md:text-3xl font-bold text-title mb-6">나의 이력 관리</h2>
-        <p className="text-base text-muted mb-8">
+      <section className="bg-white w-full py-20 px-6 md:px-12 rounded-xl max-w-6xl mx-auto">
+        <h2 className="text-2xl md:text-3xl font-bold text-center text-title mb-6">
+          나의 이력 관리
+        </h2>
+        <p className="text-center text-muted text-base md:text-lg mb-10">
           입력한 이력을 불러오거나, 새로운 이력을 추가해 맞춤 추천을 받아보세요.
         </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Button onClick={handleLoadResume}>이력 불러오기</Button>
-          <Button variant="secondary" onClick={handleClickAddResume}>
-            이력 추가하기
-          </Button>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* 이력 불러오기 카드 */}
+          <div className="bg-background-gray rounded-xl p-6 flex flex-col justify-between shadow hover:shadow-lg transition">
+            <div>
+              <h3 className="text-xl font-semibold mb-2">이력 불러오기</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                저장된 이력이 있다면 지금 확인하고 이어서 진행할 수 있어요.
+              </p>
+            </div>
+            <Button
+              variant="primary"
+              className="flex items-center justify-center gap-2"
+              onClick={handleLoadResume}
+            >
+              <FolderOpen className="mr-2" size={18} />
+              이력 불러오기
+            </Button>
+          </div>
+
+          {/* 이력 추가하기 카드 */}
+          <div className="bg-background-gray rounded-xl p-6 flex flex-col justify-between shadow hover:shadow-lg transition">
+            <div>
+              <h3 className="text-xl font-semibold mb-2">이력 추가하기</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                새롭게 이력을 입력해 맞춤 국가와 직무 추천을 받아보세요.
+              </p>
+            </div>
+            <Button
+              variant="secondary"
+              className="flex items-center justify-center gap-2"
+              onClick={handleClickAddResume}
+            >
+              <PlusCircle className="mr-2" size={18} />
+              이력 추가하기
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -239,6 +275,7 @@ const Main = () => {
                     setShowForm(true);
                   }}
                   onDelete={handleDeleteResume}
+                  onRecommend={() => navigate(`/recommend/${resume._id}`)}
                 />
               ))}
             </div>
