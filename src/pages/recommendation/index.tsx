@@ -1,6 +1,7 @@
 import { postGPTRecommend } from '@/api/gpt';
 import FlowSteps from '@/components/recommendation/FlowSteps';
 import RecommendationCard from '@/components/recommendation/RecommendationCard';
+import SimulationForm from '@/components/recommendation/SimulationForm';
 import { useAuthStore } from '@/store/authStore';
 import { GPTRecommendData } from '@/types/gpt';
 import { useEffect, useState } from 'react';

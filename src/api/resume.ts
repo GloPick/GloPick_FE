@@ -20,7 +20,7 @@ export const postResume = async (
 };
 
 export const getResume = async (token: string): Promise<GetProfileResponse> => {
-  const response = await apiInstance.get('/profile', {
+  const response = await apiInstance.get('/mypage/profiles', {
     headers: { Authorization: `Bearer ${token}` },
   });
   console.log(response.data);
@@ -28,7 +28,7 @@ export const getResume = async (token: string): Promise<GetProfileResponse> => {
 };
 
 export const deleteResume = async (id: string, token: string): Promise<DeleteProfileResponse> => {
-  const response = await apiInstance.delete(`/profile/${id}`, {
+  const response = await apiInstance.delete(`/mypage/profiles/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
@@ -39,7 +39,7 @@ export const editResume = async (
   updatedData: ResumeData,
   token: string,
 ): Promise<EditProfileResponse> => {
-  const response = await apiInstance.put(`/profile/${id}`, updatedData, {
+  const response = await apiInstance.put(`/mypage/profiles/${id}`, updatedData, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
