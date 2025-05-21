@@ -36,8 +36,8 @@ export default function MultiSelectInput({
   };
 
   return (
-    <div className="flex flex-col max-w-md gap-2">
-      {label && <label className="text-sm font-medium text-text">{label}</label>}
+    <div className="flex flex-col max-w-full gap-2">
+      {label && <label className="text-md font-semibold text-text">{label}</label>}
       <div
         className={clsx(
           'flex flex-wrap gap-2 p-2 rounded-xl bg-background-gray',

@@ -19,7 +19,7 @@ export default function Router({ children }: RouterProps) {
         <Route path="/" element={<Layout />}>
           <Route path="/test" element={<Test />} />
           <Route path="/main" element={<Main />} />
-          <Route path="/recommend/:id" element={<Recommendation />} />
+          <Route path="/recommend/:recommendationId" element={<Recommendation />} />
         </Route>
       </Routes>
       {children}

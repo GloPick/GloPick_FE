@@ -1,14 +1,21 @@
 import { Briefcase, Globe, MessageSquare } from 'lucide-react';
-import { RecommendationCardProps } from './types';
 
-export default function RecommendationCard({
+interface CountryRecommendationCardProps {
+  country: string;
+  job: string;
+  reason: string;
+  onSelect: () => void;
+  isSelected?: boolean;
+}
+
+export default function CountryRecommendationCard({
   country,
   job,
   reason,
   onSelect,
-}: RecommendationCardProps) {
+}: CountryRecommendationCardProps) {
   return (
-    <div className="bg-white rounded-xl shadow-md border border-gray-200 p-5 cursor-pointer hover:scale-105 transition-all duration-300">
+    <div className="flex flex-col justify-between h-full bg-white rounded-xl shadow-md border border-gray-200 p-5 cursor-pointer hover:scale-105 transition-all duration-300">
       <div className="flex items-center gap-3 mb-2">
         <Globe className="text-primary" size={20} />
         <h3 className="text-lg font-semibold text-primary">{country}</h3>

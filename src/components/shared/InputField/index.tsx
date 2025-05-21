@@ -13,9 +13,9 @@ export default function InputField({
   className,
 }: InputFieldProps) {
   return (
-    <div className="flex flex-col max-w-md gap-2">
+    <div className="flex flex-col max-w-full gap-2">
       {label && (
-        <label htmlFor={name} className="font-medium text-sm text-text">
+        <label htmlFor={name} className="font-semibold text-md text-text">
           {label}
         </label>
       )}

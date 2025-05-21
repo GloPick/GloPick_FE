@@ -24,8 +24,8 @@ export default function Dropdown<T = string>({
   const selectedItem = items.find((item) => item.value === selected);
 
   return (
-    <div className="relative inline-block w-full max-w-xs gap-2" ref={dropdownRef}>
-      {label && <label className="font-medium text-sm text-text">{label}</label>}
+    <div className="relative inline-block w-full max-w-full gap-2" ref={dropdownRef}>
+      {label && <label className="font-semibold text-md text-text">{label}</label>}
 
       <button
         className="w-full border border-gray-300 bg-white text-left py-2 px-3 rounded-lg shadow-sm hover:border-primary transition"

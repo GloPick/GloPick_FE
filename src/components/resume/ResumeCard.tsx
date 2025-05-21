@@ -18,11 +18,11 @@ const ResumeCard = ({ data, onEdit, onDelete, onRecommend }: ResumeCardProps) =>
   };
 
   const handleDelete = () => {
-    onDelete?.(data._id);
+    onDelete?.(data.profileId);
   };
 
   const handleRecommend = () => {
-    onRecommend?.(data._id);
+    onRecommend?.(data.profileId);
   };
 
   return (
