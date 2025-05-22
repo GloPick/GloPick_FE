@@ -10,6 +10,7 @@ export interface ResumeCardProps {
   data: ResumeResponseData;
   onEdit?: (resume: ResumeResponseData) => void;
   onDelete?: (id: string) => void;
+  onRecommend?: (id: string) => void;
 }
 
 export interface ResumeEmptyModalProps {

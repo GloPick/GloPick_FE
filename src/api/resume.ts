@@ -23,6 +23,7 @@ export const getResume = async (token: string): Promise<GetProfileResponse> => {
   const response = await apiInstance.get('/profile', {
     headers: { Authorization: `Bearer ${token}` },
   });
+  console.log(response.data);
   return response.data;
 };
 
