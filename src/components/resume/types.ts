@@ -1,14 +1,14 @@
-import { ResumeData, ResumeResponseData } from '@/types/resume';
+import { GetProfileResponseData, PostProfilePayloadData } from '@/types/resume';
 
 export interface ResumeFormProps {
-  initialData?: ResumeData;
-  onSubmit?: (data: ResumeData) => void;
+  initialData?: PostProfilePayloadData;
+  onSubmit?: (data: PostProfilePayloadData) => void;
   onClose?: () => void;
 }
 
 export interface ResumeCardProps {
-  data: ResumeResponseData;
-  onEdit?: (resume: ResumeResponseData) => void;
+  data: GetProfileResponseData;
+  onEdit?: (resume: GetProfileResponseData) => void;
   onDelete?: (id: string) => void;
   onRecommend?: (id: string) => void;
 }

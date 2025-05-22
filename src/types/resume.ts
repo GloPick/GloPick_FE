@@ -1,4 +1,4 @@
-export interface ResumeData {
+export interface PostProfilePayloadData {
   education: string;
   experience: string;
   desiredJob: string;
@@ -8,21 +8,35 @@ export interface ResumeData {
   additionalNotes?: string;
 }
 
-export interface ResumeResponseData extends ResumeData {
-  _id: string;
-  createdAt: string;
-}
-
 export interface PostProfileResponse {
   code: number;
   message: string;
-  data: null;
+  data: {
+    profileId: string;
+  } | null;
+}
+
+export interface GetProfileResponseData {
+  profileId: string;
+  user: {
+    userId: string;
+    name: string;
+    email: string;
+  };
+  education: string;
+  experience: string;
+  desiredJob: string;
+  skills: string[];
+  languages: string[];
+  desiredSalary: number;
+  additionalNotes?: string;
+  responseId: string;
 }
 
 export interface GetProfileResponse {
   code: number;
   message: string;
-  data: ResumeResponseData[];
+  data: GetProfileResponseData[];
 }
 
 export interface DeleteProfileResponse {
@@ -31,8 +45,29 @@ export interface DeleteProfileResponse {
   data: null;
 }
 
+export interface EditProfilePayloadData {
+  education: string;
+  experience: string;
+  desiredJob: string;
+  skills: string[];
+  languages: string[];
+  desiredSalary: number;
+  additionalNotes?: string;
+}
+
+export interface EditProfileResponseData {
+  profileId: string;
+  education: string;
+  experience: string;
+  desiredJob: string;
+  skills: string[];
+  languages: string[];
+  desiredSalary: number;
+  additionalNotes?: string;
+}
+
 export interface EditProfileResponse {
   code: number;
   message: string;
-  data: ResumeResponseData;
+  data: EditProfileResponseData | null;
 }

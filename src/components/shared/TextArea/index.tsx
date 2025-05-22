@@ -34,7 +34,7 @@ export default function TextArea({
   };
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-full">
       <div className="relative">
         <textarea
           ref={textAreaRef}

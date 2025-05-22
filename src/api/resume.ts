@@ -1,15 +1,16 @@
 import { apiInstance } from './index';
 import {
-  ResumeData,
   PostProfileResponse,
   GetProfileResponse,
   DeleteProfileResponse,
   EditProfileResponse,
+  PostProfilePayloadData,
+  EditProfilePayloadData,
 } from '@/types/resume';
 
 export const postResume = async (
-  data: ResumeData,
-  token: string | null,
+  data: PostProfilePayloadData,
+  token: string,
 ): Promise<PostProfileResponse> => {
   const response = await apiInstance.post('/profile', data, {
     headers: {
@@ -20,26 +21,29 @@ export const postResume = async (
 };
 
 export const getResume = async (token: string): Promise<GetProfileResponse> => {
-  const response = await apiInstance.get('/profile', {
+  const response = await apiInstance.get('/mypage/profiles', {
     headers: { Authorization: `Bearer ${token}` },
   });
   console.log(response.data);
   return response.data;
 };
 
-export const deleteResume = async (id: string, token: string): Promise<DeleteProfileResponse> => {
-  const response = await apiInstance.delete(`/profile/${id}`, {
+export const deleteResume = async (
+  profileId: string,
+  token: string,
+): Promise<DeleteProfileResponse> => {
+  const response = await apiInstance.delete(`/mypage/profiles/${profileId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
 };
 
 export const editResume = async (
-  id: string,
-  updatedData: ResumeData,
+  profileId: string,
+  updatedData: EditProfilePayloadData,
   token: string,
 ): Promise<EditProfileResponse> => {
-  const response = await apiInstance.put(`/profile/${id}`, updatedData, {
+  const response = await apiInstance.put(`/mypage/profiles/${profileId}`, updatedData, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;

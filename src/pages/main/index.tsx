@@ -7,19 +7,20 @@ import ResumeCard from '@/components/resume/ResumeCard';
 import ResumeEmptyModal from '@/components/resume/ResumeEmptyModal';
 import Modal from '@/components/layout/Modal';
 import PopularCountryChart from './PopularCountryChart';
-import { ResumeData, ResumeResponseData } from '@/types/resume';
+import { GetProfileResponseData, PostProfilePayloadData } from '@/types/resume';
 import { deleteResume, editResume, getResume, postResume } from '@/api/resume';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
 import { useNavigate } from 'react-router-dom';
+import { postCountryRecommend } from '@/api/simulation';
 
 const Main = () => {
   const { token } = useAuthStore(); // 로그인 여부 확인
   const { openModal } = useModalStore(); // 로그인 모달 제어
   const navigate = useNavigate();
 
-  const [resumes, setResumes] = useState<ResumeResponseData[]>([]);
-  const [editingResume, setEditingResume] = useState<ResumeResponseData | null>(null);
+  const [resumes, setResumes] = useState<GetProfileResponseData[]>([]);
+  const [editingResume, setEditingResume] = useState<GetProfileResponseData | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showResumeList, setShowResumeList] = useState(false);
   const [showEmptyModal, setShowEmptyModal] = useState(false);
@@ -35,18 +36,22 @@ const Main = () => {
   };
 
   // 이력 등록 및 수정 버튼 클릭
-  const handleSubmitResume = async (data: ResumeData) => {
+  const handleSubmitResume = async (data: PostProfilePayloadData) => {
     if (!token) return;
 
     try {
       if (editingResume) {
         // 수정
-        const res = await editResume(editingResume._id, data, token);
-        if (res.code === 200) {
+        const res = await editResume(editingResume.profileId, data, token);
+        if (res.code === 200 && res.data) {
           setResumes((prev) =>
-            prev.map((item) => (item._id === editingResume._id ? res.data : item)),
+            prev.map((item) =>
+              item.profileId === editingResume.profileId ? { ...item, ...res.data } : item,
+            ),
           );
           alert('이력이 수정되었습니다.');
+        } else {
+          alert(res.message);
         }
       } else {
         // 등록
@@ -55,9 +60,11 @@ const Main = () => {
           alert('이력이 등록되었습니다.');
 
           const updated = await getResume(token);
-          if (updated.code === 200) {
+          if (updated.code === 200 && updated.data) {
             setResumes(updated.data);
           }
+        } else {
+          alert(res.message);
         }
       }
     } catch (err) {
@@ -91,12 +98,41 @@ const Main = () => {
     }
   };
 
-  // 이력 삭제 버튼 클릭
-  const handleDeleteResume = async (id: string) => {
+  const handleGenerateRecommendation = async (profileId: string) => {
     if (!token) {
-      alert('로그인 후 이용 가능합니다.');
+      alert('로그인 후 이용해주세요');
+      openModal('login');
+      return;
     }
 
+    try {
+      const response = await postCountryRecommend(profileId, token);
+      if (response.code === 200) {
+        const recommendationId = response.data.recommendationId;
+        navigate(`/recommend/${recommendationId}`);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const resData = error?.response?.data;
+
+      // 이미 추천받은 이력일 때
+      if (
+        error?.response?.status === 400 &&
+        resData?.message === '이미 추천받은 이력입니다.' &&
+        resData?.data?.recommendationId
+      ) {
+        const existingId = resData.data.recommendationId;
+        alert('이미 추천받은 이력입니다. 해당 페이지로 이동합니다.');
+        navigate(`/recommend/${existingId}`);
+      } else {
+        alert('추천 생성 중 오류가 발생했습니다.');
+        console.error(error);
+      }
+    }
+  };
+
+  // 이력 삭제 버튼 클릭
+  const handleDeleteResume = async (profileId: string) => {
     const confirm = window.confirm('이력을 삭제하시겠습니까?');
     if (!confirm) return;
 
@@ -106,10 +142,10 @@ const Main = () => {
     }
 
     try {
-      const res = await deleteResume(id, token);
+      const res = await deleteResume(profileId, token);
       if (res.code === 200) {
         alert('이력이 삭제되었습니다.');
-        setResumes((prev) => prev.filter((resume) => resume._id !== id));
+        setResumes((prev) => prev.filter((resume) => resume.profileId !== profileId));
       } else {
         alert(res.message || '이력 삭제에 실패했습니다.');
       }
@@ -268,14 +304,14 @@ const Main = () => {
             <div className="grid gap-4">
               {resumes.map((resume) => (
                 <ResumeCard
-                  key={resume._id}
+                  key={resume.profileId}
                   data={resume}
                   onEdit={(resume) => {
                     setEditingResume(resume);
                     setShowForm(true);
                   }}
                   onDelete={handleDeleteResume}
-                  onRecommend={() => navigate(`/recommend/${resume._id}`)}
+                  onRecommend={() => handleGenerateRecommendation(resume.profileId)}
                 />
               ))}
             </div>

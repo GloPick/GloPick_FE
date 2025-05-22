@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { ResumeData } from '@/types/resume';
+import { PostProfilePayloadData } from '@/types/resume';
 import { ResumeFormProps } from './types';
 import { InputField, MultiSelectInput, TextArea, Button } from '../shared';
 import clsx from 'clsx';
 
 const ResumeForm = ({ initialData, onClose, onSubmit }: ResumeFormProps) => {
-  const [form, setForm] = useState<ResumeData>(
+  const [form, setForm] = useState<PostProfilePayloadData>(
     initialData || {
       education: '',
       experience: '',
@@ -16,7 +16,7 @@ const ResumeForm = ({ initialData, onClose, onSubmit }: ResumeFormProps) => {
       additionalNotes: '',
     },
   );
-  const [errors, setErrors] = useState<Partial<Record<keyof ResumeData, string>>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof PostProfilePayloadData, string>>>({});
 
   const validateForm = (): boolean => {
     const newErrors: typeof errors = {};
@@ -33,7 +33,10 @@ const ResumeForm = ({ initialData, onClose, onSubmit }: ResumeFormProps) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = <T extends keyof ResumeData>(field: T, value: ResumeData[T]) => {
+  const handleChange = <T extends keyof PostProfilePayloadData>(
+    field: T,
+    value: PostProfilePayloadData[T],
+  ) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: '' }));
   };

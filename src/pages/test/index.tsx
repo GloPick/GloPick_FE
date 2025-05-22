@@ -6,5 +6,4 @@ const Test = () => {
 
   return <>{isLoading && <Loading message="추천 결과 생성 중입니다." />}</>;
 };
-
 export default Test;
