@@ -18,6 +18,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import CityRecommendationCard from '@/components/recommendation/CityRecommendationCard';
+import SimulationResultCard from '@/components/simulation/SimulationResultCard';
 
 const Recommendation = () => {
   const { recommendationId } = useParams<{
@@ -206,117 +207,11 @@ const Recommendation = () => {
 
       {/* step 4. 시뮬레이션 결과 */}
       {currentStep === 4 && simulationResult && (
-        <div className="w-full max-w-4xl mt-10">
-          <h2 className="text-xl font-bold text-center mb-6 text-primary">최종 시뮬레이션 결과</h2>
-          <div className="bg-white p-6 rounded-xl shadow-md space-y-4">
-            <p>
-              <strong>추천 도시:</strong> {simulationResult.result.recommendedCity}
-            </p>
-            <p>
-              <strong>국가:</strong> {simulationResult.result.country}
-            </p>
-
-            <div>
-              <h3 className="text-lg font-semibold mt-4">📍 지역 정보</h3>
-              <ul className="list-disc ml-5 space-y-1">
-                <li>
-                  <strong>대중교통:</strong> {simulationResult.result.localInfo.publicTransport}
-                </li>
-                <li>
-                  <strong>치안 수준:</strong> {simulationResult.result.localInfo.safetyLevel}
-                </li>
-                <li>
-                  <strong>기후 요약:</strong> {simulationResult.result.localInfo.climateSummary}
-                </li>
-                <li>
-                  <strong>필수 시설:</strong>{' '}
-                  {simulationResult.result.localInfo.essentialFacilities.join(', ')}
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mt-4">🏠 주거 정보</h3>
-              <p>
-                <strong>단기:</strong>{' '}
-                {simulationResult.result.initialSetup.shortTermHousingOptions.join(', ')}
-              </p>
-              <p>
-                <strong>장기:</strong>{' '}
-                {simulationResult.result.initialSetup.longTermHousingPlatforms.join(', ')}
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mt-4">💼 직업 정보</h3>
-              <p>
-                <strong>일반 직무:</strong>{' '}
-                {simulationResult.result.jobReality.commonJobs.join(', ')}
-              </p>
-              <p>
-                <strong>구직 플랫폼:</strong>{' '}
-                {simulationResult.result.jobReality.jobSearchPlatforms.join(', ')}
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mt-4">🌏 문화 통합</h3>
-              <p>
-                <strong>한인 커뮤니티 링크:</strong>
-              </p>
-              <ul className="list-disc ml-5">
-                {simulationResult.result.culturalIntegration.koreanResourcesLinks.map(
-                  (link, idx) => (
-                    <li key={idx}>
-                      <a
-                        href={link}
-                        className="text-blue-600 underline"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {link}
-                      </a>
-                    </li>
-                  ),
-                )}
-              </ul>
-              <p>
-                <strong>프로그램:</strong>{' '}
-                {simulationResult.result.culturalIntegration.culturalIntegrationPrograms.join(', ')}
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mt-4">📊 종합 지표</h3>
-              <p>
-                <strong>취업 가능성:</strong> {simulationResult.result.employmentProbability}%
-              </p>
-              <p>
-                <strong>이주 적합도:</strong> {simulationResult.result.migrationSuitability}%
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mt-4">✈️ 항공편 링크</h3>
-              <a
-                href={simulationResult.flightLinks.googleFlights}
-                className="text-blue-600 underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Google Flights 보기
-              </a>
-              <br />
-              <a
-                href={simulationResult.flightLinks.skyscanner}
-                className="text-blue-600 underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Skyscanner 보기
-              </a>
-            </div>
-          </div>
+        <div className="w-full px-4 sm:px-6 md:px-8">
+          <SimulationResultCard
+            result={simulationResult.result}
+            flightLinks={simulationResult.flightLinks}
+          />
         </div>
       )}
     </div>
