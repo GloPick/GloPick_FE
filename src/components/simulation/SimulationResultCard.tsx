@@ -1,30 +1,42 @@
 import { FC } from 'react';
-import { SimulationResultData } from '@/types/simulation';
+import { FinalSimulationResult } from '@/types/simulation';
 import {
+  AlertTriangle,
+  BadgeCheck,
+  Banknote,
   BookOpen,
   Briefcase,
   Building2,
   Bus,
+  CalendarDays,
   CloudSun,
+  Contact2,
   Globe,
   Home,
+  Info,
+  Landmark,
+  Languages,
+  Link2,
+  LucideBanknote,
   MapPin,
+  Plane,
   PlaneTakeoff,
   Search,
   ShieldCheck,
   Sparkles,
+  Train,
+  UserCheck,
   Users,
 } from 'lucide-react';
+import SimulationScore from './SimulationScore';
 
 interface SimulationResultCardProps {
-  result: SimulationResultData;
-  flightLinks: {
-    googleFlights: string;
-    skyscanner: string;
-  };
+  result: FinalSimulationResult['result'];
+  flightLinks: FinalSimulationResult['flightLinks'];
+  scores: FinalSimulationResult['scores'];
 }
 
-const SimulationResultCard: FC<SimulationResultCardProps> = ({ result, flightLinks }) => {
+const SimulationResultCard: FC<SimulationResultCardProps> = ({ result, flightLinks, scores }) => {
   return (
     <div className="bg-white rounded-2xl shadow-lg p-8 max-w-5xl mx-auto space-y-6 border border-gray-100">
       <h2 className="text-2xl font-bold text-center text-primary mb-4">🧭 최종 시뮬레이션 결과</h2>
@@ -38,128 +50,261 @@ const SimulationResultCard: FC<SimulationResultCardProps> = ({ result, flightLin
           </span>
         </h3>
         <p className="text-base text-gray-700 flex justify-center items-center gap-2">
-          <Globe size={18} className="text-accent" /> {result.country}
+          <Globe size={18} /> {result.country}
         </p>
       </div>
 
       {/* 지역 정보 */}
-      <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
-        <h4 className="font-semibold text-xl text-gray-800 mb-3 flex items-center gap-2">
+      <div className="section">
+        <h4 className="title">
           <MapPin className="text-primary" size={20} /> 지역 정보
         </h4>
-        <ul className="text-base text-gray-700 space-y-3">
-          <li className="flex items-start gap-2">
-            <Bus className="text-accent mt-0.5" size={18} />
+        <ul className="list">
+          <li className="item">
+            <Bus className="icon" size={18} />
             <span>
-              <span className="font-semibold">대중교통:</span> {result.localInfo.publicTransport}
+              <span className="text">대중교통:</span> {result.localInfo.publicTransport}
             </span>
           </li>
-          <li className="flex items-start gap-2">
-            <ShieldCheck className="text-accent mt-0.5" size={18} />
+          <li className="item">
+            <ShieldCheck className="icon" size={18} />
             <span>
-              <span className="font-semibold">치안 수준:</span> {result.localInfo.safetyLevel}
+              <span className="text">치안 수준:</span> {result.localInfo.safetyLevel}
             </span>
           </li>
-          <li className="flex items-start gap-2">
-            <CloudSun className="text-accent mt-0.5" size={18} />
+          <li className="item">
+            <CloudSun className="icon" size={18} />
             <span>
-              <span className="font-semibold">기후:</span> {result.localInfo.climateSummary}
+              <span className="text">기후:</span> {result.localInfo.climateSummary}
             </span>
           </li>
-          <li className="flex items-start gap-2">
-            <Building2 className="text-accent mt-0.5" size={18} />
+          <li className="item">
+            <Users className="icon" size={18} />
             <span>
-              <span className="font-semibold">필수 시설:</span>{' '}
+              <span className="text">한인 커뮤니티:</span>
+              {result.localInfo.koreanCommunity}
+            </span>
+          </li>
+          <li className="item">
+            <Building2 className="icon" size={18} />
+            <span>
+              <span className="text">주요 시설:</span>{' '}
               {result.localInfo.essentialFacilities.join(', ')}
             </span>
           </li>
+          <li className="item">
+            <Info className="icon" size={18} />
+            <span>
+              <span className="text">문화 팁:</span> {result.localInfo.culturalTips}
+            </span>
+          </li>
+          <li className="item">
+            <AlertTriangle className="icon" size={18} />
+            <span>
+              <span className="text">주의사항:</span> {result.localInfo.warnings}
+            </span>
+          </li>
         </ul>
       </div>
 
-      {/* 주거 정보 */}
-      <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
-        <h4 className="font-semibold text-xl text-gray-800 mb-3 flex items-center gap-2">
-          <Home className="text-primary" size={20} /> 주거 정보
+      {/* 예상 지출 추정 */}
+      <div className="section">
+        <h4 className="title">
+          <LucideBanknote className="text-primary" size={20} /> 예상 월별 지출
         </h4>
-        <p className="text-base text-gray-700 mb-1 flex items-center gap-2">
-          <Building2 size={16} className="text-accent" />
-          <span>
-            <span className="font-semibold">단기:</span>{' '}
-            {result.initialSetup.shortTermHousingOptions.join(', ')}
-          </span>
+        <ul className="list">
+          <li className="item">
+            <Home className="icon" size={18} />
+            <span>
+              <span className="text">주거:</span> {result.estimatedMonthlyCost.housing}
+            </span>
+          </li>
+          <li className="item">
+            <Sparkles className="icon" size={18} />
+            <span>
+              <span className="text">식비:</span> {result.estimatedMonthlyCost.food}
+            </span>
+          </li>
+          <li className="item">
+            <Train className="icon" size={18} />
+            <span>
+              <span className="text">교통:</span> {result.estimatedMonthlyCost.transportation}
+            </span>
+          </li>
+          <li className="item">
+            <Info className="icon" size={18} />
+            <span>
+              <span className="text">기타:</span> {result.estimatedMonthlyCost.etc}
+            </span>
+          </li>
+          <li className="item">
+            <BadgeCheck className="icon" size={18} />
+            <span>
+              <span className="text">총합:</span> {result.estimatedMonthlyCost.total}
+            </span>
+          </li>
+          <li className="item">
+            <CalendarDays className="icon" size={18} />
+            <span>
+              <span className="text">1년 예상 지출:</span> {result.estimatedMonthlyCost.oneYearCost}
+            </span>
+          </li>
+          <li className="item">
+            <Sparkles className="icon" size={18} />
+            <span>
+              <span className="text">비용 절감 팁:</span>{' '}
+              {result.estimatedMonthlyCost.costCuttingTips}
+            </span>
+          </li>
+          <li className="item">
+            <BookOpen className="icon" size={18} />
+            <span>
+              <span className="text">물가 비교:</span> {result.estimatedMonthlyCost.cpi}
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      {/* 가까운 공항 */}
+      <div className="section">
+        <h4 className="title">
+          <Plane className="text-primary" size={20} /> 가장 가까운 공항
+        </h4>
+        <p className="text-gray-700 text-md">
+          {result.nearestAirport.name} ({result.nearestAirport.code}) - {result.nearestAirport.city}
         </p>
-        <p className="text-base text-gray-700 flex items-center gap-2">
-          <Home size={16} className="text-accent" />
-          <span>
-            <span className="font-semibold">장기:</span>{' '}
-            {result.initialSetup.longTermHousingPlatforms.join(', ')}
-          </span>
-        </p>
+      </div>
+
+      {/* 초기 정착 준비 */}
+      <div className="section">
+        <h4 className="title">
+          <Home className="text-primary" size={20} /> 초기 정착 준비
+        </h4>
+        <ul className="list">
+          <li className="item">
+            <Landmark size={18} className="icon" />
+            <span>
+              <span className="text">단기 주거:</span>{' '}
+              {result.initialSetup.shortTermHousingOptions.join(', ')}
+            </span>
+          </li>
+          <li className="item">
+            <Landmark size={18} className="icon" />
+            <span>
+              <span className="text">장기 주거:</span>{' '}
+              {result.initialSetup.longTermHousingPlatforms.join(', ')}
+            </span>
+          </li>
+          <li className="item">
+            <Contact2 size={18} className="icon" />
+            <span>
+              <span className="text">모바일 플랜:</span> {result.initialSetup.mobilePlan}
+            </span>
+          </li>
+          <li className="item">
+            <Banknote size={18} className="icon" />
+            <span>
+              <span className="text">은행 계좌:</span> {result.initialSetup.bankAccount}
+            </span>
+          </li>
+        </ul>
       </div>
 
       {/* 직업 정보 */}
-      <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
-        <h4 className="font-semibold text-xl text-gray-800 mb-3 flex items-center gap-2">
+      <div className="section">
+        <h4 className="title">
           <Briefcase className="text-primary" size={20} /> 직업 정보
         </h4>
-        <p className="text-base text-gray-700 mb-1 flex items-center gap-2">
-          <Sparkles size={16} className="text-accent" />
-          <span>
-            <span className="font-semibold">일반 직무:</span>{' '}
-            {result.jobReality.commonJobs.join(', ')}
-          </span>
-        </p>
-        <p className="text-base text-gray-700 flex items-center gap-2">
-          <Search size={16} className="text-accent" />
-          <span>
-            <span className="font-semibold">구직 플랫폼:</span>{' '}
-            {result.jobReality.jobSearchPlatforms.join(', ')}
-          </span>
-        </p>
+        <ul className="list">
+          <li className="item">
+            <Search size={18} className="icon" />
+            <span>
+              <span className="text">추천 직무:</span> {result.jobReality.commonJobs.join(', ')}
+            </span>
+          </li>
+          <li className="item">
+            <Link2 size={18} className="icon" />
+            <span>
+              <span className="text">구직 플랫폼:</span>{' '}
+              {result.jobReality.jobSearchPlatforms.join(', ')}
+            </span>
+          </li>
+          <li className="item">
+            <Languages size={18} className="icon" />
+            <span>
+              <span className="text">언어 요구:</span> {result.jobReality.languageRequirement}
+            </span>
+          </li>
+          <li className="item">
+            <AlertTriangle size={18} className="icon" />
+            <span>
+              <span className="text">비자 팁:</span> {result.jobReality.visaLimitationTips}
+            </span>
+          </li>
+        </ul>
       </div>
 
       {/* 문화 통합 */}
-      <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
-        <h4 className="font-semibold text-xl text-gray-800 mb-3 flex items-center gap-2">
+      <div className="section">
+        <h4 className="title">
           <Globe className="text-primary" size={20} /> 문화 정보
         </h4>
-        <p className="text-base text-gray-700 mb-1 flex items-center gap-2">
-          <Users size={16} className="text-accent" />
-          <span className="font-semibold">한인 커뮤니티 링크:</span>
-        </p>
-        <ul className="list-disc ml-6 text-base text-blue-600 underline space-y-1">
-          {result.culturalIntegration.koreanResourcesLinks.map((link, idx) => (
-            <li key={idx}>
-              <a href={link} target="_blank" rel="noopener noreferrer">
-                {link}
-              </a>
-            </li>
-          ))}
+        <ul className="list">
+          <li className="item">
+            <Users size={18} className="icon" />
+            <span>
+              <span className="text">한인 비율:</span>{' '}
+              {result.culturalIntegration.koreanPopulationRate}
+            </span>
+          </li>
+          <li className="item">
+            <UserCheck size={18} className="icon" />
+            <span>
+              <span className="text">외국인 비율:</span>{' '}
+              {result.culturalIntegration.foreignResidentRatio}
+            </span>
+          </li>
+          <li className="item">
+            <Link2 size={18} className="icon" />
+            <span>
+              <span className="text">한인 커뮤니티 링크:</span>{' '}
+              <ul className="ml-6 list-disc text-blue-600 underline">
+                {result.culturalIntegration.koreanResourcesLinks.map((link, i) => (
+                  <li key={i}>
+                    <a href={link} target="_blank" rel="noreferrer">
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </span>
+          </li>
         </ul>
-        <p className="text-base text-gray-700 mt-3 flex items-center gap-2">
-          <BookOpen size={16} className="text-accent" />
-          <span>
-            <span className="font-semibold">프로그램:</span>{' '}
-            {result.culturalIntegration.culturalIntegrationPrograms.join(', ')}
-          </span>
-        </p>
       </div>
 
       {/* 지표 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+        <SimulationScore
+          title="취업 가능성"
+          value={scores.employmentProbability}
+          type="employment"
+        />
+        <SimulationScore title="이주 추천도" value={scores.migrationSuitability} type="migration" />
+      </div>
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="bg-primary/10 rounded-xl p-4 text-center">
           <p className="text-base text-gray-700 mb-1">취업 가능성</p>
-          <p className="text-2xl font-bold text-primary">{result.employmentProbability}%</p>
+          <p className="text-2xl font-bold text-primary">28%</p>
         </div>
         <div className="bg-accent/10 rounded-xl p-4 text-center">
           <p className="text-base text-gray-700 mb-1">이주 적합도</p>
-          <p className="text-2xl font-bold text-accent">{result.migrationSuitability}%</p>
+          <p className="text-2xl font-bold text-accent">28%</p>
         </div>
-      </div>
+      </div> */}
 
       {/* 항공편 */}
-      <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
-        <h4 className="font-semibold text-xl text-gray-800 mb-3 flex items-center gap-2">
+      <div className="section">
+        <h4 className="title">
           <PlaneTakeoff className="text-primary" size={20} /> 항공편 확인
         </h4>
         <ul className="list-disc ml-6 text-base text-blue-600 underline space-y-1">

@@ -48,7 +48,7 @@ export interface PostSimulationFormPayloadData {
   hasLicense: boolean;
   jobTypes: string[];
   requiredFacilities: string[];
-  accompanyingFamily: string[];
+  accompanyingFamily: string;
   visaStatus: string[];
   additionalNotes?: string;
   departureAirport: string;
@@ -63,7 +63,7 @@ export interface PostSimulationFormResponseData {
   hasLicense: boolean;
   jobTypes: string[];
   requiredFacilities: string[];
-  accompanyingFamily: string[];
+  accompanyingFamily: string;
   visaStatus: string[];
   additionalNotes?: string;
   departureAirport: string;
@@ -104,22 +104,43 @@ export interface SimulationResultData {
     publicTransport: string;
     safetyLevel: string;
     climateSummary: string;
+    koreanCommunity: string;
     essentialFacilities: string[];
+    culturalTips: string;
+    warnings: string;
+  };
+  estimatedMonthlyCost: {
+    housing: string;
+    food: string;
+    transportation: string;
+    etc: string;
+    total: string;
+    oneYearCost: string;
+    costCuttingTips: string;
+    cpi: string;
+  };
+  nearestAirport: {
+    name: string;
+    city: string;
+    code: string;
   };
   initialSetup: {
     shortTermHousingOptions: string[];
     longTermHousingPlatforms: string[];
+    mobilePlan: string;
+    bankAccount: string;
   };
   jobReality: {
     commonJobs: string[];
     jobSearchPlatforms: string[];
+    languageRequirement: string;
+    visaLimitationTips: string;
   };
   culturalIntegration: {
+    koreanPopulationRate: string;
+    foreignResidentRatio: string;
     koreanResourcesLinks: string[];
-    culturalIntegrationPrograms: string[];
   };
-  employmentProbability: number;
-  migrationSuitability: number;
 }
 
 export interface PostSimulationResponseData {
@@ -135,4 +156,20 @@ export interface PostSimulationResponse {
   code: number;
   message: string;
   data: PostSimulationResponseData;
+}
+
+// 취업 가능성, 이주 추천도 계산, GET
+export interface GetScoreResponseData {
+  employmentProbability: number;
+  migrationSuitability: number;
+}
+
+export interface GetScoreResponse {
+  code: number;
+  message: string;
+  data: GetScoreResponseData;
+}
+
+export interface FinalSimulationResult extends PostSimulationResponseData {
+  scores: GetScoreResponseData;
 }

@@ -5,6 +5,7 @@ import {
   PostSimulationFormResponse,
   PostCityResponse,
   PostSimulationResponse,
+  GetScoreResponse,
 } from '@/types/simulation';
 import { apiInstance } from './index';
 
@@ -80,5 +81,19 @@ export const postSimulationResult = async (
     { selectedCityIndex },
     { headers: { Authorization: `Bearer ${token}` } },
   );
+  return response.data;
+};
+
+// 취업 가능성, 이주 추천도 계산
+export const getSimulationScore = async (
+  simulationId: string,
+  token: string,
+): Promise<GetScoreResponse> => {
+  const response = await apiInstance.get(`/simulation/scores/${simulationId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
   return response.data;
 };

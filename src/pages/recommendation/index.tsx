@@ -1,5 +1,6 @@
 import {
   getCountryRecommend,
+  getSimulationScore,
   postCityRecommend,
   postSimulationForm,
   postSimulationResult,
@@ -8,12 +9,12 @@ import FlowSteps from '@/components/recommendation/FlowSteps';
 import RecommendationCard from '@/components/recommendation/CountryRecommendationCard';
 import SimulationForm from '@/components/simulation/SimulationForm';
 import { useAuthStore } from '@/store/authStore';
-import { PostProfilePayloadData } from '@/types/resume';
+// import { PostProfilePayloadData } from '@/types/resume';
 import {
   CountryRanking,
+  FinalSimulationResult,
   PostCityResponseData,
   PostSimulationFormPayloadData,
-  PostSimulationResponseData,
 } from '@/types/simulation';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -35,9 +36,9 @@ const Recommendation = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [recommendedCities, setRecommendCities] = useState<PostCityResponseData[]>([]);
   const [inputId, setInputId] = useState<string>('');
-  const [simulationResult, setSimulationResult] = useState<PostSimulationResponseData | null>(null);
+  const [simulationResult, setSimulationResult] = useState<FinalSimulationResult | null>(null);
 
-  const [profile, setProfile] = useState<PostProfilePayloadData | null>(null);
+  // const [profile, setProfile] = useState<PostProfilePayloadData | null>(null);
   const navigate = useNavigate();
 
   // 국가 추천 결과 불러오기
@@ -58,7 +59,7 @@ const Recommendation = () => {
 
         setRecommendedCountry(target.rankings);
         setProfileId(target.profileId);
-        setProfile(target.profile);
+        // setProfile(target.profile);
       } catch (error) {
         console.error(error);
         alert('추천 결과 불러오기 실패');
@@ -90,17 +91,9 @@ const Recommendation = () => {
       const response = await postSimulationForm(
         recommendationId,
         profileId,
-        {
-          ...formData,
-        },
+        { ...formData },
         token,
       );
-
-      // 중복된 시뮬레이션 입력일 때
-      if (response.code === 400) {
-        alert(response.message);
-        return;
-      }
 
       const inputId = response.data.inputId;
       setInputId(inputId);
@@ -127,7 +120,15 @@ const Recommendation = () => {
       } else {
         alert('도시 추천 응답 형식이 예상과 다릅니다.');
       }
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.response?.status === 400) {
+        const serverMsg = error.response?.data?.message;
+        if (serverMsg) {
+          alert(serverMsg);
+          return;
+        }
+      }
       console.error(error);
       alert('시뮬레이션 정보를 저장 또는 도시 추천에 실패했습니다.');
     } finally {
@@ -138,10 +139,21 @@ const Recommendation = () => {
   // 도시 선택 및 시뮬레이션
   const handleSelectCity = async (cityIndex: number) => {
     if (!inputId || !token) return;
+
     try {
       setLoading('simulation');
+
+      // 최종 시뮬레이션 결과 생성
       const response = await postSimulationResult(inputId, cityIndex, token);
-      setSimulationResult(response.data);
+      const result = response.data;
+      // setSimulationResult(response.data);
+      // setCurrentStep(4);
+
+      // 취업 가능성, 이주 추천도 계산
+      const scoreResponse = await getSimulationScore(inputId, token);
+      const scores = scoreResponse.data;
+
+      setSimulationResult({ ...result, scores });
       setCurrentStep(4);
     } catch (error) {
       console.error(error);
@@ -229,6 +241,7 @@ const Recommendation = () => {
           <SimulationResultCard
             result={simulationResult.result}
             flightLinks={simulationResult.flightLinks}
+            scores={simulationResult.scores}
           />
         </div>
       )}
