@@ -14,7 +14,7 @@ const Loading = ({ message = '잠시만 기다려주세요...' }: { message?: st
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="mt-4 text-text text-lg font-semibold"
+        className="mt-4 text-white text-lg font-semibold"
       >
         {message}
       </motion.p>

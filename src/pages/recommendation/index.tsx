@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import CityRecommendationCard from '@/components/recommendation/CityRecommendationCard';
 import SimulationResultCard from '@/components/simulation/SimulationResultCard';
+import Loading from '@/components/shared/Loading';
 
 const Recommendation = () => {
   const { recommendationId } = useParams<{
@@ -26,6 +27,7 @@ const Recommendation = () => {
   }>();
   const { token } = useAuthStore();
 
+  const [loading, setLoading] = useState<null | 'country' | 'city' | 'simulation'>(null);
   const [recommendedCountry, setRecommendedCountry] = useState<CountryRanking[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string>('');
   const [selectedRankIndex, setSelectedRankIndex] = useState<number>(0);
@@ -45,6 +47,7 @@ const Recommendation = () => {
         return;
       }
       try {
+        setLoading('country');
         const response = await getCountryRecommend(token);
         const target = response.data.find((item) => item.recommendationId === recommendationId);
         if (!target) {
@@ -60,6 +63,8 @@ const Recommendation = () => {
         console.error(error);
         alert('추천 결과 불러오기 실패');
         navigate('/main');
+      } finally {
+        setLoading(null);
       }
     };
 
@@ -78,6 +83,10 @@ const Recommendation = () => {
     if (!profileId || !recommendationId || !token) return;
 
     try {
+      // 로딩화면 렌더링
+      setLoading('city');
+
+      // 시뮬레이션 입력 정보 저장
       const response = await postSimulationForm(
         recommendationId,
         profileId,
@@ -87,13 +96,21 @@ const Recommendation = () => {
         token,
       );
 
+      // 중복된 시뮬레이션 입력일 때
+      if (response.code === 400) {
+        alert(response.message);
+        return;
+      }
+
       const inputId = response.data.inputId;
       setInputId(inputId);
       setCurrentStep(3);
 
+      // 도시 추천 요청
       const cityResponse = await postCityRecommend(inputId, token);
       const cityData = cityResponse.data;
 
+      // 분기 처리
       if (Array.isArray(cityData)) {
         // 성공 응답
         setRecommendCities(cityData);
@@ -106,13 +123,15 @@ const Recommendation = () => {
           }),
         );
         setRecommendCities(formatted);
-        alert('이미 추천된 도시 목록입니다.');
+        alert('입력 정보에 대해 이미 추천된 도시가 존재합니다. 해당 페이지로 이동합니다.');
       } else {
         alert('도시 추천 응답 형식이 예상과 다릅니다.');
       }
     } catch (error) {
       console.error(error);
       alert('시뮬레이션 정보를 저장 또는 도시 추천에 실패했습니다.');
+    } finally {
+      setLoading(null);
     }
   };
 
@@ -120,12 +139,15 @@ const Recommendation = () => {
   const handleSelectCity = async (cityIndex: number) => {
     if (!inputId || !token) return;
     try {
+      setLoading('simulation');
       const response = await postSimulationResult(inputId, cityIndex, token);
       setSimulationResult(response.data);
       setCurrentStep(4);
     } catch (error) {
       console.error(error);
       alert('최종 시뮬레이션 생성 실패');
+    } finally {
+      setLoading(null);
     }
   };
 
@@ -154,10 +176,8 @@ const Recommendation = () => {
       <FlowSteps currentStep={currentStep} />
 
       {/* step 1. 추천 카드 선택 */}
-      {currentStep === 1 && recommendedCountry.length === 0 ? (
-        <p className="text-center text-gray-500">추천 결과를 불러오고 있습니다...</p>
-      ) : currentStep === 1 ? (
-        <div className="w-full max-w-5xl px-4 sm:px-6 md:px-8 mx-auto">
+      {currentStep === 1 && recommendedCountry && (
+        <div className="w-full max-w-5xl px-4 sm:p-6 md:px-8 mx-auto">
           <div className="mb-6 text-center">
             <h2 className="text-2xl font-bold text-primary">🗺️ 국가 추천 결과</h2>
             <p className="text-sm text-gray-500 mt-1">원하는 국가를 선택해주세요.</p>
@@ -174,7 +194,7 @@ const Recommendation = () => {
             ))}
           </div>
         </div>
-      ) : null}
+      )}
 
       {/* step 2. 추가 정보 입력 */}
       {currentStep === 2 && (
@@ -184,9 +204,7 @@ const Recommendation = () => {
       )}
 
       {/* step 3. 도시 추천 결과 */}
-      {currentStep === 3 && recommendedCities.length === 0 ? (
-        <p className="text-center text-gray-500">추천 결과를 불러오고 있습니다...</p>
-      ) : currentStep === 3 ? (
+      {currentStep === 3 && recommendedCities && (
         <div className="w-full max-w-5xl px-4 sm:px-6 md:px-8 mx-auto">
           <div className="mb-6 text-center">
             <h2 className="text-2xl font-bold text-primary">🏙️ 도시 추천 결과</h2>
@@ -203,7 +221,7 @@ const Recommendation = () => {
             ))}
           </div>
         </div>
-      ) : null}
+      )}
 
       {/* step 4. 시뮬레이션 결과 */}
       {currentStep === 4 && simulationResult && (
@@ -214,6 +232,10 @@ const Recommendation = () => {
           />
         </div>
       )}
+
+      {loading === 'country' && <Loading message="이력 기반으로 추천 국가 생성 중" />}
+      {loading === 'city' && <Loading message="입력하신 정보를 토대로 추천 도시 생성 중" />}
+      {loading === 'simulation' && <Loading message="최종 시뮬레이션 생성 중" />}
     </div>
   );
 };

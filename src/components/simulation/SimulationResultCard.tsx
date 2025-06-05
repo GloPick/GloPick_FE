@@ -121,7 +121,7 @@ const SimulationResultCard: FC<SimulationResultCardProps> = ({ result, flightLin
       {/* 문화 통합 */}
       <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
         <h4 className="font-semibold text-xl text-gray-800 mb-3 flex items-center gap-2">
-          <Globe className="text-primary" size={20} /> 문화 통합
+          <Globe className="text-primary" size={20} /> 문화 정보
         </h4>
         <p className="text-base text-gray-700 mb-1 flex items-center gap-2">
           <Users size={16} className="text-accent" />
