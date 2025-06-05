@@ -83,7 +83,10 @@ const Recommendation = () => {
     if (!profileId || !recommendationId || !token) return;
 
     try {
+      // 로딩화면 렌더링
       setLoading('city');
+
+      // 시뮬레이션 입력 정보 저장
       const response = await postSimulationForm(
         recommendationId,
         profileId,
@@ -93,13 +96,21 @@ const Recommendation = () => {
         token,
       );
 
+      // 중복된 시뮬레이션 입력일 때
+      if (response.code === 400) {
+        alert(response.message);
+        return;
+      }
+
       const inputId = response.data.inputId;
       setInputId(inputId);
       setCurrentStep(3);
 
+      // 도시 추천 요청
       const cityResponse = await postCityRecommend(inputId, token);
       const cityData = cityResponse.data;
 
+      // 분기 처리
       if (Array.isArray(cityData)) {
         // 성공 응답
         setRecommendCities(cityData);
@@ -112,7 +123,7 @@ const Recommendation = () => {
           }),
         );
         setRecommendCities(formatted);
-        alert('이미 추천된 도시 목록입니다.');
+        alert('입력 정보에 대해 이미 추천된 도시가 존재합니다. 해당 페이지로 이동합니다.');
       } else {
         alert('도시 추천 응답 형식이 예상과 다릅니다.');
       }
