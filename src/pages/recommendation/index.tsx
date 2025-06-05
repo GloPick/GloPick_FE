@@ -90,17 +90,9 @@ const Recommendation = () => {
       const response = await postSimulationForm(
         recommendationId,
         profileId,
-        {
-          ...formData,
-        },
+        { ...formData },
         token,
       );
-
-      // 중복된 시뮬레이션 입력일 때
-      if (response.code === 400) {
-        alert(response.message);
-        return;
-      }
 
       const inputId = response.data.inputId;
       setInputId(inputId);
@@ -127,7 +119,15 @@ const Recommendation = () => {
       } else {
         alert('도시 추천 응답 형식이 예상과 다릅니다.');
       }
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.response?.status === 400) {
+        const serverMsg = error.response?.data?.message;
+        if (serverMsg) {
+          alert(serverMsg);
+          return;
+        }
+      }
       console.error(error);
       alert('시뮬레이션 정보를 저장 또는 도시 추천에 실패했습니다.');
     } finally {

@@ -2,33 +2,62 @@ import SimulationResultCard from '@/components/simulation/SimulationResultCard';
 
 const dummySimulationResult = {
   result: {
-    country: '캐나다',
-    recommendedCity: '밴쿠버',
+    country: '미국',
+    recommendedCity: '매디슨',
     localInfo: {
-      publicTransport: 'SkyTrain, 버스, Seabus 등 다양한 교통수단이 잘 갖춰져 있습니다.',
-      safetyLevel: '전반적으로 안전한 도시로 평가되며, 관광지 주변은 비교적 혼잡할 수 있습니다.',
-      climateSummary: '온화한 해양성 기후로 겨울에도 비교적 따뜻하며, 비가 자주 내립니다.',
-      essentialFacilities: ['병원', '마트', '은행', '한인마트'],
+      publicTransport:
+        '버스가 주요 교통수단입니다. 하지만 운전면허가 있으므로 차량 이용이 가능합니다.',
+      safetyLevel: '대한민국과 비교하여 치안이 좋으나, 항상 주의가 필요합니다.',
+      climateSummary: '사계절이 뚜렷하며 겨울에는 매우 추워집니다.',
+      koreanCommunity: '한인 마트와 한식당이 몇 군데 있습니다.',
+      essentialFacilities: [
+        'University Hospital',
+        "Woodman's Food Market",
+        'Chicago Consulate General',
+      ],
+      culturalTips: '현지인들은 친절하며, 다양한 문화를 존중합니다.',
+      warnings: '겨울철 눈길 운전에 주의해야 합니다.',
+    },
+    estimatedMonthlyCost: {
+      housing: '100만원',
+      food: '40만원',
+      transportation: '20만원',
+      etc: '30만원',
+      total: '190만원',
+      oneYearCost: '2280만원',
+      costCuttingTips: '대중교통을 이용하거나, 중고 가구를 활용하는 것이 좋습니다.',
+      cpi: '대한민국 보다 1.2배 정도 물가가 높은 편입니다.',
+    },
+    nearestAirport: {
+      name: 'Dane County Regional Airport',
+      city: '매디슨',
+      code: 'MSN',
     },
     initialSetup: {
-      shortTermHousingOptions: ['호텔', '에어비앤비', '게스트하우스'],
-      longTermHousingPlatforms: ['Zillow', 'Rentals.ca', 'Kijiji'],
+      shortTermHousingOptions: ['호텔', '호스텔', '에어비앤비'],
+      longTermHousingPlatforms: ['Zillow', 'Apartments.com'],
+      mobilePlan: '선불 심카드가 편리합니다 (예: AT&T, T-Mobile)',
+      bankAccount: '여권과 주소 증빙만으로 계좌 개설이 가능합니다.',
     },
     jobReality: {
-      commonJobs: ['프론트엔드 개발자', 'UX 디자이너', 'QA 엔지니어'],
-      jobSearchPlatforms: ['LinkedIn', 'Indeed', 'JobBank'],
+      commonJobs: ['원격 근무가 가능한 IT, 마케팅, 디자인 등의 직종이 추천됩니다.'],
+      jobSearchPlatforms: ['Indeed', 'LinkedIn', 'Glassdoor'],
+      languageRequirement: '영어 중급 이상 필수',
+      visaLimitationTips: '취업 비자는 고용주 스폰서가 필요합니다.',
     },
     culturalIntegration: {
-      koreanResourcesLinks: ['https://vankorean.com', 'https://hellovancouver.ca'],
-      culturalIntegrationPrograms: ['밴쿠버 한인회 모임', '영어/한국어 언어교환 프로그램'],
+      koreanPopulationRate: '전체 인구의 약 0.5% 이므로 한국인이 많지 않습니다.',
+      foreignResidentRatio: '8.5%',
+      koreanResourcesLinks: [
+        'https://www.koreanmadison.org',
+        'https://www.facebook.com/groups/2204690880',
+      ],
     },
-    employmentProbability: 87,
-    migrationSuitability: 78,
   },
   flightLinks: {
     googleFlights:
-      'https://www.google.com/flights?hl=ko#flt=/m/05qtj..2024-08-01;c:KRW;e:1;sd:1;t:f',
-    skyscanner: 'https://www.skyscanner.co.kr/transport/flights/icn/yvr/',
+      'https://www.google.com/travel/flights?q=Flights from Incheon%20International%20Airport%20(ICN) to MSN/one way',
+    skyscanner: 'https://www.skyscanner.co.kr/transport/flights/icn/msn/',
   },
 };
 

@@ -23,7 +23,7 @@ const SimulationForm = ({ onSubmit, selectedCountry }: SimulationFormProps) => {
     hasLicense: false,
     jobTypes: [],
     requiredFacilities: [],
-    accompanyingFamily: [],
+    accompanyingFamily: '',
     visaStatus: [],
     additionalNotes: '',
     departureAirport: '',
@@ -147,11 +147,13 @@ const SimulationForm = ({ onSubmit, selectedCountry }: SimulationFormProps) => {
         placeholder="예: 병원, 대중교통"
       />
 
-      <MultiSelectInput
+      <InputField
         label="👨‍👩‍👧 동반 가족"
-        selected={form.accompanyingFamily}
-        onChange={(val) => handleChange('accompanyingFamily', val)}
+        name="accompanyigFamily"
+        value={form.accompanyingFamily}
+        onChange={(e) => handleChange('accompanyingFamily', e.target.value)}
         placeholder="예: 배우자, 자녀"
+        error={errors.accompanyingFamily}
       />
 
       <MultiSelectInput
