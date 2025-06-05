@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { SimulationResultData } from '@/types/simulation';
+import { FinalSimulationResult } from '@/types/simulation';
 import {
   AlertTriangle,
   BadgeCheck,
@@ -28,16 +28,15 @@ import {
   UserCheck,
   Users,
 } from 'lucide-react';
+import SimulationScore from './SimulationScore';
 
 interface SimulationResultCardProps {
-  result: SimulationResultData;
-  flightLinks: {
-    googleFlights: string;
-    skyscanner: string;
-  };
+  result: FinalSimulationResult['result'];
+  flightLinks: FinalSimulationResult['flightLinks'];
+  scores: FinalSimulationResult['scores'];
 }
 
-const SimulationResultCard: FC<SimulationResultCardProps> = ({ result, flightLinks }) => {
+const SimulationResultCard: FC<SimulationResultCardProps> = ({ result, flightLinks, scores }) => {
   return (
     <div className="bg-white rounded-2xl shadow-lg p-8 max-w-5xl mx-auto space-y-6 border border-gray-100">
       <h2 className="text-2xl font-bold text-center text-primary mb-4">🧭 최종 시뮬레이션 결과</h2>
@@ -284,7 +283,15 @@ const SimulationResultCard: FC<SimulationResultCardProps> = ({ result, flightLin
       </div>
 
       {/* 지표 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+        <SimulationScore
+          title="취업 가능성"
+          value={scores.employmentProbability}
+          type="employment"
+        />
+        <SimulationScore title="이주 추천도" value={scores.migrationSuitability} type="migration" />
+      </div>
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="bg-primary/10 rounded-xl p-4 text-center">
           <p className="text-base text-gray-700 mb-1">취업 가능성</p>
           <p className="text-2xl font-bold text-primary">28%</p>
@@ -293,7 +300,7 @@ const SimulationResultCard: FC<SimulationResultCardProps> = ({ result, flightLin
           <p className="text-base text-gray-700 mb-1">이주 적합도</p>
           <p className="text-2xl font-bold text-accent">28%</p>
         </div>
-      </div>
+      </div> */}
 
       {/* 항공편 */}
       <div className="section">

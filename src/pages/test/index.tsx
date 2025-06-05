@@ -59,6 +59,10 @@ const dummySimulationResult = {
       'https://www.google.com/travel/flights?q=Flights from Incheon%20International%20Airport%20(ICN) to MSN/one way',
     skyscanner: 'https://www.skyscanner.co.kr/transport/flights/icn/msn/',
   },
+  scores: {
+    employmentProbability: 88,
+    migrationSuitability: 59,
+  },
 };
 
 const Test = () => {
@@ -66,6 +70,7 @@ const Test = () => {
     <SimulationResultCard
       result={dummySimulationResult.result}
       flightLinks={dummySimulationResult.flightLinks}
+      scores={dummySimulationResult.scores}
     />
   );
 };

@@ -141,8 +141,6 @@ export interface SimulationResultData {
     foreignResidentRatio: string;
     koreanResourcesLinks: string[];
   };
-  // employmentProbability: number;
-  // migrationSuitability: number;
 }
 
 export interface PostSimulationResponseData {
@@ -161,13 +159,17 @@ export interface PostSimulationResponse {
 }
 
 // 취업 가능성, 이주 추천도 계산, GET
-export interface GetScoresResponseData {
+export interface GetScoreResponseData {
   employmentProbability: number;
   migrationSuitability: number;
 }
 
-export interface GetScoresResponse {
+export interface GetScoreResponse {
   code: number;
   message: string;
-  data: GetCountryResponseData[];
+  data: GetScoreResponseData;
+}
+
+export interface FinalSimulationResult extends PostSimulationResponseData {
+  scores: GetScoreResponseData;
 }
