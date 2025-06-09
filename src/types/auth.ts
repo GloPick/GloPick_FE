@@ -38,3 +38,16 @@ export interface GetUserInfoResponse {
   message: string;
   data: GetUserInfoResponseData;
 }
+
+export interface PutUserInfoPayloadData {
+  name: string;
+  email: string;
+  birth: string;
+  phone: string;
+}
+
+export interface PutUserInfoResponse {
+  code: number;
+  message: string;
+  data: PutUserInfoPayloadData;
+}

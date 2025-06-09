@@ -1,6 +1,9 @@
-import { getUserInfo } from '@/api/auth';
+import { getUserInfo, putUserInfo } from '@/api/auth';
 import { useAuthStore } from '@/store/authStore';
+import { PutUserInfoPayloadData } from '@/types/auth';
 import { useEffect, useState } from 'react';
+import Modal from '../layout/Modal';
+import EditUserModal from './EditUserModal';
 
 interface UserInfo {
   name: string;
@@ -12,6 +15,8 @@ interface UserInfo {
 const UserInfo = () => {
   const { token } = useAuthStore();
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -33,6 +38,19 @@ const UserInfo = () => {
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
     return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+  };
+
+  const handleUpdateUser = async (formData: PutUserInfoPayloadData) => {
+    if (!token) return;
+
+    try {
+      const response = await putUserInfo(formData, token);
+      setUserInfo(response.data);
+      alert('정보가 수정되었습니다.');
+    } catch (error) {
+      console.error(error);
+      alert('정보 수정에 실패했습니다.');
+    }
   };
 
   return (
@@ -59,13 +77,26 @@ const UserInfo = () => {
       </div>
 
       <div className="mt-6 flex justify-end gap-3">
-        <button className="px-4 py-2 text-sm font-medium border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition">
+        <button
+          className="px-4 py-2 text-sm font-medium border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+          onClick={() => setIsEditOpen(true)}
+        >
           정보 수정
         </button>
         <button className="px-4 py-2 text-sm font-medium bg-red text-white rounded-lg hover:opacity-90 transition">
           회원 탈퇴
         </button>
       </div>
+
+      {isEditOpen && (
+        <Modal onClose={() => setIsEditOpen(false)}>
+          <EditUserModal
+            initData={userInfo}
+            onClose={() => setIsEditOpen(false)}
+            onSubmit={handleUpdateUser}
+          />
+        </Modal>
+      )}
     </div>
   );
 };
