@@ -17,7 +17,7 @@ const Header = () => {
 
   const navItems = [
     { name: 'FAQ', to: '/faq' },
-    ...(isLoggedIn ? [{ name: '커뮤니티', to: '/community' }] : []),
+    ...(isLoggedIn ? [{ name: '마이페이지', to: '/mypage' }] : []),
   ];
 
   const handleLogout = () => {

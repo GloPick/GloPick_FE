@@ -24,3 +24,17 @@ export interface SignupData {
   birth: string;
   phone: string;
 }
+
+export interface GetUserInfoResponseData {
+  _id: string;
+  name: string;
+  email: string;
+  birth: string;
+  phone: string;
+}
+
+export interface GetUserInfoResponse {
+  code: number;
+  message: string;
+  data: GetUserInfoResponseData;
+}

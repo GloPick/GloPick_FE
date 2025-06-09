@@ -1,3 +1,4 @@
+import UserInfo from '@/components/mypage/UserInfo';
 import SimulationResultCard from '@/components/simulation/SimulationResultCard';
 
 const dummySimulationResult = {
@@ -67,11 +68,14 @@ const dummySimulationResult = {
 
 const Test = () => {
   return (
-    <SimulationResultCard
-      result={dummySimulationResult.result}
-      flightLinks={dummySimulationResult.flightLinks}
-      scores={dummySimulationResult.scores}
-    />
+    // <SimulationResultCard
+    //   result={dummySimulationResult.result}
+    //   flightLinks={dummySimulationResult.flightLinks}
+    //   scores={dummySimulationResult.scores}
+    // />
+    <section className="mb-6">
+      <UserInfo />
+    </section>
   );
 };
 export default Test;
