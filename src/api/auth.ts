@@ -38,3 +38,11 @@ export const putUserInfo = async (
   });
   return response.data;
 };
+
+// 사용자 회원 탈퇴
+export const deleteUser = async (token: string) => {
+  const response = await apiInstance.delete(`/mypage/account`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
