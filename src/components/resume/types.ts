@@ -14,6 +14,6 @@ export interface ResumeCardProps {
 }
 
 export interface ResumeEmptyModalProps {
-  onClose: () => void;
+  onClose?: () => void;
   onAddClick?: () => void;
 }

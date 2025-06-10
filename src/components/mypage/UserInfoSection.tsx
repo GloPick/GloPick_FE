@@ -1,42 +1,27 @@
-import { deleteUser, getUserInfo, putUserInfo } from '@/api/auth';
+import { deleteUser, putUserInfo } from '@/api/auth';
 import { useAuthStore } from '@/store/authStore';
 import { PutUserInfoPayloadData } from '@/types/auth';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Modal from '../layout/Modal';
 import EditUserModal from './EditUserModal';
 import { useNavigate } from 'react-router-dom';
 
-interface UserInfo {
+export interface UserInfo {
   name: string;
   email: string;
   birth: string;
   phone: string;
 }
 
-const UserInfo = () => {
+interface UserInfoSectionProps {
+  data: UserInfo;
+  onUpdate: () => Promise<void>;
+}
+
+const UserInfoSection = ({ data, onUpdate }: UserInfoSectionProps) => {
   const navigate = useNavigate();
-
   const { token, logout } = useAuthStore();
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-
   const [isEditOpen, setIsEditOpen] = useState(false);
-
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      if (!token) return;
-
-      try {
-        const response = await getUserInfo(token);
-        setUserInfo(response.data);
-      } catch (error) {
-        console.error('사용자 정보 조회 실패', error);
-      }
-    };
-
-    fetchUserInfo();
-  }, [token]);
-
-  if (!userInfo) return null;
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -48,8 +33,9 @@ const UserInfo = () => {
 
     try {
       const response = await putUserInfo(formData, token);
-      setUserInfo(response.data);
       alert('정보가 수정되었습니다.');
+      await onUpdate();
+      setIsEditOpen(false);
     } catch (error) {
       console.error(error);
       alert('정보 수정에 실패했습니다.');
@@ -84,19 +70,19 @@ const UserInfo = () => {
       <div className="grid gap-4 text-gray-800">
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium text-gray-500">이름</span>
-          <span className="text-base">{userInfo.name}</span>
+          <span className="text-base">{data.name}</span>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium text-gray-500">이메일</span>
-          <span className="text-base">{userInfo.email}</span>
+          <span className="text-base">{data.email}</span>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium text-gray-500">생년월일</span>
-          <span className="text-base">{formatDate(userInfo.birth)}</span>
+          <span className="text-base">{formatDate(data.birth)}</span>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium text-gray-500">연락처</span>
-          <span className="text-base">{userInfo.phone}</span>
+          <span className="text-base">{data.phone}</span>
         </div>
       </div>
 
@@ -118,7 +104,7 @@ const UserInfo = () => {
       {isEditOpen && (
         <Modal onClose={() => setIsEditOpen(false)}>
           <EditUserModal
-            initData={userInfo}
+            initData={data}
             onClose={() => setIsEditOpen(false)}
             onSubmit={handleUpdateUser}
           />
@@ -128,4 +114,4 @@ const UserInfo = () => {
   );
 };
 
-export default UserInfo;
+export default UserInfoSection;

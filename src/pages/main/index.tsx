@@ -306,7 +306,7 @@ const Main = () => {
                 <ResumeCard
                   key={resume.profileId}
                   data={resume}
-                  onEdit={(resume) => {
+                  onEdit={(resume: GetProfileResponseData) => {
                     setEditingResume(resume);
                     setShowForm(true);
                   }}

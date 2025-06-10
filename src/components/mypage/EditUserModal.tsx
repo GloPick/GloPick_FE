@@ -108,7 +108,7 @@ const EditUserModal = ({ initData, onClose, onSubmit }: EditUserModalProps) => {
           className="px-4 py-2 rounded-md bg-primary text-white font-semibold hover:bg-primary/90 transition"
           disabled={loading}
         >
-          {loading ? '저장 중...' : '저장'}
+          저장
         </button>
       </div>
     </div>
