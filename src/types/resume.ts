@@ -30,7 +30,7 @@ export interface GetProfileResponseData {
   languages: string[];
   desiredSalary: number;
   additionalNotes?: string;
-  responseId: string;
+  responseId: string; // 국가추천 id
 }
 
 export interface GetProfileResponse {

@@ -11,9 +11,10 @@ export interface ResumeCardProps {
   onEdit?: (resume: GetProfileResponseData) => void;
   onDelete?: (id: string) => void;
   onRecommend?: (id: string) => void;
+  onLoadSimulationList?: (profileId: string) => void;
 }
 
 export interface ResumeEmptyModalProps {
-  onClose: () => void;
+  onClose?: () => void;
   onAddClick?: () => void;
 }

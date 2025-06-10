@@ -6,7 +6,7 @@ import { useAuthStore } from '@/store/authStore';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { logout, token, user } = useAuthStore();
+  const { logout, token } = useAuthStore();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { openModal } = useModalStore();
@@ -17,7 +17,7 @@ const Header = () => {
 
   const navItems = [
     { name: 'FAQ', to: '/faq' },
-    ...(isLoggedIn ? [{ name: '커뮤니티', to: '/community' }] : []),
+    ...(isLoggedIn ? [{ name: '마이페이지', to: '/mypage' }] : []),
   ];
 
   const handleLogout = () => {
@@ -42,7 +42,6 @@ const Header = () => {
         ))}
         {isLoggedIn ? (
           <>
-            <span className="text-gray-800">{user?.name}님</span>
             <button onClick={handleLogout} className="hover:text-secondary">
               로그아웃
             </button>

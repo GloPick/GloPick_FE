@@ -5,6 +5,8 @@ import Landing from '@/pages/landing';
 import Layout from '@/components/layout';
 import Main from '@/pages/main';
 import Recommendation from '@/pages/recommendation';
+import MyPage from '@/pages/mypage';
+import SimulationSummary from '@/components/mypage/SimulationSummarySection';
 
 interface RouterProps {
   children?: ReactNode;
@@ -19,7 +21,9 @@ export default function Router({ children }: RouterProps) {
         <Route path="/" element={<Layout />}>
           <Route path="/test" element={<Test />} />
           <Route path="/main" element={<Main />} />
+          <Route path="/mypage" element={<MyPage />} />
           <Route path="/recommend/:recommendationId" element={<Recommendation />} />
+          <Route path="/simulation/:simulationId" element={<SimulationSummary />} />
         </Route>
       </Routes>
       {children}

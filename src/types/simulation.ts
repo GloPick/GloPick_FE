@@ -158,6 +158,22 @@ export interface PostSimulationResponse {
   data: PostSimulationResponseData;
 }
 
+// 시뮬레이션 결과 요약 조회
+export interface GetSimulationSummaryResponseData {
+  _id: string;
+  userId: string;
+  job: string;
+  country: string;
+  city: string;
+  migrationSuitability: number;
+}
+
+export interface GetSimulationSummaryResponse {
+  code: number;
+  message: string;
+  data: GetSimulationSummaryResponseData[];
+}
+
 // 취업 가능성, 이주 추천도 계산, GET
 export interface GetScoreResponseData {
   employmentProbability: number;

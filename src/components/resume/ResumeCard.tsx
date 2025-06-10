@@ -8,11 +8,16 @@ import {
   Languages,
   Coins,
   User2,
-  Sparkles,
 } from 'lucide-react';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
 
 const ResumeCard = ({ data, onEdit, onDelete, onRecommend }: ResumeCardProps) => {
+  const navigate = useNavigate();
+  // const { token } = useAuthStore();
+  // const [simulationResult, setSimulationResult] = useState<FinalSimulationResult | null>(null);
+  // const [loading, setLoading] = useState(false); // 데이터 로딩 완료 여부
+
   const handleEdit = () => {
     onEdit?.(data);
   };
@@ -24,6 +29,54 @@ const ResumeCard = ({ data, onEdit, onDelete, onRecommend }: ResumeCardProps) =>
   const handleRecommend = () => {
     onRecommend?.(data.profileId);
   };
+
+  // const handleLoadSimulation = async () => {
+  //   if (!token) return;
+
+  //   try {
+  //     setLoading(true);
+  //     const response = await getSimulationResult(data.profileId, token);
+  //     const simId = response.data.simulationId;
+  //     const scoreRes = await getSimulationScore(simId, token);
+
+  //     const fullResult = {
+  //       ...response.data,
+  //       scores: scoreRes.data,
+  //     };
+
+  //     if (response.code === 200 && response.data) {
+  //       setSimulationResult(fullResult);
+  //     } else {
+  //       alert('시뮬레이션 결과를 불러오는 데 실패했습니다.');
+  //     }
+  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //   } catch (error: any) {
+  //     if (error.response?.status === 404) {
+  //       try {
+  //         const recommendResponse = await getCountryRecommend(token);
+  //         const target = recommendResponse.data.find(
+  //           (rec: GetCountryResponseData) => rec.profileId === data.profileId,
+  //         );
+
+  //         if (target) {
+  //           alert('해당 이력의 시뮬레이션 결과가 없습니다. 국가 추천 페이지로 넘어갑니다.');
+  //           navigate(`/recommend/${data.responseId}`);
+  //         } else {
+  //           alert('해당 이력에 해당하는 추천 국가가 없습니다. 국가 추천을 먼저 받아주세요.');
+  //         }
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     } else {
+  //       alert('시뮬레이션 결과를 불러오지 못했습니다.');
+  //     }
+  //   }
+  // };
+
+  // 시뮬 요약 보기
+  // const handleViewSimulation = () => {
+  //   navigate('/simulation/list');
+  // };
 
   return (
     <div
@@ -96,8 +149,8 @@ const ResumeCard = ({ data, onEdit, onDelete, onRecommend }: ResumeCardProps) =>
         </div>
       </div>
 
-      {/* 추천받기 버튼 */}
-      {onRecommend && (
+      {/* 버튼 */}
+      {/* {onRecommend && (
         <button
           onClick={handleRecommend}
           className="mt-4 w-full flex items-center justify-center gap-2 text-sm font-semibold text-white bg-primary py-2 px-4 rounded-lg hover:bg-primary/80 transition"
@@ -105,7 +158,34 @@ const ResumeCard = ({ data, onEdit, onDelete, onRecommend }: ResumeCardProps) =>
           <Sparkles size={16} />
           이력 기반 추천받기
         </button>
+      )} */}
+      {data.responseId ? (
+        <button
+          onClick={() => navigate(`/recommend/${data.responseId}`)}
+          className="mt-4 w-full flex items-center justify-center gap-2 text-sm font-semibold text-white bg-primary py-2 px-4 rounded-lg hover:bg-primary/80 transition"
+        >
+          국가 추천 결과 보기
+        </button>
+      ) : (
+        <button
+          onClick={handleRecommend}
+          className="mt-4 w-full flex items-center justify-center gap-2 text-sm font-semibold text-white bg-primary py-2 px-4 rounded-lg hover:bg-primary/80 transition"
+        >
+          국가 추천 받기
+        </button>
       )}
+      {/* <button
+        onClick={handleLoadSimulation}
+        className="mt-4 w-full flex items-center justify-center gap-2 text-sm font-semibold text-white bg-primary py-2 px-4 rounded-lg hover:bg-primary/80 transition"
+      >
+        시뮬레이션 결과 보기
+      </button>
+      <button
+        onClick={handleViewSimulation}
+        className="mt-4 w-full flex items-center justify-center gap-2 text-sm font-semibold text-white bg-primary py-2 px-4 rounded-lg hover:bg-primary/80 transition"
+      >
+        시뮬레이션 요약 보기
+      </button> */}
     </div>
   );
 };

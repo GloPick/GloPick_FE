@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 
 interface ModalState {
-  modalType: 'login' | 'signup' | null;
+  modalType: 'login' | 'signup' | 'editUserInfo' | null;
   isOpen: boolean;
-  openModal: (type: 'login' | 'signup') => void;
+  openModal: (type: 'login' | 'signup' | 'editUserInfo') => void;
   closeModal: () => void;
 }
 

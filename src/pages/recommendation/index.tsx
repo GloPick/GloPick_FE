@@ -9,7 +9,6 @@ import FlowSteps from '@/components/recommendation/FlowSteps';
 import RecommendationCard from '@/components/recommendation/CountryRecommendationCard';
 import SimulationForm from '@/components/simulation/SimulationForm';
 import { useAuthStore } from '@/store/authStore';
-// import { PostProfilePayloadData } from '@/types/resume';
 import {
   CountryRanking,
   FinalSimulationResult,
@@ -59,7 +58,6 @@ const Recommendation = () => {
 
         setRecommendedCountry(target.rankings);
         setProfileId(target.profileId);
-        // setProfile(target.profile);
       } catch (error) {
         console.error(error);
         alert('추천 결과 불러오기 실패');
@@ -146,8 +144,6 @@ const Recommendation = () => {
       // 최종 시뮬레이션 결과 생성
       const response = await postSimulationResult(inputId, cityIndex, token);
       const result = response.data;
-      // setSimulationResult(response.data);
-      // setCurrentStep(4);
 
       // 취업 가능성, 이주 추천도 계산
       const scoreResponse = await getSimulationScore(inputId, token);
