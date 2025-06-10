@@ -6,7 +6,7 @@ import ResumeForm from '@/components/resume/ResumeForm';
 import ResumeCard from '@/components/resume/ResumeCard';
 import ResumeEmptyModal from '@/components/resume/ResumeEmptyModal';
 import Modal from '@/components/layout/Modal';
-import PopularCountryChart from './PopularCountryChart';
+import PopularChart from './PopularChart';
 import { GetProfileResponseData, PostProfilePayloadData } from '@/types/resume';
 import { deleteResume, editResume, getResume, postResume } from '@/api/resume';
 import { useAuthStore } from '@/store/authStore';
@@ -273,7 +273,7 @@ const Main = () => {
           transition={{ duration: 0.7 }}
         >
           <div className="max-w-4xl mx-auto">
-            <PopularCountryChart />
+            <PopularChart />
           </div>
         </motion.div>
       </section>
