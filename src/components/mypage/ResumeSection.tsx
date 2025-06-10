@@ -9,13 +9,21 @@ interface ResumeSectionProps {
   onDelete: (profileId: string) => void;
   onRecommend: (profileId: string) => void;
   onAdd: () => void;
+  onLoadSimulationList?: (profileId: string) => void;
 }
 
-const ResumeSection = ({ resumes, onEdit, onDelete, onRecommend, onAdd }: ResumeSectionProps) => {
+const ResumeSection = ({
+  resumes,
+  onEdit,
+  onDelete,
+  onRecommend,
+  onAdd,
+  // onLoadSimulationList,
+}: ResumeSectionProps) => {
   return (
-    <section className="mt-10 w-full bg-white border border-gray-200 rounded-xl shadow-md p-6">
+    <div className="space-y-4 px-4 py-6">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold text-primary">나의 이력</h2>
+        <h2 className="text-xl font-bold">나의 이력</h2>
         <button
           onClick={onAdd}
           className="text-sm text-white bg-secondary px-4 py-2 rounded-md hover:bg-secondary/80 transition"
@@ -37,7 +45,7 @@ const ResumeSection = ({ resumes, onEdit, onDelete, onRecommend, onAdd }: Resume
           </p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-6">
           {resumes.map((resume) => (
             <ResumeCard
               key={resume.profileId}
@@ -45,11 +53,12 @@ const ResumeSection = ({ resumes, onEdit, onDelete, onRecommend, onAdd }: Resume
               onEdit={() => onEdit(resume)}
               onDelete={() => onDelete(resume.profileId)}
               onRecommend={() => onRecommend(resume.profileId)}
+              // onLoadSimulationList={() => onLoadSimulationList(resume.profileId)}
             />
           ))}
         </div>
       )}
-    </section>
+    </div>
   );
 };
 

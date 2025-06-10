@@ -10,6 +10,7 @@ import { useAuthStore } from '@/store/authStore';
 import { GetProfileResponseData, PostProfilePayloadData } from '@/types/resume';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SimulationSummary from '../../components/mypage/SimulationSummarySection';
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -21,6 +22,10 @@ const MyPage = () => {
   const [editingResume, setEditingResume] = useState<GetProfileResponseData | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // const [simulationList, setSimulationList] = useState<GetSimulationSummaryResponseData[]>([]);
+  // const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
+  // const [showSimulationListModal, setShowSimulationListModal] = useState(false);
 
   // 사용자 정보 조회
   const fetchUserInfo = async () => {
@@ -149,6 +154,20 @@ const MyPage = () => {
     setLoading(false);
   };
 
+  // 시뮬레이션 요약 리스트
+  // const handleLoadSimulationList = async (profileId: string) => {
+  //   if (!token) return;
+  //   try {
+  //     const res = await getSimulationSummary(token);
+  //     setSimulationList(res.data);
+  //     setSelectedResumeId(profileId);
+  //     setShowSimulationListModal(true);
+  //   } catch (error) {
+  //     alert('시뮬레이션 목록을 불러오는 데 실패했습니다.');
+  //     console.error(error);
+  //   }
+  // };
+
   if (!userInfo) return null;
 
   return (
@@ -160,7 +179,9 @@ const MyPage = () => {
         onDelete={handleDeleteResume}
         onRecommend={handleGenerateRecommendation}
         onAdd={handleAddResume}
+        // onLoadSimulationList={handleLoadSimulationList}
       />
+      <SimulationSummary />
 
       {/* 이력 수정, 등록 모달 */}
       {showForm && (
@@ -182,6 +203,7 @@ const MyPage = () => {
           </div>
         </Modal>
       )}
+
       {loading && <Loading message="이력 기반으로 추천 국가 생성 중" />}
     </div>
   );

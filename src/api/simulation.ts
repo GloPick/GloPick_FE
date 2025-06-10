@@ -6,6 +6,7 @@ import {
   PostCityResponse,
   PostSimulationResponse,
   GetScoreResponse,
+  GetSimulationSummaryResponse,
 } from '@/types/simulation';
 import { apiInstance } from './index';
 
@@ -81,6 +82,27 @@ export const postSimulationResult = async (
     { selectedCityIndex },
     { headers: { Authorization: `Bearer ${token}` } },
   );
+  return response.data;
+};
+
+// 이력 별 시뮬레이션 결과 조회
+export const getSimulationResult = async (
+  profileId: string,
+  token: string,
+): Promise<PostSimulationResponse> => {
+  const response = await apiInstance.get(`/mypage/simulations/by-profile/${profileId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+// 시뮬레이션 결과 요약 조회
+export const getSimulationSummary = async (
+  token: string,
+): Promise<GetSimulationSummaryResponse> => {
+  const response = await apiInstance.get(`/simulation/list`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return response.data;
 };
 
