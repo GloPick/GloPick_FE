@@ -16,6 +16,7 @@ export default function Button({
     primary: 'bg-primary text-white',
     secondary: 'bg-gray-2 text-white',
     outline: 'border border-gray-300 text-gray-800 bg-white',
+    white: 'border border-gray-300 text-gray-800 font-semibold hover:bg-gray-100',
   };
 
   return (
