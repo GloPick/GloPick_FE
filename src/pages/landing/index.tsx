@@ -27,11 +27,10 @@ const Landing = () => {
         </p>
 
         <div className="flex flex-row gap-4 justify-center">
-          <Button className="bg-gray-2" onClick={() => handleClick('guest')}>
-            비회원 체험하기
-          </Button>
-          <Button className="bg-gray-2" onClick={() => handleClick('auth')}>
-            회원가입 하러가기
+          <Button onClick={() => handleClick('guest')}>비회원 체험</Button>
+          <Button onClick={() => handleClick('auth')}>회원가입</Button>
+          <Button variant="white" onClick={() => navigate('/main')}>
+            홈
           </Button>
         </div>
       </div>
