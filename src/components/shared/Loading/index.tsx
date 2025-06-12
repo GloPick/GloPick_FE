@@ -7,7 +7,7 @@ const Loading = ({ message = '잠시만 기다려주세요...' }: { message?: st
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-black bg-opacity-40 backdrop-blur-sm flex flex-col items-center justify-center"
+      className="fixed inset-0 z-[999] bg-black bg-opacity-40 backdrop-blur-sm flex flex-col items-center justify-center"
     >
       <PlaneTakeoff className="text-secondary animate-bounce" size={48} />
       <motion.p
