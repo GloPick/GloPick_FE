@@ -13,6 +13,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
 import { useNavigate } from 'react-router-dom';
 import { postCountryRecommend } from '@/api/simulation';
+import Loading from '@/components/shared/Loading';
 
 const Main = () => {
   const { token } = useAuthStore(); // 로그인 여부 확인
@@ -24,6 +25,7 @@ const Main = () => {
   const [showForm, setShowForm] = useState(false);
   const [showResumeList, setShowResumeList] = useState(false);
   const [showEmptyModal, setShowEmptyModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // 이력 추가하기 버튼 클릭
   const handleClickAddResume = () => {
@@ -165,6 +167,7 @@ const Main = () => {
     }
 
     try {
+      setLoading(true);
       const response = await postCountryRecommend(profileId, token);
       if (response.code === 200) {
         const recommendationId = response.data.recommendationId;
@@ -188,6 +191,7 @@ const Main = () => {
         console.error(error);
       }
     }
+    setLoading(false);
   };
 
   // 이력 삭제 버튼 클릭
@@ -389,6 +393,8 @@ const Main = () => {
           />
         </Modal>
       )}
+
+      {loading && <Loading message="이력 기반으로 추천 국가 생성 중" />}
     </div>
   );
 };
