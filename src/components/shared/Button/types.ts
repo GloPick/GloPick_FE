@@ -1,4 +1,4 @@
-export type ButtonVariant = 'primary' | 'secondary' | 'outline';
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'white';
 
 export interface ButtonProps {
   children: React.ReactNode;

@@ -7,6 +7,8 @@ import Main from '@/pages/main';
 import Recommendation from '@/pages/recommendation';
 import MyPage from '@/pages/mypage';
 import SimulationSummary from '@/components/mypage/SimulationSummarySection';
+import GuestResult from '@/pages/guest/GuestResult';
+import Guest from '@/pages/guest';
 
 interface RouterProps {
   children?: ReactNode;
@@ -22,6 +24,8 @@ export default function Router({ children }: RouterProps) {
           <Route path="/test" element={<Test />} />
           <Route path="/main" element={<Main />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/guest" element={<Guest />} />
+          <Route path="/guest/result" element={<GuestResult />} />
           <Route path="/recommend/:recommendationId" element={<Recommendation />} />
           <Route path="/simulation/:simulationId" element={<SimulationSummary />} />
         </Route>

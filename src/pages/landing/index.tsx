@@ -8,7 +8,7 @@ const Landing = () => {
 
   const handleClick = (action: 'guest' | 'auth') => {
     if (action === 'guest') {
-      navigate('/main');
+      navigate('/guest');
     } else if (action === 'auth') {
       openModal('signup');
     }
