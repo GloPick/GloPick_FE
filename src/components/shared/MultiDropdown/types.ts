@@ -1,4 +1,4 @@
-import { DropdownItem } from '../types';
+import { DropdownItem } from '../Dropdown/types';
 
 export interface MultiDropdownProps<T = string> {
   label?: string;
