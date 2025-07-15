@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import { MultiSelectInputProps } from './types';
+
+interface MultiSelectInputProps {
+  label?: string;
+  selected: string[];
+  onChange: (items: string[]) => void;
+  placeholder?: string;
+  error?: string;
+  className?: string;
+}
 
 export default function MultiSelectInput({
   label,

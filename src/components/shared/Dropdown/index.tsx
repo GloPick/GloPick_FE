@@ -1,5 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
-import { DropdownProps } from './types';
+
+interface DropdownProps<T = string> {
+  label?: string;
+  name?: string;
+  items: DropdownItem<T>[];
+  selected?: T;
+  onSelect: (value: T) => void;
+}
+
+export interface DropdownItem<T = string> {
+  name: string;
+  value: T;
+}
 
 export default function Dropdown<T = string>({
   label,

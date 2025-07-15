@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TrendingUp, Globe, BarChart3, FolderOpen, PlusCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components';
+import { Button } from '@/components/shared';
 import ResumeForm from '@/components/resume/ResumeForm';
 import ResumeCard from '@/components/resume/ResumeCard';
 import ResumeEmptyModal from '@/components/resume/ResumeEmptyModal';

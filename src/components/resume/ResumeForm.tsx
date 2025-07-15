@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { PostProfilePayloadData } from '@/types/resume';
-import { ResumeFormProps } from './types';
 import { InputField, MultiSelectInput, TextArea, Button } from '../shared';
 import clsx from 'clsx';
+
+interface ResumeFormProps {
+  initialData?: PostProfilePayloadData;
+  onSubmit?: (data: PostProfilePayloadData) => void;
+  onClose?: () => void;
+}
 
 const ResumeForm = ({ initialData, onClose, onSubmit }: ResumeFormProps) => {
   const [form, setForm] = useState<PostProfilePayloadData>(

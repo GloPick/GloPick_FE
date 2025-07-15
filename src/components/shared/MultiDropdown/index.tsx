@@ -1,6 +1,19 @@
 import { useState } from 'react';
-import Dropdown from '@/components/shared/Dropdown/index';
-import { MultiDropdownProps } from '@/components/shared/MultiDropdown/types';
+import Dropdown from '../Dropdown';
+
+interface MultiDropdownProps<T = string> {
+  label?: string;
+  name?: string;
+  items: DropdownItem<T>[];
+  selcted?: T;
+  value?: string;
+  onChange: (val: string) => void;
+}
+
+interface DropdownItem<T = string> {
+  name: string;
+  value: T;
+}
 
 export default function MultiDropdown({ label, items, value = '', onChange }: MultiDropdownProps) {
   const isInitialCustom = value !== '' && !items.some((item) => item.value === value);

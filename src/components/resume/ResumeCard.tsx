@@ -1,4 +1,3 @@
-import { ResumeCardProps } from './types';
 import {
   Pencil,
   Trash2,
@@ -11,6 +10,15 @@ import {
 } from 'lucide-react';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import { GetProfileResponseData } from '@/types/resume';
+
+interface ResumeCardProps {
+  data: GetProfileResponseData;
+  onEdit?: (resume: GetProfileResponseData) => void;
+  onDelete?: (id: string) => void;
+  onRecommend?: (id: string) => void;
+  onLoadSimulationList?: (profileId: string) => void;
+}
 
 const ResumeCard = ({ data, onEdit, onDelete, onRecommend }: ResumeCardProps) => {
   const navigate = useNavigate();
