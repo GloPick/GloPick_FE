@@ -39,65 +39,6 @@ const Main = () => {
 
   // 이력 등록 및 수정 버튼 클릭
   const handleSubmitResume = async (data: PostProfilePayloadData) => {
-    //   const isGuest = !token || searchParams.get('guest') === 'true';
-    //   setLoading(true);
-
-    //   try {
-    //     if (isGuest) {
-    //       // 비회원 추천 요청
-    //       const res = await postGuestCountry({
-    //         education: data.education,
-    //         experience: data.experience,
-    //         skills: data.skills,
-    //         languages: data.languages,
-    //         desiredSalary: data.desiredSalary,
-    //         desiredJob: data.desiredJob,
-    //         additionalNotes: data.additionalNotes,
-    //       });
-
-    //       if (res.code === 200) {
-    //         navigate('/guest', {
-    //           state: { result: res.data.recommendedCountries.rankings },
-    //         });
-    //       } else {
-    //         alert(res.message || '추천 요청에 실패했습니다.');
-    //       }
-    //     } else {
-    //       // 회원: 수정 or 등록
-    //       if (editingResume) {
-    //         const res = await editResume(editingResume.profileId, data, token);
-    //         if (res.code === 200 && res.data) {
-    //           setResumes((prev) =>
-    //             prev.map((item) =>
-    //               item.profileId === editingResume.profileId ? { ...item, ...res.data } : item,
-    //             ),
-    //           );
-    //           alert('이력이 수정되었습니다.');
-    //         } else {
-    //           alert(res.message);
-    //         }
-    //       } else {
-    //         const res = await postResume(data, token);
-    //         if (res.code === 201) {
-    //           alert('이력이 등록되었습니다.');
-    //           const updated = await getResume(token);
-    //           if (updated.code === 200 && updated.data) {
-    //             setResumes(updated.data);
-    //           }
-    //         } else {
-    //           alert(res.message);
-    //         }
-    //       }
-    //     }
-    //   } catch (err) {
-    //     console.error(err);
-    //     alert('처리 중 오류가 발생했습니다.');
-    //   } finally {
-    //     setLoading(false);
-    //     setShowForm(false);
-    //     setEditingResume(null);
-    //   }
-    // };
     if (!token) return;
 
     try {

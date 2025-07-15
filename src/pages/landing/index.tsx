@@ -1,12 +1,24 @@
 import { Button } from '@/components/shared';
+import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
 import { useNavigate } from 'react-router-dom';
 
 const Landing = () => {
   const navigate = useNavigate();
   const { openModal } = useModalStore();
+  const { token } = useAuthStore();
 
   const handleClick = (action: 'guest' | 'auth') => {
+    if (token) {
+      if (action === 'guest') {
+        alert('이미 로그인 상태입니다. 비회원 체험은 이용할 수 없습니다.');
+      } else if (action === 'auth') {
+        alert('이미 로그인 상태입니다.');
+      }
+      navigate('/main');
+      return;
+    }
+
     if (action === 'guest') {
       navigate('/guest');
     } else if (action === 'auth') {
