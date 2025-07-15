@@ -2,13 +2,13 @@ import { ReactNode } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Test from '@/pages/test';
 import Landing from '@/pages/landing';
-import Layout from '@/components/layout';
-import Main from '@/pages/main';
+import Layout from '@/components/layout/Layout';
+import Main from '@/pages/main/Main';
 import Recommendation from '@/pages/recommendation';
 import MyPage from '@/pages/mypage';
 import SimulationSummary from '@/components/mypage/SimulationSummarySection';
 import GuestResult from '@/pages/guest/GuestResult';
-import Guest from '@/pages/guest';
+import Guest from '@/pages/guest/Guest';
 import AccessRoute from './AccessRoute';
 
 interface RouterProps {

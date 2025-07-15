@@ -1,6 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
-import { TextAreaProps } from './types';
 import clsx from 'clsx';
+
+export interface TextAreaProps {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  maxLength?: number;
+  className?: string;
+}
 
 export default function TextArea({
   value,

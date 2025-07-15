@@ -1,5 +1,15 @@
-import { ButtonProps } from './types';
 import clsx from 'clsx';
+
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'white';
+
+interface ButtonProps {
+  children: React.ReactNode;
+  type?: 'button' | 'submit';
+  variant?: ButtonVariant;
+  onClick?: () => void;
+  disabled?: boolean;
+  className?: string;
+}
 
 export default function Button({
   children,

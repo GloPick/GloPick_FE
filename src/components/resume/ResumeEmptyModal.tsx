@@ -1,7 +1,11 @@
 import { FileQuestion } from 'lucide-react';
 import Button from '@/components/shared/Button';
 import clsx from 'clsx';
-import { ResumeEmptyModalProps } from './types';
+
+interface ResumeEmptyModalProps {
+  onClose?: () => void;
+  onAddClick?: () => void;
+}
 
 const ResumeEmptyModal = ({ onClose, onAddClick }: ResumeEmptyModalProps) => {
   return (

@@ -1,4 +1,4 @@
-import { Button } from '@/components';
+import { Button } from '@/components/shared';
 import { useModalStore } from '@/store/modalStore';
 import { PostGuestCountryResponseData } from '@/types/guest';
 import { useLocation, useNavigate } from 'react-router-dom';
