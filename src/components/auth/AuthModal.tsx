@@ -3,10 +3,12 @@ import { useModalStore } from '@/store/modalStore';
 import { X } from 'lucide-react';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
+import { useAuthStore } from '@/store/authStore';
 
 export default function AuthModal() {
   const { modalType, isOpen, openModal, closeModal } = useModalStore();
   const modalRef = useRef<HTMLDivElement>(null);
+  const { token } = useAuthStore();
 
   // 모달 외부 클릭 시 닫기
   useEffect(() => {
@@ -27,6 +29,14 @@ export default function AuthModal() {
       document.body.style.overflow = '';
     }
   }, [isOpen]);
+
+  const handleClickAuth = (type: 'login' | 'signup') => {
+    if (token) {
+      alert('이미 로그인 상태입니다.');
+      return;
+    }
+    openModal(type);
+  };
 
   if (!isOpen) return null;
 
@@ -57,7 +67,7 @@ export default function AuthModal() {
                 계정이 없으신가요?{' '}
                 <span
                   className="text-primary font-semibold cursor-pointer"
-                  onClick={() => openModal('signup')}
+                  onClick={() => handleClickAuth('signup')}
                 >
                   회원가입
                 </span>
@@ -70,7 +80,7 @@ export default function AuthModal() {
                 이미 계정이 있으신가요?{' '}
                 <span
                   className="text-primary font-semibold cursor-pointer"
-                  onClick={() => openModal('login')}
+                  onClick={() => handleClickAuth('login')}
                 >
                   로그인
                 </span>
