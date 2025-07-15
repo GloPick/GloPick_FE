@@ -5,7 +5,7 @@ import { ResumeEmptyModalProps } from './types';
 
 const ResumeEmptyModal = ({ onClose, onAddClick }: ResumeEmptyModalProps) => {
   return (
-    <div className={clsx('w-full max-w-md p-8 bg-white text-center', 'animate-fade-in')}>
+    <div className={clsx('w-full max-w-md p-8 bg-white text-center animate-fade-in')}>
       {/* 아이콘 */}
       <div className="flex justify-center mb-4">
         <FileQuestion size={48} className="text-accent" />

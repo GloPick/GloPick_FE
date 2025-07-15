@@ -33,7 +33,7 @@ const ResumeSection = ({
       </div>
 
       {resumes.length === 0 ? (
-        <div className={clsx('w-full p-8 bg-white text-center', 'animate-fade-in')}>
+        <div className={clsx('w-full p-8 bg-white text-center animate-fade-in')}>
           <div className="flex justify-center mb-4">
             <FileQuestion size={48} className="text-accent" />
           </div>
