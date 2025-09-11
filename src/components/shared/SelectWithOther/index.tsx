@@ -13,6 +13,7 @@ interface SelectWithOtherProps {
   onChange: (value: string) => void;
   placeholder?: string;
   otherLabel?: string;
+  required?: boolean;
   error?: string;
 }
 
@@ -23,6 +24,7 @@ export default function SelectWithOther({
   onChange,
   placeholder = '직접 입력',
   otherLabel = '기타 (직접 입력)',
+  required = false,
   error,
 }: SelectWithOtherProps) {
   const [isOther, setIsOther] = useState(false);
@@ -57,7 +59,9 @@ export default function SelectWithOther({
 
   return (
     <div className="space-y-2">
-      <label className="font-semibold text-md text-text">{label}</label>
+      <label className="font-semibold text-md text-text">
+        {label} {required && <span className="text-text ml-0.5">*</span>}
+      </label>
       <select
         value={isOther ? 'other' : value}
         onChange={handleSelectChange}

@@ -8,7 +8,7 @@ interface InputFieldProps {
   placeholder?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
-  disabled?: boolean;
+  required?: boolean;
   className?: string;
 }
 
@@ -20,14 +20,14 @@ export default function InputField({
   placeholder,
   onChange,
   error,
-  disabled = false,
+  required = false,
   className,
 }: InputFieldProps) {
   return (
     <div className="flex flex-col max-w-full gap-2">
       {label && (
-        <label htmlFor={name} className="font-semibold text-md text-text">
-          {label}
+        <label className="font-semibold text-md text-text">
+          {label} {required && <span className="text-text ml-0.5">*</span>}
         </label>
       )}
 
@@ -38,10 +38,9 @@ export default function InputField({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        disabled={disabled}
         className={clsx(
-          'w-full p-3 text-sm text-text bg-background-gray placeholder-placeholder rounded-xl focus:outline-none shadow-inner',
-          error ? 'shadow-red' : 'shadow-inner',
+          'w-full p-3 text-sm text-text bg-background-gray placeholder-placeholder rounded border focus:outline-none shadow-inner',
+          error ? 'border-red' : 'border-gray-300',
           className,
         )}
       />
