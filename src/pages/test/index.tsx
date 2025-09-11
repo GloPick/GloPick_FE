@@ -1,4 +1,4 @@
-import { MultiDropdown } from '@/components/shared';
+import { SelectWithOther } from '@/components/shared';
 import { useState } from 'react';
 
 const Test = () => {
@@ -6,7 +6,7 @@ const Test = () => {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border rounded shadow">
       <h1 className="text-xl font-bold mb-4">직무 선택</h1>
-      <MultiDropdown
+      <SelectWithOther
         label="희망 직무"
         value={selectedJob}
         onChange={setSelectedJob}
@@ -15,7 +15,7 @@ const Test = () => {
           { label: '백엔드 개발자', value: 'backend' },
           { label: '디자이너', value: 'designer' },
         ]}
-        error={'입력해주세요.'}
+        error={selectedJob.trim() === '' ? '입력해주세요.' : undefined}
       />
     </div>
   );

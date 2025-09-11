@@ -6,7 +6,7 @@ type Option = {
   value: string;
 };
 
-interface MultiDropdownProps {
+interface SelectWithOtherProps {
   label: string;
   options: Option[];
   value: string;
@@ -16,7 +16,7 @@ interface MultiDropdownProps {
   error?: string;
 }
 
-export default function MultiDropdown({
+export default function SelectWithOther({
   label,
   options,
   value,
@@ -24,7 +24,7 @@ export default function MultiDropdown({
   placeholder = '직접 입력',
   otherLabel = '기타 (직접 입력)',
   error,
-}: MultiDropdownProps) {
+}: SelectWithOtherProps) {
   const [isOther, setIsOther] = useState(false);
   const [customValue, setCustomValue] = useState('');
 
