@@ -1,49 +1,82 @@
-import { useState } from 'react';
-import Dropdown from '../Dropdown';
+// 리스트 중 하나 선택, 없으면 직접 입력 (기타)
+import { useEffect, useState } from 'react';
 
-interface MultiDropdownProps<T = string> {
-  label?: string;
-  name?: string;
-  items: DropdownItem<T>[];
-  selcted?: T;
-  value?: string;
-  onChange: (val: string) => void;
+type Option = {
+  label: string;
+  value: string;
+};
+
+interface MultiDropdownProps {
+  label: string;
+  options: Option[];
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  otherLabel?: string;
 }
 
-interface DropdownItem<T = string> {
-  name: string;
-  value: T;
-}
+export default function MultiDropdown({
+  label,
+  options,
+  value,
+  onChange,
+  placeholder = '직접 입력',
+  otherLabel = '기타 (직접 입력)',
+}: MultiDropdownProps) {
+  const [isOther, setIsOther] = useState(false);
+  const [customValue, setCustomValue] = useState('');
 
-export default function MultiDropdown({ label, items, value = '', onChange }: MultiDropdownProps) {
-  const isInitialCustom = value !== '' && !items.some((item) => item.value === value);
-  const [isCustomInput, setIsCustomInput] = useState(isInitialCustom);
+  useEffect(() => {
+    // 최초 렌더링 시 기타인지 확인
+    if (!options.some((opt) => opt.value === value) && value !== '') {
+      setIsOther(true);
+      setCustomValue(value);
+    }
+  }, [value, options]);
 
-  const handleSelect = (selected: string) => {
-    if (selected === '기타') {
-      setIsCustomInput(true);
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = e.target.value;
+
+    if (selected === 'other') {
+      setIsOther(true);
+      setCustomValue('');
       onChange('');
     } else {
-      setIsCustomInput(false);
+      setIsOther(false);
       onChange(selected);
     }
   };
 
+  const handleCustomInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    setCustomValue(input);
+    onChange(input);
+  };
+
   return (
-    <div className="w-full max-w-xs">
-      <Dropdown
-        label={label}
-        items={[...items, { name: '기타', value: '기타' }]}
-        selected={isCustomInput ? '기타' : value}
-        onSelect={handleSelect}
-      />
-      {isCustomInput && (
+    <div className="space-y-2">
+      <label className="font-semibold text-md text-text">{label}</label>
+      <select
+        value={isOther ? 'other' : value}
+        onChange={handleSelectChange}
+        className="w-full border p-2 rounded"
+      >
+        <option value="">선택해주세요</option>
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+        <option value="other">{otherLabel}</option>
+      </select>
+
+      {isOther && (
         <input
           type="text"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="직접 입력하세요"
-          className="mt-2 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+          className="w-full border p-2 rounded"
+          placeholder={placeholder}
+          value={customValue}
+          onChange={handleCustomInput}
         />
       )}
     </div>
