@@ -50,8 +50,8 @@ export default function TextArea({
           placeholder={placeholder}
           rows={rows}
           className={clsx(
-            'w-full p-5 rounded-xl bg-background-gray resize-none outline-none',
-            'text-sm text-text placeholder-placeholder',
+            'w-full pt-3 pl-2 pb-7 rounded border border-gray-300 resize-none',
+            'text-text placeholder-placeholder',
             className,
           )}
         />

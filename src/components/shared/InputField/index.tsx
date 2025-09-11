@@ -39,7 +39,7 @@ export default function InputField({
         value={value}
         onChange={onChange}
         className={clsx(
-          'w-full p-3 text-sm text-text bg-background-gray placeholder-placeholder rounded border focus:outline-none shadow-inner',
+          'w-full p-2 text-text placeholder-placeholder rounded border',
           error ? 'border-red' : 'border-gray-300',
           className,
         )}

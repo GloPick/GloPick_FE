@@ -65,7 +65,7 @@ export default function SelectWithOther({
       <select
         value={isOther ? 'other' : value}
         onChange={handleSelectChange}
-        className="w-full border p-2 rounded"
+        className="w-full border border-gray-300 p-2 rounded"
       >
         <option value="">선택해주세요</option>
         {options.map((opt) => (
@@ -80,7 +80,7 @@ export default function SelectWithOther({
         <>
           <input
             type="text"
-            className={`w-full border p-2 rounded ${error ? 'border-red' : 'border-gray-300'}`}
+            className={`w-full border p-2 rounded placeholder-placeholder ${error ? 'border-red' : 'border-gray-300'}`}
             placeholder={placeholder}
             value={customValue}
             onChange={handleCustomChange}

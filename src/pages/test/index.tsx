@@ -1,4 +1,4 @@
-import { InputField, SelectWithOther } from '@/components/shared';
+import { InputField, SelectWithOther, TextArea } from '@/components/shared';
 import Select from '@/components/shared/Select';
 import { PostSimulationFormPayloadData } from '@/types/simulation';
 import { useState } from 'react';
@@ -87,6 +87,12 @@ const Test = () => {
         placeholder="예: 인천공항"
         error=""
         required
+      />
+
+      <TextArea
+        value={form.additionalNotes || ''}
+        onChange={(val) => handleChange('additionalNotes', val)}
+        placeholder="기타 희망 조건이 있다면 입력해주세요 (예: 원격 근무)"
       />
     </div>
   );
