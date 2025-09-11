@@ -13,7 +13,7 @@ interface InputFieldProps {
 }
 
 export default function InputField({
-  type,
+  type = 'text',
   label,
   name,
   value,
@@ -26,8 +26,9 @@ export default function InputField({
   return (
     <div className="flex flex-col max-w-full gap-2">
       {label && (
-        <label className="font-semibold text-md text-text">
-          {label} {required && <span className="text-text ml-0.5">*</span>}
+        <label htmlFor={name} className="font-semibold text-md text-text">
+          {label}
+          {required && <span className="text-text ml-0.5">*</span>}
         </label>
       )}
 
@@ -38,12 +39,14 @@ export default function InputField({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        required={required}
         className={clsx(
-          'w-full p-2 text-text placeholder-placeholder rounded border',
+          'w-full p-2 text-text placeholder-placeholder rounded border focus:outline-none',
           error ? 'border-red' : 'border-gray-300',
           className,
         )}
       />
+
       {error && <span className="text-sm text-red mt-2">{error}</span>}
     </div>
   );

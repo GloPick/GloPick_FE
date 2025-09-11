@@ -1,4 +1,5 @@
-import { InputField, SelectWithOther, TextArea } from '@/components/shared';
+import { InputField, DropdownWithOther, TextArea } from '@/components/shared';
+import MultiSelectButton from '@/components/shared/MultiSelectButton';
 import Select from '@/components/shared/Select';
 import { PostSimulationFormPayloadData } from '@/types/simulation';
 import { useState } from 'react';
@@ -7,6 +8,9 @@ const Test = () => {
   const [education, setEducation] = useState('');
   const [error, setError] = useState('');
   const [selectedJob, setSelectedJob] = useState('');
+  const [languages, setLanguages] = useState<string[]>([]);
+  const [facilities, setFacilities] = useState<string[]>([]);
+  const [customLang, setCustomLang] = useState('');
   const [form, setForm] = useState<PostSimulationFormPayloadData>({
     selectedRankIndex: 0,
     budget: 0,
@@ -66,7 +70,7 @@ const Test = () => {
 
       <div className="max-w-md mx-auto mt-10 p-6 border rounded shadow">
         <h1 className="text-xl font-bold mb-4">직무 선택</h1>
-        <SelectWithOther
+        <DropdownWithOther
           label="희망 직무"
           value={selectedJob}
           onChange={setSelectedJob}
@@ -78,6 +82,25 @@ const Test = () => {
           required
         />
       </div>
+
+      <MultiSelectButton
+        label="사용 가능한 언어"
+        options={['영어', '일본어', '중국어']}
+        selected={languages}
+        onChange={setLanguages}
+        otherLabel="기타"
+        otherValue={customLang}
+        onOtherChange={setCustomLang}
+        error={error}
+        required
+      />
+
+      <MultiSelectButton
+        label="희망 복지 시설"
+        options={['병원', '대중교통', '인터넷', '치안']}
+        selected={facilities}
+        onChange={setFacilities}
+      />
 
       <InputField
         label="✈️ 출발 공항"
