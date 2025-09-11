@@ -13,6 +13,7 @@ interface MultiDropdownProps {
   onChange: (value: string) => void;
   placeholder?: string;
   otherLabel?: string;
+  error?: string;
 }
 
 export default function MultiDropdown({
@@ -22,6 +23,7 @@ export default function MultiDropdown({
   onChange,
   placeholder = '직접 입력',
   otherLabel = '기타 (직접 입력)',
+  error,
 }: MultiDropdownProps) {
   const [isOther, setIsOther] = useState(false);
   const [customValue, setCustomValue] = useState('');
@@ -47,7 +49,7 @@ export default function MultiDropdown({
     }
   };
 
-  const handleCustomInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCustomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     setCustomValue(input);
     onChange(input);
@@ -71,13 +73,16 @@ export default function MultiDropdown({
       </select>
 
       {isOther && (
-        <input
-          type="text"
-          className="w-full border p-2 rounded"
-          placeholder={placeholder}
-          value={customValue}
-          onChange={handleCustomInput}
-        />
+        <>
+          <input
+            type="text"
+            className={`w-full border p-2 rounded ${error ? 'border-red' : 'border-gray-300'}`}
+            placeholder={placeholder}
+            value={customValue}
+            onChange={handleCustomChange}
+          />
+          {error && <p className="text-sm text-red mt-2">{error}</p>}
+        </>
       )}
     </div>
   );

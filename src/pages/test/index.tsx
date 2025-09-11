@@ -15,6 +15,7 @@ const Test = () => {
           { label: '백엔드 개발자', value: 'backend' },
           { label: '디자이너', value: 'designer' },
         ]}
+        error={'입력해주세요.'}
       />
     </div>
   );
