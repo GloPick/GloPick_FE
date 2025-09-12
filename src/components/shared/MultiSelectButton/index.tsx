@@ -12,7 +12,6 @@ interface MultiSelectButtonProps {
   onOtherChange?: (val: string) => void;
   error?: string;
   required?: boolean;
-  className?: string;
 }
 
 export default function MultiSelectButton({
@@ -25,14 +24,15 @@ export default function MultiSelectButton({
   onOtherChange,
   error,
   required = false,
-  className,
 }: MultiSelectButtonProps) {
   const [showInput, setShowInput] = useState(false);
 
+  // 기타 입력 기능 활성화 조건
   const isOtherEnabled = typeof otherValue === 'string' && typeof onOtherChange === 'function';
 
+  // 옵션 선택/해제
   const toggleSelect = (option: string) => {
-    const isSelected = selected.includes(option);
+    const isSelected = selected.includes(option); // selected 배열에 option 있는지
     if (isSelected) {
       onChange(selected.filter((v) => v !== option));
       if (option === otherValue) {
@@ -44,18 +44,17 @@ export default function MultiSelectButton({
     }
   };
 
+  // 기타 버튼 클릭
   const handleOtherClick = () => {
     if (!isOtherEnabled) return;
 
     if (showInput) {
-      // 기타 취소
       setShowInput(false);
       if (otherValue) {
         onChange(selected.filter((v) => v !== otherValue));
         onOtherChange?.('');
       }
     } else {
-      // 기타 시작
       setShowInput(true);
     }
   };
@@ -69,7 +68,7 @@ export default function MultiSelectButton({
   }, [otherValue]);
 
   return (
-    <div className={clsx('flex flex-col gap-2', className)}>
+    <div className={'flex flex-col gap-2'}>
       <label className="font-semibold text-md text-text">
         {label} {required && <span className="text-text ml-0.5">*</span>}
       </label>
@@ -93,7 +92,7 @@ export default function MultiSelectButton({
           );
         })}
 
-        {/* 기타 버튼은 조건이 충족될 때만 렌더링 */}
+        {/* 기타 버튼 렌더링 */}
         {isOtherEnabled && (
           <button
             type="button"
@@ -110,7 +109,7 @@ export default function MultiSelectButton({
         )}
       </div>
 
-      {/* 기타 입력창도 마찬가지로 조건 충족 시에만 */}
+      {/* 기타 입력창 렌더링 */}
       {isOtherEnabled && showInput && (
         <InputField
           name="customOption"
