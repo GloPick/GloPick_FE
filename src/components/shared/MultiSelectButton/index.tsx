@@ -116,7 +116,7 @@ export default function MultiSelectButton({
           value={otherValue}
           onChange={(e) => onOtherChange(e.target.value)}
           placeholder="직접 입력"
-          required
+          required={required}
           error={error} // 필요 시
         />
       )}
