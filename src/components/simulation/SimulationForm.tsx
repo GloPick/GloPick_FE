@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { PostSimulationFormPayloadData } from '@/types/simulation';
-import { Button, Dropdown, InputField, MultiSelectInput, TextArea } from '../shared';
+import { Button, InputField, TextArea } from '../shared';
 import { motion } from 'framer-motion';
 
-const LANGUAGE_LEVEL_OPTIONS = [
-  { name: '능숙', value: '능숙' },
-  { name: '기초', value: '기초' },
-  { name: '통역 필요', value: '통역 필요' },
-];
+// const LANGUAGE_LEVEL_OPTIONS = [
+//   { name: '능숙', value: '능숙' },
+//   { name: '기초', value: '기초' },
+//   { name: '통역 필요', value: '통역 필요' },
+// ];
 
 interface SimulationFormProps {
   onSubmit: (formData: PostSimulationFormPayloadData) => void;
@@ -108,7 +108,7 @@ const SimulationForm = ({ onSubmit, selectedCountry }: SimulationFormProps) => {
         error={errors.duration}
       />
 
-      <div>
+      {/* <div>
         <Dropdown
           label="🗣️ 언어 능력 (필수)"
           items={LANGUAGE_LEVEL_OPTIONS as { name: string; value: '기초' | '능숙' | '통역 필요' }[]}
@@ -118,7 +118,7 @@ const SimulationForm = ({ onSubmit, selectedCountry }: SimulationFormProps) => {
         {errors.languageLevel && (
           <p className="text-sm text-red-500 mt-1">{errors.languageLevel}</p>
         )}
-      </div>
+      </div> */}
 
       <div className="flex flex-col">
         <label className="text-md font-semibold text-gray-800 mb-1">🚗 운전 면허</label>
@@ -133,7 +133,7 @@ const SimulationForm = ({ onSubmit, selectedCountry }: SimulationFormProps) => {
         </div>
       </div>
 
-      <MultiSelectInput
+      {/* <MultiSelectInput
         label="💼 희망 취업 형태"
         selected={form.jobTypes}
         onChange={(val) => handleChange('jobTypes', val)}
@@ -145,7 +145,7 @@ const SimulationForm = ({ onSubmit, selectedCountry }: SimulationFormProps) => {
         selected={form.requiredFacilities}
         onChange={(val) => handleChange('requiredFacilities', val)}
         placeholder="예: 병원, 대중교통"
-      />
+      /> */}
 
       <InputField
         label="👨‍👩‍👧 동반 가족"
@@ -156,12 +156,12 @@ const SimulationForm = ({ onSubmit, selectedCountry }: SimulationFormProps) => {
         error={errors.accompanyingFamily}
       />
 
-      <MultiSelectInput
+      {/* <MultiSelectInput
         label="🛂 비자 상태"
         selected={form.visaStatus}
         onChange={(val) => handleChange('visaStatus', val)}
         placeholder="예: 취업 비자, 학생 비자"
-      />
+      /> */}
 
       <TextArea
         value={form.additionalNotes || ''}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PostProfilePayloadData } from '@/types/resume';
-import { InputField, MultiSelectInput, TextArea, Button } from '../shared';
+import { InputField, TextArea, Button } from '../shared';
 import clsx from 'clsx';
 
 interface ResumeFormProps {
@@ -84,7 +84,7 @@ const ResumeForm = ({ initialData, onClose, onSubmit }: ResumeFormProps) => {
         error={errors.desiredJob}
       />
 
-      <MultiSelectInput
+      {/* <MultiSelectInput
         label="기술 스택"
         selected={form.skills}
         onChange={(val) => handleChange('skills', val)}
@@ -98,7 +98,7 @@ const ResumeForm = ({ initialData, onClose, onSubmit }: ResumeFormProps) => {
         onChange={(val) => handleChange('languages', val)}
         placeholder="언어를 입력해주세요"
         error={errors.languages}
-      />
+      /> */}
 
       <InputField
         type="number"
