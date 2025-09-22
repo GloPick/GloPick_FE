@@ -4,7 +4,7 @@ import { postCountryRecommend } from '@/api/simulation';
 import Modal from '@/components/layout/Modal';
 import ResumeSection from '@/components/mypage/ResumeSection';
 import UserInfoSection, { UserInfo } from '@/components/mypage/UserInfoSection';
-import ResumeForm from '@/components/resume/ResumeForm';
+import ResumeForm from '@/components/resume/ResumeStepWrapper';
 import Loading from '@/components/shared/Loading';
 import { useAuthStore } from '@/store/authStore';
 import { GetProfileResponseData, PostProfilePayloadData } from '@/types/resume';

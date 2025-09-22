@@ -1,10 +1,7 @@
 export interface PostProfilePayloadData {
-  education: string;
-  experience: string;
-  desiredJob: string;
-  skills: string[];
   languages: string[];
-  desiredSalary: number;
+  desiredSalary: string;
+  desiredJob: string;
   additionalNotes?: string;
 }
 
@@ -23,12 +20,9 @@ export interface GetProfileResponseData {
     name: string;
     email: string;
   };
-  education: string;
-  experience: string;
   desiredJob: string;
-  skills: string[];
   languages: string[];
-  desiredSalary: number;
+  desiredSalary: string;
   additionalNotes?: string;
   responseId: string; // 국가추천 id
 }
@@ -46,23 +40,17 @@ export interface DeleteProfileResponse {
 }
 
 export interface EditProfilePayloadData {
-  education: string;
-  experience: string;
   desiredJob: string;
-  skills: string[];
   languages: string[];
-  desiredSalary: number;
+  desiredSalary: string;
   additionalNotes?: string;
 }
 
 export interface EditProfileResponseData {
   profileId: string;
-  education: string;
-  experience: string;
   desiredJob: string;
-  skills: string[];
   languages: string[];
-  desiredSalary: number;
+  desiredSalary: string;
   additionalNotes?: string;
 }
 

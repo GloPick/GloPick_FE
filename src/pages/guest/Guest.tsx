@@ -1,7 +1,7 @@
 import { postGuestCountry } from '@/api/guest';
 import { Button } from '@/components/shared';
 import Modal from '@/components/layout/Modal';
-import ResumeForm from '@/components/resume/ResumeForm';
+import ResumeForm from '@/components/resume/ResumeStepWrapper';
 import Loading from '@/components/shared/Loading';
 import { PostGuestCountryPayloadData, PostGuestCountryResponseData } from '@/types/guest';
 import { useState } from 'react';
