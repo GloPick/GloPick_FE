@@ -57,6 +57,9 @@ export default function DropdownWithOther({
     onChange(input);
   };
 
+  const hasError = Boolean(error);
+  const errorMessage = typeof error === 'string' ? error : '';
+
   return (
     <div className="space-y-2">
       {label && (
@@ -87,9 +90,11 @@ export default function DropdownWithOther({
           onChange={handleOtherChange}
           placeholder={placeholder}
           required={required && isOther}
-          error={error}
         />
       )}
+
+      {/* 에러 메시지 */}
+      {hasError && errorMessage && <p className="text-sm text-red mt-1">{errorMessage}</p>}
     </div>
   );
 }

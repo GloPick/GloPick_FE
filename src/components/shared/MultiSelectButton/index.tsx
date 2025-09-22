@@ -22,7 +22,6 @@ export default function MultiSelectButton({
   otherLabel = '기타',
   otherValue = '',
   onOtherChange,
-  error,
   required = false,
 }: MultiSelectButtonProps) {
   const [showInput, setShowInput] = useState(false);
@@ -117,11 +116,8 @@ export default function MultiSelectButton({
           onChange={(e) => onOtherChange(e.target.value)}
           placeholder="직접 입력"
           required
-          error={error} // 필요 시
         />
       )}
-
-      {error && <p className="text-sm text-red mt-2">{error}</p>}
     </div>
   );
 }
