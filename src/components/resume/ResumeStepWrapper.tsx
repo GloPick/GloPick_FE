@@ -65,7 +65,7 @@ const ResumeStepWrapper = ({ initialData, onClose, onSubmit }: ResumeStepWrapper
     // 해당 스텝의 필드들에 에러가 있는지 확인
     return fieldsToValidate.every((field) => {
       if (field === 'languages') return form.languages.length > 0;
-      if (field === 'desiredSalary' || field === 'desiredJob') return form[field].trim();
+      if (field === 'desiredSalary' || field === 'desiredJob') return form[field].trim().length > 0;
       return true;
     });
   };

@@ -39,12 +39,11 @@ export default function ResumeStepLanguageSalary({
           onChange={handleLanguagesChange}
           otherLabel="기타 (직접 입력)"
           otherValue={data.languages.find((lang) => !LANGUAGE_OPTIONS.includes(lang)) || ''}
-          onOtherChange={(val) =>
-            handleLanguagesChange([
-              ...data.languages.filter((l) => LANGUAGE_OPTIONS.includes(l)),
-              val,
-            ])
-          }
+          onOtherChange={(val) => {
+            const known = data.languages.filter((l) => LANGUAGE_OPTIONS.includes(l));
+            const v = val.trim();
+            handleLanguagesChange(v ? [...known, v] : known);
+          }}
           required
           error={touched.languages ? errors.languages : undefined}
         />
