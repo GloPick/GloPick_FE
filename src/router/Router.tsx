@@ -9,6 +9,7 @@ import SimulationSummary from '@/components/mypage/SimulationSummarySection';
 import GuestResult from '@/pages/guest/GuestResult';
 import Guest from '@/pages/guest/Guest';
 import AccessRoute from './AccessRoute';
+import ProfileWrapper from '@/pages/profile/ProfileWrapper';
 
 interface RouterProps {
   children?: ReactNode;
@@ -33,6 +34,7 @@ export default function Router({ children }: RouterProps) {
 
           {/* 로그인 전용 라우트 */}
           <Route element={<AccessRoute access="private" />}>
+            <Route path="/profile" element={<ProfileWrapper />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/recommend/:recommendationId" element={<Recommendation />} />
             <Route path="/simulation/:simulationId" element={<SimulationSummary />} />
