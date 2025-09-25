@@ -13,9 +13,10 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { postCountryRecommendation } from '@/api/profile';
 
 const ProfileWrapper = () => {
-  const [formData, setFormData] = useState<ProfileFormData>({
+  const [formData, setFormData] = useState({
     // 1단계: 기본 정보
     language: '',
     expectedSalary: 0,
@@ -119,7 +120,7 @@ const ProfileWrapper = () => {
       // 1단계: 기본정보 + 우선순위 API 호출
       if (currentStep === 1) {
         // TODO: 기본정보 및 우선순위 API 호출
-        const response = await postUserProfile({
+        const response = await postCountryRecommendation({
           language: formData.language,
           expectedSalary: formData.expectedSalary,
           jobField: formData.jobField,
