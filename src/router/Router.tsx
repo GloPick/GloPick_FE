@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Test from '@/pages/test';
-import Landing from '@/pages/landing';
 import Layout from '@/components/layout/Layout';
 import Main from '@/pages/main/Main';
 import Recommendation from '@/pages/recommendation';
@@ -20,12 +19,11 @@ export default function Router({ children }: RouterProps) {
     <BrowserRouter>
       <Routes>
         {/* 공개 라우트 */}
-        <Route index element={<Landing />} />
+        <Route path="/main" element={<Main />} />
 
         {/* 공통 레이아웃 */}
         <Route path="/" element={<Layout />}>
           <Route path="/test" element={<Test />} />
-          <Route path="/main" element={<Main />} />
 
           {/* 비로그인 전용 라우트 */}
           <Route element={<AccessRoute access="guest" />}>
