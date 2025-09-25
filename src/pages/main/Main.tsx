@@ -20,10 +20,10 @@ const Main = () => {
 
   const handleGuestService = () => {
     if (token) {
-      const confirm = window.confirm(
+      const confirmed = window.confirm(
         '이미 로그인되어 있습니다.\n개인 맞춤 추천을 바로 받아보시겠습니까?',
       );
-      if (confirm) {
+      if (confirmed) {
         navigate('/profile');
       }
       return;
