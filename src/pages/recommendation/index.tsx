@@ -52,7 +52,7 @@ const Recommendation = () => {
         const target = response.data.find((item) => item.recommendationId === recommendationId);
         if (!target) {
           alert('추천 결과가 존재하지 않습니다.');
-          navigate('/main');
+          navigate('/');
           return;
         }
 
@@ -61,7 +61,7 @@ const Recommendation = () => {
       } catch (error) {
         console.error(error);
         alert('추천 결과 불러오기 실패');
-        navigate('/main');
+        navigate('/');
       } finally {
         setLoading(null);
       }

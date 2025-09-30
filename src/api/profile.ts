@@ -5,11 +5,10 @@ import {
 import { apiInstance } from './index';
 
 export const postCountryRecommendation = async (
-  profileId: string,
   data: PostCountryRecommendationPayload,
   token: string,
 ): Promise<PostCountryRecommendationResponse> => {
-  const response = await apiInstance.post(`/country-recommendations/${profileId}`, data, {
+  const response = await apiInstance.post(`/country-recommendations`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

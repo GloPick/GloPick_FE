@@ -23,13 +23,13 @@ const Header = () => {
   const handleLogout = () => {
     logout();
     alert('로그아웃 되었습니다.');
-    navigate('/main');
+    navigate('/');
   };
 
   return (
     <header className="w-full bg-transparent shadow-md px-4 py-3 flex justify-between items-center">
       {/* 로고 */}
-      <Link to="/main" className="text-xl font-bold text-primary">
+      <Link to="/" className="text-xl font-bold text-primary">
         GloPick
       </Link>
 

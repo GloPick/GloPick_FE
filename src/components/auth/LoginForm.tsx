@@ -24,7 +24,7 @@ export default function LoginForm() {
         login(res.data.token, { name: res.data.name, email: res.data.email });
         closeModal();
         alert('로그인 되었습니다.');
-        navigate('/main');
+        navigate('/');
       }
     } catch (err) {
       console.error(err);
