@@ -117,6 +117,7 @@ const InputPage: React.FC = () => {
 
       const recommendedCountries = countryResponse.data.recommendations;
 
+      localStorage.removeItem(PERSISTENCE_KEY);
       // 성공 시, 2단계 페이지로 이동하며 데이터 전달
       navigate('/countries', {
         state: { initialData: profileRequestData, profileId, results: recommendedCountries },
