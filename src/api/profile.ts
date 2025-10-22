@@ -1,4 +1,5 @@
 import {
+  GetCountryRecommendationResponse,
   PostCountryRecommendationPayload,
   PostCountryRecommendationResponse,
 } from '@/types/profile';
@@ -16,7 +17,10 @@ export const postCountryRecommendation = async (
   return response.data;
 };
 
-export const getCountryRecommendation = async (profileId: string, token: string) => {
+export const getCountryRecommendation = async (
+  profileId: string,
+  token: string,
+): Promise<GetCountryRecommendationResponse> => {
   const response = await apiInstance.get(`/country-recommendations/${profileId}`, {
     headers: {
       Authorization: `Bearer ${token}`,

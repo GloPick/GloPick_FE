@@ -38,16 +38,14 @@ export interface GetCountryRecommendationResponseData {
   isExisting: boolean;
   recommendationId: string;
   profileId: string;
-  recommendations: [
-    {
-      rank: number;
-      totalScore: number;
-      country: {
-        name: string;
-        code: string;
-      };
-    },
-  ];
+  recommendations: Array<{
+    rank: number;
+    totalScore: number;
+    country: {
+      name: string;
+      code: string;
+    };
+  }>;
   timestamp: string;
 }
 

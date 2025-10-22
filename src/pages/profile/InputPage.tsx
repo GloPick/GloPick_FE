@@ -69,7 +69,7 @@ const InputPage: React.FC = () => {
   const isFormValid = useMemo(() => {
     const hasAllFields = data.jobField && data.language && data.expectedSalary;
     const salaryNumeric = parseInt(data.expectedSalary || '0');
-    const isSalaryValid = !isNaN(salaryNumeric) && salaryNumeric >= 10000000;
+    const isSalaryValid = !isNaN(salaryNumeric) && salaryNumeric >= 20000000;
     const isValidWeights = currentTotal === 100;
 
     return hasAllFields && isSalaryValid && isValidWeights;

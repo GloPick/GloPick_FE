@@ -8,5 +8,8 @@ import { ISCOJobField } from '@/types/profile';
  */
 export const toISCOJobField = (nameKo: string): ISCOJobField => {
   const found = JOB_OPTIONS.find((opt) => opt.nameKo === nameKo);
-  return found ?? { code: '', nameKo, nameEn: '' };
+  if (!found) {
+    throw new Error(`유효하지 않은 직무명입니다: ${nameKo}`);
+  }
+  return found;
 };
