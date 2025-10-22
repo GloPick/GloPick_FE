@@ -1,43 +1,61 @@
-export type Weights = {
-  salary: number;
-  job: number;
-  language: number;
-};
-
-export type InputFormState = {
-  jobCategory: string;
-  desiredSalary: string;
+export interface InputFormState {
+  jobField: string;
+  expectedSalary: string;
   language: string;
-};
+}
 
-// 국가 추천 결과 요청 데이터 - 1단계
+export interface ISCOJobField {
+  code: string;
+  nameKo: string;
+  nameEn: string;
+}
+
+export interface Weights {
+  languageWeight: number;
+  salaryWeight: number;
+  jobWeight: number;
+}
+
+// 사용자 프로필 등록 요청 데이터 - 1단계
 export interface PostCountryRecommendationPayload {
-  jobCategory: string;
-  desiredSalary: number; // API 전송을 위해 number 타입으로 변환
   language: string;
+  expectedSalary: number;
+  jobField: ISCOJobField;
   weights: Weights;
 }
 
-// 국가 추천 결과 응답 데이터 - 1단계
-export interface PostCountryRecommendationResponseData {
-  countryCode: string; // 국가 코드 (예: "US", "KR")
-  countryName: string; // 국가 이름 (예: "United States", "South Korea")
-  score: number; // 추천 점수 (예: 85.5)
-  rank: number; // 추천 순위 (예: 1, 2, 3 ...)
-  details: {
-    salaryScore: number; // 연봉 관련 점수
-    jobMatchScore: number; // 직무 매칭 관련 점수
-    languageMatchScore: number; // 언어 매칭 관련 점수
-  };
-}
-
-// 국가 추천 결과 응답 - 1단계
+// 사용자 프로필 등록 결과 응답 - 1단계
 export interface PostCountryRecommendationResponse {
   success: boolean;
   message: string;
-  data: {
-    countries: PostCountryRecommendationResponseData[];
+  data?: {
+    profileId: string;
   };
+}
+
+// 프로필 기반 국가 추천 결과 응답 데이터
+export interface GetCountryRecommendationResponseData {
+  isExisting: boolean;
+  recommendationId: string;
+  profileId: string;
+  recommendations: [
+    {
+      rank: number;
+      totalScore: number;
+      country: {
+        name: string;
+        code: string;
+      };
+    },
+  ];
+  timestamp: string;
+}
+
+// 프로필 기반 국가 추천 결과 응답
+export interface GetCountryRecommendationResponse {
+  success: boolean;
+  message: string;
+  data: GetCountryRecommendationResponseData;
 }
 
 // 도시 추천 리스트 요청 데이터 - 2단계

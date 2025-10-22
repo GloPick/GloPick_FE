@@ -2,45 +2,57 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WeightInputGroup from '../../components/profile/WeightInputGroup';
 import InputForm from '@/components/profile/InputForm';
-import { InputFormState, Weights } from '@/types/profile';
-import { postCountryRecommendation } from '@/api/profile';
+import { InputFormState, PostCountryRecommendationPayload, Weights } from '@/types/profile';
+import { getCountryRecommendation, postCountryRecommendation } from '@/api/profile';
 import { useAuthStore } from '@/store/authStore';
 import { Button, Loading } from '@/components/shared';
 import { PERSISTENCE_KEY } from '@/constants';
+import { toISCOJobField } from '@/utils/isco';
 
 // 로컬 스토리지에서 초기 상태 로드
-const loadInitialData = () => {
+const loadInitialData = (): { data: InputFormState; weights: Weights } => {
   const saved = localStorage.getItem(PERSISTENCE_KEY);
   if (saved) {
     try {
-      return JSON.parse(saved);
+      // JSON 파싱 및 유효성 검사
+      const parsed = JSON.parse(saved);
+      if (
+        parsed?.data &&
+        typeof parsed.data.jobField === 'string' &&
+        typeof parsed.data.expectedSalary === 'string' &&
+        typeof parsed.data.language === 'string' &&
+        parsed?.weights &&
+        typeof parsed.weights.languageWeight === 'number' &&
+        typeof parsed.weights.salaryWeight === 'number' &&
+        typeof parsed.weights.jobWeight === 'number'
+      ) {
+        return parsed;
+      }
     } catch (e) {
       console.error('Failed to parse saved data', e);
     }
   }
   // 기본 초기값
   return {
-    data: { jobCategory: '', desiredSalary: '', language: '' } as InputFormState,
-    weights: { salary: 34, job: 33, language: 33 } as Weights,
+    data: { jobField: '', expectedSalary: '', language: '' },
+    weights: { salaryWeight: 40, jobWeight: 30, languageWeight: 30 },
   };
 };
 
 const InputPage: React.FC = () => {
   const navigate = useNavigate();
-  const initial = loadInitialData();
   const { token } = useAuthStore();
 
   // 상태 관리
-  const [data, setData] = useState<InputFormState>(initial.data);
-  const [weights, setWeights] = useState<Weights>(initial.weights);
+  const [data, setData] = useState<InputFormState>(() => loadInitialData().data);
+  const [weights, setWeights] = useState<Weights>(() => loadInitialData().weights);
   const [currentTotal, setCurrentTotal] = useState<number>(100);
   const [loading, setLoading] = useState(false);
   const [globalError, setGlobalError] = useState<string | null>(null);
 
   // [Persistence] 상태 변경 시 localStorage에 저장
   useEffect(() => {
-    const fullState = { data, weights };
-    localStorage.setItem(PERSISTENCE_KEY, JSON.stringify(fullState));
+    localStorage.setItem(PERSISTENCE_KEY, JSON.stringify({ data, weights }));
   }, [data, weights]);
 
   const onFieldChange = useCallback((field: keyof InputFormState, value: string) => {
@@ -55,8 +67,8 @@ const InputPage: React.FC = () => {
   }, []);
 
   const isFormValid = useMemo(() => {
-    const hasAllFields = data.jobCategory && data.language && data.desiredSalary;
-    const salaryNumeric = parseInt(data.desiredSalary || '0');
+    const hasAllFields = data.jobField && data.language && data.expectedSalary;
+    const salaryNumeric = parseInt(data.expectedSalary || '0');
     const isSalaryValid = !isNaN(salaryNumeric) && salaryNumeric >= 10000000;
     const isValidWeights = currentTotal === 100;
 
@@ -74,32 +86,40 @@ const InputPage: React.FC = () => {
 
     setLoading(true);
 
-    const requestData = {
-      jobCategory: data.jobCategory,
-      desiredSalary: parseInt(data.desiredSalary),
-      language: data.language,
-      weights: weights,
-    };
-
     if (!token) {
       alert('로그인이 필요한 서비스입니다.');
       setLoading(false);
       return;
     }
 
+    const profileRequestData: PostCountryRecommendationPayload = {
+      language: data.language,
+      expectedSalary: parseInt(data.expectedSalary),
+      jobField: toISCOJobField(data.jobField),
+      weights: weights,
+    };
+
     // 1단계 API 호출: 국가 추천 리스트 받기
     try {
-      const response = await postCountryRecommendation(requestData, token);
+      const profileResponse = await postCountryRecommendation(profileRequestData, token);
 
-      if (!response.success) {
+      if (!profileResponse || !profileResponse.data?.profileId) {
         throw new Error('국가 추천 결과를 불러오는 데 실패했습니다.');
       }
 
-      const recommendedCountries = response.data.countries;
+      const profileId = profileResponse.data.profileId;
+
+      const countryResponse = await getCountryRecommendation(profileId, token);
+
+      if (!countryResponse.success) {
+        throw new Error('국가 추천 결과를 불러오는 데 실패했습니다.');
+      }
+
+      const recommendedCountries = countryResponse.data.recommendations;
 
       // 성공 시, 2단계 페이지로 이동하며 데이터 전달
       navigate('/countries', {
-        state: { initialData: requestData, results: recommendedCountries },
+        state: { initialData: profileRequestData, profileId, results: recommendedCountries },
       });
     } catch (err) {
       setGlobalError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.');
@@ -129,8 +149,8 @@ const InputPage: React.FC = () => {
               {/* 1. 기본 정보 입력 컴포넌트 */}
               <InputForm
                 {...data}
-                onCategoryChange={(val) => onFieldChange('jobCategory', val)}
-                onSalaryChange={(val) => onFieldChange('desiredSalary', val)}
+                onCategoryChange={(val) => onFieldChange('jobField', val)}
+                onSalaryChange={(val) => onFieldChange('expectedSalary', val)}
                 onLanguageChange={(val) => onFieldChange('language', val)}
               />
             </div>

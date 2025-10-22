@@ -8,15 +8,15 @@ interface WeightInputGroupProps {
 
 // 가중치 항목의 메타데이터
 const weightItems: { key: keyof Weights; label: string; emoji: string }[] = [
-  { key: 'salary', label: '연봉의 중요도', emoji: '💰' },
-  { key: 'job', label: '직무 매칭의 중요도', emoji: '💼' },
-  { key: 'language', label: '언어 매칭의 중요도', emoji: '🌐' },
+  { key: 'jobWeight', label: '직무 매칭의 중요도', emoji: '💼' },
+  { key: 'languageWeight', label: '언어 매칭의 중요도', emoji: '🌐' },
+  { key: 'salaryWeight', label: '연봉의 중요도', emoji: '💰' },
 ];
 
 const WeightInputGroup: React.FC<WeightInputGroupProps> = ({ weights, onWeightsChange }) => {
   // 현재 가중치 합계 계산
   const currentTotal = useMemo(() => {
-    return weights.salary + weights.job + weights.language;
+    return weights.salaryWeight + weights.jobWeight + weights.languageWeight;
   }, [weights]);
 
   const remainingValue = 100 - currentTotal;
@@ -26,9 +26,10 @@ const WeightInputGroup: React.FC<WeightInputGroupProps> = ({ weights, onWeightsC
     (key: keyof Weights, value: string) => {
       let newValue = parseInt(value) || 0; // 숫자가 아니면 0으로 처리
       newValue = Math.max(0, Math.min(100, newValue));
+      newValue = Math.round(newValue / 10) * 10; // 10단위로 반올림
 
       const newWeights = { ...weights, [key]: newValue };
-      const newTotal = newWeights.salary + newWeights.job + newWeights.language;
+      const newTotal = newWeights.salaryWeight + newWeights.jobWeight + newWeights.languageWeight;
 
       onWeightsChange(newWeights, newTotal);
     },
@@ -77,6 +78,7 @@ const WeightInputGroup: React.FC<WeightInputGroupProps> = ({ weights, onWeightsC
                 type="number"
                 min="0"
                 max="100"
+                step={10}
                 value={weights[item.key]}
                 onChange={(e) => handleChange(item.key, e.target.value)}
                 className="w-20 p-2 text-right border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-lg font-mono"

@@ -18,32 +18,66 @@ export const LANGUAGE_OPTIONS = [
 
 // 직무 분야 (ILOSTAT ISCO-08 대분류 기준)
 export const JOB_OPTIONS = [
-  { label: '군인', value: '0', description: '국방 및 군사 업무' },
   {
-    label: '관리자',
-    value: '1',
+    code: '1',
+    nameKo: '관리자',
+    nameEn: 'Managers',
     description: '기업, 정부, 기타 조직의 정책 수립 및 계획 수립, 조정, 감독',
   },
   {
-    label: '전문가',
-    value: '2',
+    code: '2',
+    nameKo: '전문가',
+    nameEn: 'Professionals',
     description: '과학, 공학, 의학, 교육, 법률, 사회과학, 인문학 등 전문 분야',
   },
-  { label: '기술자 및 준전문가', value: '3', description: '기술적 업무 수행 및 전문가 지원 업무' },
-  { label: '사무종사자', value: '4', description: '사무, 회계, 고객서비스 등 일반 사무 업무' },
-  { label: '서비스 및 판매 종사자', value: '5', description: '개인서비스, 보안서비스, 판매 업무' },
-  { label: '농림어업 숙련 종사자', value: '6', description: '농업, 임업, 어업 분야 숙련 업무' },
   {
-    label: '기능원 및 관련 기능 종사자',
-    value: '7',
+    code: '3',
+    nameKo: '기술자 및 준전문가',
+    nameEn: 'Technicians and Associate Professionals',
+    description: '기술적 업무 수행 및 전문가 지원 업무',
+  },
+  {
+    code: '4',
+    nameKo: '사무종사자',
+    nameEn: 'Clerical Support Workers',
+    description: '사무, 회계, 고객서비스 등 일반 사무 업무',
+  },
+  {
+    code: '5',
+    nameKo: '서비스 및 판매 종사자',
+    nameEn: 'Service and Sales Workers',
+    description: '개인서비스, 보안서비스, 판매 업무',
+  },
+  {
+    code: '6',
+    nameKo: '농림어업 숙련 종사자',
+    nameEn: 'Skilled Agricultural, Forestry and Fishery Workers',
+    description: '농업, 임업, 어업 분야 숙련 업무',
+  },
+  {
+    code: '7',
+    nameKo: '기능원 및 관련 기능 종사자',
+    nameEn: 'Craft and Related Trades Workers',
     description: '건설, 금속가공, 기계, 전기 등 기능 업무',
   },
   {
-    label: '설비·기계 조작 및 조립 종사자',
-    value: '8',
+    code: '8',
+    nameKo: '설비·기계 조작 및 조립 종사자',
+    nameEn: 'Plant and Machine Operators and Assemblers',
     description: '산업기계 및 설비 조작, 운송장비 운전, 조립 업무',
   },
-  { label: '단순노무 종사자', value: '9', description: '청소, 건설보조, 제조업 단순작업 등' },
+  {
+    code: '9',
+    nameKo: '단순노무 종사자',
+    nameEn: 'Elementary Occupations',
+    description: '청소, 건설보조, 제조업 단순작업 등',
+  },
+  {
+    code: '0',
+    nameKo: '군인',
+    nameEn: 'Armed Forces Occupations',
+    description: '국방 및 군사 업무',
+  },
 ];
 
 export const SALARY_OPTIONS = [
