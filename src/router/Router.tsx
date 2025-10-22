@@ -10,6 +10,7 @@ import GuestResult from '@/pages/guest/GuestResult';
 import Guest from '@/pages/guest/Guest';
 import AccessRoute from './AccessRoute';
 import InputPage from '@/pages/profile/InputPage';
+import CountryRecommendationPage from '@/pages/recommendation/CountryRecommendationPage';
 //import ProfileWrapper from '@/pages/profile/ProfileWrapper';
 
 interface RouterProps {
@@ -31,6 +32,7 @@ export default function Router({ children }: RouterProps) {
         {/* 공통 레이아웃 */}
         <Route path="/" element={<Layout />}>
           <Route path="/test" element={<Test />} />
+          <Route path="/country-recommendation" element={<CountryRecommendationPage />} />
 
           {/* 비로그인 전용 라우트 */}
           <Route element={<AccessRoute access="guest" />}>

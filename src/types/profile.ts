@@ -33,19 +33,23 @@ export interface PostCountryRecommendationResponse {
   };
 }
 
+export interface Country {
+  name: string;
+  code: string;
+}
+
+export interface CountryRecommendation {
+  rank: number;
+  totalScore: number;
+  country: Country;
+}
+
 // 프로필 기반 국가 추천 결과 응답 데이터
 export interface GetCountryRecommendationResponseData {
   isExisting: boolean;
   recommendationId: string;
   profileId: string;
-  recommendations: Array<{
-    rank: number;
-    totalScore: number;
-    country: {
-      name: string;
-      code: string;
-    };
-  }>;
+  recommendations: Array<CountryRecommendation>;
   timestamp: string;
 }
 
