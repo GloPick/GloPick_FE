@@ -127,8 +127,6 @@ const InputPage: React.FC = () => {
       return;
     }
 
-    setLoading(true);
-
     const profileRequestData: PostCountryRecommendationPayload = {
       language: data.language,
       desiredJob: data.jobField,
