@@ -1,20 +1,20 @@
 import React, { useMemo } from 'react';
 import Select from '@/components/shared/Select';
-import { JOB_OPTIONS, LANGUAGE_OPTIONS, SALARY_OPTIONS } from '@/constants';
+import { JOB_OPTIONS, LANGUAGE_OPTIONS } from '@/constants';
 import { InputFormState } from '@/types/profile';
 
 interface InputFormProps extends InputFormState {
   onCategoryChange: (value: string) => void;
-  onSalaryChange: (value: string) => void;
+  // onSalaryChange: (value: string) => void;
   onLanguageChange: (value: string) => void;
 }
 
 const InputForm: React.FC<InputFormProps> = ({
   jobField,
-  expectedSalary,
+  // expectedSalary,
   language,
   onCategoryChange,
-  onSalaryChange,
+  // onSalaryChange,
   onLanguageChange,
 }) => {
   // 선택된 직무 정보
@@ -66,7 +66,7 @@ const InputForm: React.FC<InputFormProps> = ({
       </div>
 
       {/* 희망 연봉 선택 */}
-      <Select
+      {/* <Select
         label="💰 희망 연봉"
         options={SALARY_OPTIONS.map((option) => ({
           label: option.label,
@@ -76,7 +76,7 @@ const InputForm: React.FC<InputFormProps> = ({
         onChange={onSalaryChange}
         placeholder="희망 연봉을 선택하세요"
         required
-      />
+      /> */}
       {/* <DropdownWithOther
         label="💰 희망 연봉"
         options={SALARY_OPTIONS.map((option) => ({

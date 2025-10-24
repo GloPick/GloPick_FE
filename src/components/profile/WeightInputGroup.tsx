@@ -10,13 +10,13 @@ interface WeightInputGroupProps {
 const weightItems: { key: keyof Weights; label: string; emoji: string }[] = [
   { key: 'jobWeight', label: '직무 매칭의 중요도', emoji: '💼' },
   { key: 'languageWeight', label: '언어 매칭의 중요도', emoji: '🌐' },
-  { key: 'salaryWeight', label: '연봉의 중요도', emoji: '💰' },
+  { key: 'qolWeight', label: '삶의 질(QOL) 중요도', emoji: '🏡' },
 ];
 
 const WeightInputGroup: React.FC<WeightInputGroupProps> = ({ weights, onWeightsChange }) => {
   // 현재 가중치 합계 계산
   const currentTotal = useMemo(() => {
-    return weights.salaryWeight + weights.jobWeight + weights.languageWeight;
+    return weights.qolWeight + weights.jobWeight + weights.languageWeight;
   }, [weights]);
 
   const remainingValue = 100 - currentTotal;
@@ -29,7 +29,7 @@ const WeightInputGroup: React.FC<WeightInputGroupProps> = ({ weights, onWeightsC
       newValue = Math.round(newValue / 10) * 10; // 10단위로 반올림
 
       const newWeights = { ...weights, [key]: newValue };
-      const newTotal = newWeights.salaryWeight + newWeights.jobWeight + newWeights.languageWeight;
+      const newTotal = newWeights.qolWeight + newWeights.jobWeight + newWeights.languageWeight;
 
       onWeightsChange(newWeights, newTotal);
     },
@@ -55,7 +55,7 @@ const WeightInputGroup: React.FC<WeightInputGroupProps> = ({ weights, onWeightsC
         `}
       >
         {isComplete
-          ? '✅ 모든 가중치가 정확히 100%로 배분되었습니다.'
+          ? '✅ 가중치가 100%를 모두 분배했습니다.'
           : `⚠️ 배분해야 할 값: ${remainingValue}% (현재 합계: ${currentTotal}%)`}
       </div>
 
