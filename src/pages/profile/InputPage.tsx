@@ -70,11 +70,21 @@ const InputPage: React.FC = () => {
 
   // 상태 관리
   const [step, setStep] = useState(1);
-  const [data, setData] = useState<InputFormState>(() => loadInitialData().data);
-  const [qol, setQol] = useState<QualityOfLifeWeights>(() => loadInitialData().qol);
-  const [weights, setWeights] = useState<Weights>(() => loadInitialData().weights);
-  const [qolTotal, setQolTotal] = useState<number>(100);
-  const [currentTotal, setCurrentTotal] = useState<number>(100);
+  const initial = useMemo(() => loadInitialData(), []);
+  const [data, setData] = useState<InputFormState>(initial.data);
+  const [qol, setQol] = useState<QualityOfLifeWeights>(initial.qol);
+  const [weights, setWeights] = useState<Weights>(initial.weights);
+  const initialQolTotal =
+    initial.qol.income +
+    initial.qol.jobs +
+    initial.qol.health +
+    initial.qol.safety +
+    initial.qol.lifeSatisfaction;
+  const initialWeightsTotal =
+    initial.weights.qolWeight + initial.weights.jobWeight + initial.weights.languageWeight;
+  const [qolTotal, setQolTotal] = useState<number>(initialQolTotal);
+  const [currentTotal, setCurrentTotal] = useState<number>(initialWeightsTotal);
+
   const [loading, setLoading] = useState(false);
   const [globalError, setGlobalError] = useState<string | null>(null);
 
