@@ -101,6 +101,7 @@ const InputPage: React.FC = () => {
   const onQolChange = useCallback((newQol: QualityOfLifeWeights, total: number) => {
     setQol(newQol);
     setQolTotal(total);
+    setGlobalError(null);
   }, []);
 
   const onWeightsChange = useCallback((newWeights: Weights, total: number) => {
