@@ -1,6 +1,5 @@
 export interface InputFormState {
   jobField: string;
-  expectedSalary: string;
   language: string;
 }
 
@@ -10,18 +9,28 @@ export interface ISCOJobField {
   nameEn: string;
 }
 
+export interface QualityOfLifeWeights {
+  income: number;
+  jobs: number;
+  health: number;
+  safety: number;
+  lifeSatisfaction: number;
+}
+
 export interface Weights {
   languageWeight: number;
-  salaryWeight: number;
+  qolWeight: number;
   jobWeight: number;
 }
 
 // 사용자 프로필 등록 요청 데이터 - 1단계
 export interface PostCountryRecommendationPayload {
   language: string;
-  expectedSalary: number;
-  jobField: ISCOJobField;
-  weights: Weights;
+  qualityOfLifeWeights: QualityOfLifeWeights;
+  desiredJob: string;
+  languageWeight: number;
+  qualityOfLifeWeight: number;
+  jobWeight: number;
 }
 
 // 사용자 프로필 등록 결과 응답 - 1단계
