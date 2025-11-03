@@ -27,12 +27,12 @@ export default function Router({ children }: RouterProps) {
         {/* 레이아웃 제외 & 로그인 전용 */}
         <Route element={<AccessRoute access="private" />}>
           <Route path="/profile" element={<InputPage />} />
+          <Route path="/countries" element={<CountryRecommendationPage />} />
         </Route>
 
         {/* 공통 레이아웃 */}
         <Route path="/" element={<Layout />}>
           <Route path="/test" element={<Test />} />
-          <Route path="/countries" element={<CountryRecommendationPage />} />
 
           {/* 비로그인 전용 라우트 */}
           <Route element={<AccessRoute access="guest" />}>
