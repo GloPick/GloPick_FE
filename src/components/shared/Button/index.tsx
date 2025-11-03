@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'white';
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'white' | 'none';
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ interface ButtonProps {
 export default function Button({
   children,
   type = 'button',
-  variant = 'primary',
+  variant = 'none',
   onClick,
   disabled = false,
   className,
@@ -27,6 +27,7 @@ export default function Button({
     secondary: 'bg-gray-2 text-white',
     outline: 'border border-gray-300 text-gray-800 bg-white',
     white: 'border border-gray-300 text-gray-800 font-semibold hover:bg-gray-100',
+    none: '',
   };
 
   return (

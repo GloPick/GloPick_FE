@@ -13,8 +13,8 @@ export interface QualityOfLifeWeights {
   income: number;
   jobs: number;
   health: number;
-  safety: number;
   lifeSatisfaction: number;
+  safety: number;
 }
 
 export interface Weights {
@@ -31,15 +31,41 @@ export interface PostCountryRecommendationPayload {
   languageWeight: number;
   qualityOfLifeWeight: number;
   jobWeight: number;
+  additionalNotes?: string;
 }
 
 // 사용자 프로필 등록 결과 응답 - 1단계
 export interface PostCountryRecommendationResponse {
-  success: boolean;
   message: string;
   data?: {
     profileId: string;
   };
+}
+
+export interface Country {
+  name: string;
+  code: string;
+  region: string;
+  languages: string[];
+  population: number;
+  employmentRate?: number;
+}
+
+export interface CountryRecommendation {
+  rank: number;
+  country: Country;
+  totalScore: number;
+  breakdown: {
+    languageScore: number;
+    jobScore: number;
+    qualityOfLifeScore: number;
+    appliedWeights: {
+      language: number;
+      job: number;
+      qualityOfLife: number;
+    };
+  };
+  reasons: string[];
 }
 
 // 프로필 기반 국가 추천 결과 응답 데이터
@@ -47,14 +73,7 @@ export interface GetCountryRecommendationResponseData {
   isExisting: boolean;
   recommendationId: string;
   profileId: string;
-  recommendations: Array<{
-    rank: number;
-    totalScore: number;
-    country: {
-      name: string;
-      code: string;
-    };
-  }>;
+  recommendations: CountryRecommendation[];
   timestamp: string;
 }
 

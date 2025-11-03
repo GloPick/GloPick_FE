@@ -38,7 +38,7 @@ export default function AuthModal() {
     openModal(type);
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || (modalType !== 'login' && modalType !== 'signup')) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-center items-center">

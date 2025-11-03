@@ -1,20 +1,81 @@
 export const LANGUAGE_OPTIONS = [
   { label: '한국어', value: 'Korean' },
   { label: '영어', value: 'English' },
-  { label: '중국어', value: 'Chinese' },
-  { label: '일본어', value: 'Japanese' },
   { label: '스페인어', value: 'Spanish' },
   { label: '프랑스어', value: 'French' },
   { label: '독일어', value: 'German' },
-  { label: '이탈리아어', value: 'Italian' },
   { label: '포르투갈어', value: 'Portuguese' },
-  { label: '러시아어', value: 'Russian' },
-  { label: '아랍어', value: 'Arabic' },
-  { label: '힌디어', value: 'Hindi' },
+  { label: '이탈리아어', value: 'Italian' },
   { label: '네덜란드어', value: 'Dutch' },
   { label: '스웨덴어', value: 'Swedish' },
   { label: '노르웨이어', value: 'Norwegian' },
+  { label: '덴마크어', value: 'Danish' },
+  { label: '핀란드어', value: 'Finnish' },
+  { label: '폴란드어', value: 'Polish' },
+  { label: '체코어', value: 'Czech' },
+  { label: '헝가리어', value: 'Hungarian' },
+  { label: '그리스어', value: 'Greek' },
+  { label: '터키어', value: 'Turkish' },
+  { label: '일본어', value: 'Japanese' },
+  { label: '히브리어', value: 'Hebrew' },
+  { label: '슬로바키아어', value: 'Slovak' },
+  { label: '슬로베니아어', value: 'Slovene' },
+  { label: '아이슬란드어', value: 'Icelandic' },
+  { label: '에스토니아어', value: 'Estonian' },
+  { label: '라트비아어', value: 'Latvian' },
+  { label: '리투아니아어', value: 'Lithuanian' },
 ];
+
+export const COUNTRY_CODE_MAP: Record<string, string> = {
+  KOR: 'kr', // 대한민국
+  JPN: 'jp', // 일본
+  USA: 'us', // 미국
+  CAN: 'ca', // 캐나다
+  AUS: 'au', // 호주
+  NZL: 'nz', // 뉴질랜드
+  HKG: 'hk', // 홍콩
+  SGP: 'sg', // 싱가포르
+  GBR: 'gb', // 영국
+  IRL: 'ie', // 아일랜드
+  DEU: 'de', // 독일
+  FRA: 'fr', // 프랑스
+  ITA: 'it', // 이탈리아
+  ESP: 'es', // 스페인
+  PRT: 'pt', // 포르투갈
+  NLD: 'nl', // 네덜란드
+  BEL: 'be', // 벨기에
+  CHE: 'ch', // 스위스
+  AUT: 'at', // 오스트리아
+  SWE: 'se', // 스웨덴
+  NOR: 'no', // 노르웨이
+  DNK: 'dk', // 덴마크
+  FIN: 'fi', // 핀란드
+  ISL: 'is', // 아이슬란드
+  CZE: 'cz', // 체코
+  POL: 'pl', // 폴란드
+  HUN: 'hu', // 헝가리
+  SVK: 'sk', // 슬로바키아
+  SVN: 'si', // 슬로베니아
+  EST: 'ee', // 에스토니아
+  LVA: 'lv', // 라트비아
+  LTU: 'lt', // 리투아니아
+  GRC: 'gr', // 그리스
+  TUR: 'tr', // 터키
+  ISR: 'il', // 이스라엘
+  LUX: 'lu', // 룩셈부르크
+  MEX: 'mx', // 멕시코
+  BRA: 'br', // 브라질
+  ARG: 'ar', // 아르헨티나
+  CHL: 'cl', // 칠레
+  COL: 'co', // 콜롬비아
+  ZAF: 'za', // 남아프리카공화국
+  IND: 'in', // 인도
+  IDN: 'id', // 인도네시아
+  PHL: 'ph', // 필리핀
+  VNM: 'vn', // 베트남
+  MYS: 'my', // 말레이시아
+  THA: 'th', // 태국
+};
 
 // 직무 분야 (ILOSTAT ISCO-08 대분류 기준)
 export const JOB_OPTIONS = [
@@ -79,14 +140,3 @@ export const JOB_OPTIONS = [
     description: '국방 및 군사 업무',
   },
 ];
-
-export const SALARY_OPTIONS = [
-  { label: '2천만원 이하', value: 20000000 },
-  { label: '2천만원 ~ 3천만원', value: 25000000 },
-  { label: '3천만원 ~ 5천만원', value: 40000000 },
-  { label: '5천만원 ~ 7천만원', value: 60000000 },
-  { label: '7천만원 ~ 1억원', value: 85000000 },
-  { label: '1억원 이상', value: 120000000 },
-];
-
-export const PERSISTENCE_KEY = 'globalJobFinderInput';
