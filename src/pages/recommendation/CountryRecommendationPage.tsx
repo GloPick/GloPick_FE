@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { COUNTRY_CODE_MAP } from '@/constants';
 import { useRecommendationStore } from '@/store/recommendationStore';
 import { CountryRecommendation } from '@/types/profile';
-import { Search } from 'lucide-react';
+import { Search, MessageCircleQuestionIcon } from 'lucide-react';
 import { useModalStore } from '@/store/modalStore';
 import ScoreDetailModal from './ScoreDetailModal';
 
@@ -64,19 +64,39 @@ const CountryRecommendationPage = () => {
 
             <h1 className="text-5xl font-extrabold mt-4">{topCountry.country.name}</h1>
 
-            <p className="mt-2 text-blue-100 text-lg font-medium">
-              종합 점수{' '}
-              <span className="text-white font-bold">{topCountry.totalScore.toFixed(1)}</span>점
-            </p>
+            <div className="flex items-center justify-center space-x-2 mt-1">
+              <p className="mt-2 text-blue-100 text-lg font-medium">
+                종합 점수{' '}
+                <span className="text-white font-bold">{topCountry.totalScore.toFixed(1)}</span>점
+              </p>
+              {/* 돋보기 버튼 */}
+              <button
+                onClick={() => handleOpenDetailModal(topCountry)}
+                className="text-blue-200 hover:text-white mt-2"
+                aria-label="점수 상세 보기"
+              >
+                <MessageCircleQuestionIcon size={21} strokeWidth={2.5} />
+              </button>
+            </div>
 
-            {/* 돋보기 버튼 */}
-            <button
-              onClick={() => handleOpenDetailModal(topCountry)}
-              className="text-blue-200 hover:text-white mt-2"
-              aria-label="점수 상세 보기"
-            >
-              <Search size={20} strokeWidth={3} />
-            </button>
+            <div className="text-xs text-gray-500 mt-3 space-y-1">
+              <div className="flex items-center justify-center space-x-1.5">
+                <span className="text-blue-200 text-sm font-medium">
+                  인구: {topCountry.country.population.toLocaleString()}명
+                </span>
+              </div>
+              {topCountry.country.employmentRate ? (
+                <div className="flex items-center justify-center space-x-1.5">
+                  <span className="text-blue-200 text-sm font-medium">
+                    고용률: {topCountry.country.employmentRate.toFixed(1)}%
+                  </span>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center space-x-1.5">
+                  <span className="text-blue-200 text-sm font-medium">고용률: N/A</span>
+                </div>
+              )}
+            </div>
 
             <p className="text-blue-200 text-sm mt-3 max-w-md">
               삶의 질, 고용 안정성, 안전성 등 주요 지표에서 우수한 성과를 보이는 국가입니다.
