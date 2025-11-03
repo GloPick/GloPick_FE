@@ -1,68 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Loading } from '@/components/shared';
 import { useNavigate } from 'react-router-dom';
+import { COUNTRY_CODE_MAP } from '@/constants';
+import { useRecommendationStore } from '@/store/recommendationStore';
 
-const mockRecommendations = [
-  { rank: 1, totalScore: 92.5, country: { name: '독일', code: 'DE' } },
-  { rank: 2, totalScore: 89.3, country: { name: '캐나다', code: 'CA' } },
-  { rank: 3, totalScore: 85.5, country: { name: '싱가포르', code: 'SG' } },
-  { rank: 4, totalScore: 83.1, country: { name: '호주', code: 'AU' } },
-  { rank: 5, totalScore: 80.9, country: { name: '스웨덴', code: 'SE' } },
-];
-
-const COUNTRY_CODE_MAP: Record<string, string> = {
-  KOR: 'kr', // 한국
-  JPN: 'jp', // 일본
-  USA: 'us', // 미국
-  CAN: 'ca', // 캐나다
-  AUS: 'au', // 호주
-  DEU: 'de', // 독일
-  FRA: 'fr', // 프랑스
-  GBR: 'gb', // 영국
-  ITA: 'it', // 이탈리아
-  NLD: 'nl', // 네덜란드
-  SWE: 'se', // 스웨덴
-  NOR: 'no', // 노르웨이
-  DNK: 'dk', // 덴마크
-  FIN: 'fi', // 핀란드
-  CHE: 'ch', // 스위스
-  NZL: 'nz', // 뉴질랜드
-  SGP: 'sg', // 싱가포르
-  IRL: 'ie', // 아일랜드
-  BEL: 'be', // 벨기에
-  AUT: 'at', // 오스트리아
-  ISR: 'il', // 이스라엘
-  CZE: 'cz', // 체코
-  POL: 'pl', // 폴란드
-  PRT: 'pt', // 포르투갈
-  ESP: 'es', // 스페인
-  EST: 'ee', // 에스토니아
-  HUN: 'hu', // 헝가리
-  SVK: 'sk', // 슬로바키아
-  SVN: 'si', // 슬로베니아
-  TUR: 'tr', // 터키
-  LUX: 'lu', // 룩셈부르크
-  ISL: 'is', // 아이슬란드
-  MEX: 'mx', // 멕시코
-};
-
-const CountryRecommendationPage: React.FC = () => {
+const CountryRecommendationPage = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<typeof mockRecommendations>([]);
+  const { profileId, countries } = useRecommendationStore();
 
-  useEffect(() => {
-    setTimeout(() => {
-      setResults(mockRecommendations);
-      setLoading(false);
-    }, 800); // 로딩 효과용
-  }, []);
+  const [loading, setLoading] = useState(false);
 
   if (loading) return <Loading message="AI가 맞춤 국가를 분석 중입니다..." />;
-
-  const topCountry = results[0];
-  const otherCountries = results.slice(1);
-  if (!topCountry) {
+  if (!countries || countries.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] text-gray-600">
         <p className="text-lg">추천 결과가 없습니다 😢</p>
@@ -72,6 +21,9 @@ const CountryRecommendationPage: React.FC = () => {
       </div>
     );
   }
+
+  const topCountry = countries[0];
+  const otherCountries = countries.slice(1);
 
   // 국기 코드 변환 함수
   const getFlagUrl = (code: string, size: number) => {
@@ -110,16 +62,15 @@ const CountryRecommendationPage: React.FC = () => {
           </p>
 
           <Button
-            className="mt-6 w-52 text-base font-bold shadow-md bg-white text-blue-700 hover:bg-white/90"
+            className="mt-6 w-52 text-base font-bold shadow-md bg-transparent text-white 
+             border-2 border-white rounded-full py-3 transition-all duration-300 
+             ease-in-out hover:bg-white hover:text-blue-700 hover:shadow-lg
+             focus:outline-none focus:ring-2 focus:ring-white/50"
             onClick={() =>
               navigate('/cities', {
                 state: {
                   country: topCountry.country,
-                  cities: [
-                    { name: '베를린', score: 88 },
-                    { name: '함부르크', score: 83 },
-                    { name: '뮌헨', score: 79 },
-                  ],
+                  profileId,
                 },
               })
             }
@@ -159,17 +110,13 @@ const CountryRecommendationPage: React.FC = () => {
               <p className="text-sm text-gray-600 mt-1">점수 {item.totalScore.toFixed(1)}점</p>
 
               <Button
-                className="mt-4 w-full py-2 text-sm"
-                variant="secondary"
+                variant="none"
+                className="mt-4 w-full py-2 text-sm font-bold bg-transparent border-2 border-blue-800 text-blue-700 rounded-full transition-all duration-300 ease-in-out hover:bg-blue-800 hover:text-white"
                 onClick={() =>
                   navigate('/cities', {
                     state: {
                       country: item.country,
-                      cities: [
-                        { name: '도시A', score: 80 },
-                        { name: '도시B', score: 78 },
-                        { name: '도시C', score: 76 },
-                      ],
+                      profileId,
                     },
                   })
                 }

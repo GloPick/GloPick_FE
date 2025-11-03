@@ -1,118 +1,47 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WeightInputGroup from '../../components/profile/WeightInputGroup';
 import InputForm from '@/components/profile/InputForm';
-import {
-  InputFormState,
-  PostCountryRecommendationPayload,
-  QualityOfLifeWeights,
-  Weights,
-} from '@/types/profile';
 import { getCountryRecommendation, postCountryRecommendation } from '@/api/profile';
 import { useAuthStore } from '@/store/authStore';
 import { Button, Loading } from '@/components/shared';
-import { PERSISTENCE_KEY } from '@/constants';
 import QOLWeightInputGroup from '@/components/profile/QOLWeightInputGroup';
 import { AnimatePresence, motion } from 'framer-motion';
-
-// 로컬 스토리지에서 초기 상태 로드
-const loadInitialData = (): {
-  data: InputFormState;
-  qol: QualityOfLifeWeights;
-  weights: Weights;
-} => {
-  const saved = localStorage.getItem(PERSISTENCE_KEY);
-  if (saved) {
-    try {
-      // JSON 파싱 및 유효성 검사
-      const parsed = JSON.parse(saved);
-      if (
-        parsed?.data &&
-        typeof parsed.data.jobField === 'string' &&
-        typeof parsed.data.language === 'string' &&
-        parsed?.weights &&
-        typeof parsed.weights.languageWeight === 'number' &&
-        typeof parsed.weights.jobWeight === 'number' &&
-        typeof parsed.weights.qolWeight === 'number' &&
-        parsed?.qol &&
-        typeof parsed.qol.income === 'number' &&
-        typeof parsed.qol.jobs === 'number' &&
-        typeof parsed.qol.health === 'number' &&
-        typeof parsed.qol.safety === 'number' &&
-        typeof parsed.qol.lifeSatisfaction === 'number'
-      ) {
-        return parsed;
-      }
-    } catch (e) {
-      console.error('Failed to parse saved data', e);
-    }
-  }
-  // 기본 초기값
-  return {
-    data: { jobField: '', language: '' },
-    weights: { qolWeight: 40, jobWeight: 30, languageWeight: 30 },
-    qol: { income: 20, jobs: 20, health: 20, safety: 20, lifeSatisfaction: 20 },
-  };
-};
+import { useProfileStore } from '@/store/profileStore';
+import { PostCountryRecommendationPayload } from '@/types/profile';
+import { useRecommendationStore } from '@/store/recommendationStore';
 
 const steps = [
   { id: 1, title: '기본 정보 입력' },
-  {
-    id: 2,
-    title: 'QOL 설정',
-  },
+  { id: 2, title: 'QOL 설정' },
   { id: 3, title: '항목 중요도 설정' },
 ];
 
-const InputPage: React.FC = () => {
+const InputPage = () => {
   const navigate = useNavigate();
   const { token } = useAuthStore();
 
-  // 상태 관리
-  const [step, setStep] = useState(1);
-  const initial = useMemo(() => loadInitialData(), []);
-  const [data, setData] = useState<InputFormState>(initial.data);
-  const [qol, setQol] = useState<QualityOfLifeWeights>(initial.qol);
-  const [weights, setWeights] = useState<Weights>(initial.weights);
-  const initialQolTotal =
-    initial.qol.income +
-    initial.qol.jobs +
-    initial.qol.health +
-    initial.qol.safety +
-    initial.qol.lifeSatisfaction;
-  const initialWeightsTotal =
-    initial.weights.qolWeight + initial.weights.jobWeight + initial.weights.languageWeight;
-  const [qolTotal, setQolTotal] = useState<number>(initialQolTotal);
-  const [currentTotal, setCurrentTotal] = useState<number>(initialWeightsTotal);
+  const { data, qol, weights, step, setData, setQol, setWeights, setStep, reset } =
+    useProfileStore();
+
+  const { setProfileId, setCountries } = useRecommendationStore();
 
   const [loading, setLoading] = useState(false);
   const [globalError, setGlobalError] = useState<string | null>(null);
 
-  // [Persistence] 상태 변경 시 localStorage에 저장
-  useEffect(() => {
-    localStorage.setItem(PERSISTENCE_KEY, JSON.stringify({ data, weights, qol }));
-  }, [data, weights, qol]);
+  const qolTotal = useMemo(
+    () => qol.income + qol.jobs + qol.health + qol.safety + qol.lifeSatisfaction,
+    [qol],
+  );
 
-  const onFieldChange = useCallback((field: keyof InputFormState, value: string) => {
-    setData((prev) => ({ ...prev, [field]: value }));
-    setGlobalError(null); // 입력 시 에러 초기화
-  }, []);
-
-  const onQolChange = useCallback((newQol: QualityOfLifeWeights, total: number) => {
-    setQol(newQol);
-    setQolTotal(total);
-    setGlobalError(null);
-  }, []);
-
-  const onWeightsChange = useCallback((newWeights: Weights, total: number) => {
-    setWeights(newWeights);
-    setCurrentTotal(total);
-    setGlobalError(null);
-  }, []);
+  const weightsTotal = useMemo(
+    () => weights.languageWeight + weights.jobWeight + weights.qolWeight,
+    [weights],
+  );
 
   const isFormValid = useMemo(() => {
-    return data.jobField && data.language && currentTotal === 100 && qolTotal === 100;
-  }, [data, currentTotal, qolTotal]);
+    return data.jobField && data.language && weightsTotal === 100 && qolTotal === 100;
+  }, [data, weightsTotal, qolTotal]);
 
   const handleSubmit = async () => {
     setGlobalError(null);
@@ -137,6 +66,7 @@ const InputPage: React.FC = () => {
       jobWeight: weights.jobWeight,
     };
 
+    setLoading(true);
     // 1단계 API 호출: 국가 추천 리스트 받기
     try {
       const profileResponse = await postCountryRecommendation(profileRequestData, token);
@@ -153,13 +83,11 @@ const InputPage: React.FC = () => {
         throw new Error('국가 추천 결과를 불러오는 데 실패했습니다.');
       }
 
-      const recommendedCountries = countryResponse.data.recommendations;
-
-      localStorage.removeItem(PERSISTENCE_KEY);
+      setProfileId(profileId);
+      setCountries(countryResponse.data.recommendations);
+      reset();
       // 성공 시, 2단계 페이지로 이동하며 데이터 전달
-      navigate('/countries', {
-        state: { initialData: profileRequestData, profileId, results: recommendedCountries },
-      });
+      navigate('/countries');
     } catch (err) {
       setGlobalError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.');
     } finally {
@@ -171,36 +99,27 @@ const InputPage: React.FC = () => {
     return <Loading message="국가 추천 분석 중..." />;
   }
 
-  const validateCurrentStep = (): boolean => {
+  const validateStep = (): boolean => {
     if (step === 1) {
       if (!data.jobField || !data.language) {
         setGlobalError('직무와 언어를 모두 선택해주세요.');
         return false;
       }
     }
-    if (step === 2) {
-      if (qolTotal !== 100) {
-        setGlobalError('QOL 세부 항목의 합계가 100%가 되어야 합니다.');
-        return false;
-      }
+    if (step === 2 && qolTotal !== 100) {
+      setGlobalError('QOL 세부 항목의 합계가 100%가 되어야 합니다.');
+      return false;
     }
-    if (step === 3) {
-      if (currentTotal !== 100) {
-        setGlobalError('직무, 언어, QOL 중요도의 합계가 100%가 되어야 합니다.');
-        return false;
-      }
+    if (step === 3 && weightsTotal !== 100) {
+      setGlobalError('직무, 언어, QOL 중요도의 합계가 100%가 되어야 합니다.');
+      return false;
     }
     setGlobalError(null);
     return true;
   };
 
-  const nextStep = () => {
-    if (validateCurrentStep()) {
-      setStep((s) => Math.min(s + 1, 3));
-    }
-  };
-
-  const prevStep = () => setStep((s) => Math.max(s - 1, 1));
+  const nextStep = () => validateStep() && setStep(Math.min(step + 1, 3));
+  const prevStep = () => setStep(Math.max(step - 1, 1));
 
   return (
     <div className="flex justify-center px-6 py-14 bg-gradient-to-b from-white to-blue-50 min-h-screen">
@@ -248,8 +167,8 @@ const InputPage: React.FC = () => {
             >
               <InputForm
                 {...data}
-                onCategoryChange={(v) => onFieldChange('jobField', v)}
-                onLanguageChange={(v) => onFieldChange('language', v)}
+                onCategoryChange={(v) => setData('jobField', v)}
+                onLanguageChange={(v) => setData('language', v)}
               />
             </motion.section>
           )}
@@ -262,7 +181,7 @@ const InputPage: React.FC = () => {
               exit={{ opacity: 0, x: 40 }}
               transition={{ duration: 0.4 }}
             >
-              <QOLWeightInputGroup qol={qol} onChange={onQolChange} />
+              <QOLWeightInputGroup qol={qol} onChange={(q) => setQol(q)} />
             </motion.section>
           )}
 
@@ -274,7 +193,7 @@ const InputPage: React.FC = () => {
               exit={{ opacity: 0, x: 40 }}
               transition={{ duration: 0.4 }}
             >
-              <WeightInputGroup weights={weights} onWeightsChange={onWeightsChange} />
+              <WeightInputGroup weights={weights} onWeightsChange={(w) => setWeights(w)} />
             </motion.section>
           )}
         </AnimatePresence>

@@ -32,7 +32,7 @@ export default function Router({ children }: RouterProps) {
         {/* 공통 레이아웃 */}
         <Route path="/" element={<Layout />}>
           <Route path="/test" element={<Test />} />
-          <Route path="/country-recommendation" element={<CountryRecommendationPage />} />
+          <Route path="/countries" element={<CountryRecommendationPage />} />
 
           {/* 비로그인 전용 라우트 */}
           <Route element={<AccessRoute access="guest" />}>
