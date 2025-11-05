@@ -4,6 +4,8 @@ import { X } from 'lucide-react';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import { useAuthStore } from '@/store/authStore';
+import { KakaoIcon } from '@/assets/icon/KakaoIcon';
+import { SocialDivider } from './SocialDivider';
 
 export default function AuthModal() {
   const { modalType, isOpen, openModal, closeModal } = useModalStore();
@@ -38,6 +40,11 @@ export default function AuthModal() {
     openModal(type);
   };
 
+  const handleKakaoLogin = () => {
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${import.meta.env.VITE_KAKAO_REST_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI}&response_type=code`;
+    window.location.href = KAKAO_AUTH_URL;
+  };
+
   if (!isOpen || (modalType !== 'login' && modalType !== 'signup')) return null;
 
   return (
@@ -63,6 +70,17 @@ export default function AuthModal() {
           {modalType === 'login' ? (
             <>
               <LoginForm />
+
+              <SocialDivider />
+              <button
+                type="button"
+                onClick={handleKakaoLogin}
+                className="w-full py-3 flex items-center justify-center bg-[#FEE500] text-black text-sm font-semibold rounded-md hover:bg-opacity-90 transition"
+              >
+                <KakaoIcon />
+                <span className="ml-2">카카오 로그인</span>
+              </button>
+
               <div className="text-sm mt-4 text-center">
                 계정이 없으신가요?{' '}
                 <span
@@ -76,6 +94,16 @@ export default function AuthModal() {
           ) : (
             <>
               <SignupForm />
+
+              <SocialDivider />
+              <button
+                type="button"
+                onClick={handleKakaoLogin}
+                className="w-full py-3 flex items-center justify-center bg-[#FEE500] text-black text-sm font-semibold rounded-md hover:bg-opacity-90 transition"
+              >
+                <KakaoIcon />
+                <span className="ml-2">카카오 로그인</span>
+              </button>
               <div className="text-sm mt-4 text-center">
                 이미 계정이 있으신가요?{' '}
                 <span
