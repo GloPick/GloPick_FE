@@ -5,7 +5,7 @@ import { COUNTRY_CODE_MAP } from '@/constants';
 import { useRecommendationStore } from '@/store/recommendationStore';
 import { CountryRecommendation } from '@/types/profile';
 import { useModalStore } from '@/store/modalStore';
-import ScoreDetailModal from './ScoreDetailModal';
+import ScoreDetailModal from '../../components/recommendation/ScoreDetailModal';
 import { postCityRecommendation } from '@/api/profile';
 import { MessageCircleQuestionIcon, Search } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
