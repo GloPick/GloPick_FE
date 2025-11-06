@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { useModalStore } from '@/store/modalStore';
@@ -7,10 +7,11 @@ export default function KakaoCallback() {
   const navigate = useNavigate();
   const { login } = useAuthStore();
   const { openModal } = useModalStore();
+  const hasRun = useRef(false); // 실행 여부 추적 ref
 
   useEffect(() => {
-    if (sessionStorage.getItem('kakao_login_done')) return;
-    sessionStorage.setItem('kakao_login_done', 'true');
+    if (hasRun.current) return; // 두 번째 실행 방지
+    hasRun.current = true;
 
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token');
