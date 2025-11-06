@@ -24,7 +24,7 @@ const InputPage = () => {
   const { data, qol, weights, step, setData, setQol, setWeights, setStep, reset } =
     useProfileStore();
 
-  const { setProfileId, setCountries } = useRecommendationStore();
+  const { setProfileId, setRecommendationId, setCountries } = useRecommendationStore();
 
   const [loading, setLoading] = useState(false);
   const [globalError, setGlobalError] = useState<string | null>(null);
@@ -78,13 +78,14 @@ const InputPage = () => {
       const profileId = profileResponse.data.profileId;
 
       const countryResponse = await getCountryRecommendation(profileId, token);
-
+      const { recommendationId, recommendations } = countryResponse.data;
       if (!countryResponse.success) {
         throw new Error('국가 추천 결과를 불러오는 데 실패했습니다.');
       }
 
       setProfileId(profileId);
-      setCountries(countryResponse.data.recommendations);
+      setRecommendationId(recommendationId);
+      setCountries(recommendations);
       reset();
       // 성공 시, 2단계 페이지로 이동하며 데이터 전달
       navigate('/countries');
