@@ -1,3 +1,4 @@
+// ========== 프로필 관련 타입 ==========
 export interface InputFormState {
   jobField: string;
   language: string;
@@ -23,6 +24,7 @@ export interface Weights {
   jobWeight: number;
 }
 
+// ========== 국가 추천 관련 타입 ==========
 // 사용자 프로필 등록 요청 데이터 - 1단계
 export interface PostCountryRecommendationPayload {
   language: string;
@@ -84,24 +86,33 @@ export interface GetCountryRecommendationResponse {
   data: GetCountryRecommendationResponseData;
 }
 
+// ========== 도시 추천 관련 타입 ==========
 // 도시 추천 리스트 요청 데이터 - 2단계
 export interface PostCityRecommendationPayload {
-  countryCode: string;
-  category: 'Safety' | 'Environment' | 'Employment' | 'Infrastructure';
+  selectedCountryIndex: number;
+}
+
+export interface CityRecommendation {
+  name: string;
+  summary: string;
 }
 
 // 도시 추천 결과 응답 데이터 - 2단계
 export interface PostCityRecommendationResponseData {
-  cityName: string;
+  isExisting: boolean;
+  inputId: string;
+  selectedCountry: number;
+  recommendedCities: CityRecommendation[];
 }
 
 // 도시 추천 결과 응답 - 2단계
 export interface PostCityRecommendationResponse {
-  success: boolean;
+  code: number;
   message: string;
-  data: PostCityRecommendationResponseData[];
+  data: PostCityRecommendationResponseData;
 }
 
+// ========== 시뮬레이션 관련 타입 ==========
 // 시뮬레이션 결과 요청 - 3단계
 export interface PostSimulationPayload {
   countryCode: string;

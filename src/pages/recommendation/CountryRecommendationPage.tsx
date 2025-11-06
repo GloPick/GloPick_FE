@@ -4,19 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import { COUNTRY_CODE_MAP } from '@/constants';
 import { useRecommendationStore } from '@/store/recommendationStore';
 import { CountryRecommendation } from '@/types/profile';
-import { Search, MessageCircleQuestionIcon } from 'lucide-react';
 import { useModalStore } from '@/store/modalStore';
-import ScoreDetailModal from './ScoreDetailModal';
+import ScoreDetailModal from '../../components/recommendation/ScoreDetailModal';
+import { postCityRecommendation } from '@/api/profile';
+import { MessageCircleQuestionIcon, Search } from 'lucide-react';
+import { useAuthStore } from '@/store/authStore';
 
 const CountryRecommendationPage = () => {
   const navigate = useNavigate();
   const { openModal, isOpen, modalType } = useModalStore();
-  const { profileId, countries } = useRecommendationStore();
+  const { profileId, recommendationId, countries, selectedCountry, setSelectedCountry, setCities } =
+    useRecommendationStore();
+  const { token } = useAuthStore();
 
   const [loading, setLoading] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<CountryRecommendation | null>(null);
 
-  if (loading) return <Loading message="AI가 맞춤 국가를 분석 중입니다..." />;
   if (!countries || countries.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] text-gray-600">
@@ -41,6 +43,44 @@ const CountryRecommendationPage = () => {
     setSelectedCountry(item);
     openModal('scoreDetail');
   };
+
+  const handleCityRecommendation = async (index: number) => {
+    if (!token) {
+      alert('로그인이 필요한 서비스입니다.');
+      setLoading(false);
+      return;
+    }
+
+    const selectedCountry = countries?.[index];
+    setSelectedCountry(selectedCountry);
+
+    if (!selectedCountry || !recommendationId || !profileId) {
+      alert('추천 세션이 만료되었습니다. 다시 국가 추천을 진행해주세요.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await postCityRecommendation(recommendationId, profileId, token, {
+        selectedCountryIndex: index,
+      });
+
+      if (!response.data.recommendedCities?.length) {
+        alert('도시 추천에 실패했습니다. 다시 시도해주세요.');
+        return;
+      }
+      setCities(response.data.recommendedCities);
+      navigate('/cities');
+    } catch (error) {
+      console.error('도시 추천 오류:', error);
+      alert('도시 추천에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <Loading message="도시 추천 분석 중..." />;
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-6 pt-10 pb-12">
@@ -107,14 +147,7 @@ const CountryRecommendationPage = () => {
              border-2 border-white rounded-full py-3 transition-all duration-300 
              ease-in-out hover:bg-white hover:text-blue-700 hover:shadow-lg
              focus:outline-none focus:ring-2 focus:ring-white/50"
-              onClick={() =>
-                navigate('/cities', {
-                  state: {
-                    country: topCountry.country,
-                    profileId,
-                  },
-                })
-              }
+              onClick={() => handleCityRecommendation(0)}
             >
               도시 추천 보기 →
             </Button>
@@ -132,7 +165,7 @@ const CountryRecommendationPage = () => {
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {otherCountries.map((item) => (
+            {otherCountries.map((item, index) => (
               <div
                 key={item.country.code}
                 className="relative border border-gray-200 rounded-2xl p-6 bg-white hover:shadow-lg hover:-translate-y-1 transition-all text-center"
@@ -184,14 +217,7 @@ const CountryRecommendationPage = () => {
                 <Button
                   variant="none"
                   className="mt-4 w-full py-2 text-sm font-bold bg-transparent border-2 border-blue-800 text-blue-700 rounded-full transition-all duration-300 ease-in-out hover:bg-blue-800 hover:text-white"
-                  onClick={() =>
-                    navigate('/cities', {
-                      state: {
-                        country: item.country,
-                        profileId,
-                      },
-                    })
-                  }
+                  onClick={() => handleCityRecommendation(index + 1)}
                 >
                   도시 보기
                 </Button>

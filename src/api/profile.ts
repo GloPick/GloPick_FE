@@ -1,5 +1,7 @@
 import {
   GetCountryRecommendationResponse,
+  PostCityRecommendationPayload,
+  PostCityRecommendationResponse,
   PostCountryRecommendationPayload,
   PostCountryRecommendationResponse,
 } from '@/types/profile';
@@ -28,5 +30,24 @@ export const getCountryRecommendation = async (
       Authorization: `Bearer ${token}`,
     },
   });
+  return response.data;
+};
+
+// 선택한 국가 기반 도시 추천
+export const postCityRecommendation = async (
+  recommendationId: string,
+  profileId: string,
+  token: string,
+  data: PostCityRecommendationPayload,
+): Promise<PostCityRecommendationResponse> => {
+  const response = await apiInstance.post(
+    `/simulation/recommend-cities/${recommendationId}/${profileId}`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
   return response.data;
 };
