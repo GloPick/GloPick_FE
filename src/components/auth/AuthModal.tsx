@@ -6,6 +6,7 @@ import SignupForm from './SignupForm';
 import { useAuthStore } from '@/store/authStore';
 import { KakaoIcon } from '@/assets/icon/KakaoIcon';
 import { SocialDivider } from './SocialDivider';
+import { getKakaoAuthUrl } from '@/api/auth';
 
 export default function AuthModal() {
   const { modalType, isOpen, openModal, closeModal } = useModalStore();
@@ -15,7 +16,8 @@ export default function AuthModal() {
   // 모달 외부 클릭 시 닫기
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+      if (!modalRef.current) return;
+      if (!modalRef.current.contains(e.target as Node)) {
         closeModal();
       }
     };
@@ -40,9 +42,15 @@ export default function AuthModal() {
     openModal(type);
   };
 
-  const handleKakaoLogin = () => {
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${import.meta.env.VITE_KAKAO_REST_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI}&response_type=code`;
-    window.location.href = KAKAO_AUTH_URL;
+  const handleKakaoLogin = async () => {
+    try {
+      const url = await getKakaoAuthUrl();
+      window.location.href = url;
+      return;
+    } catch (error) {
+      console.error('카카오 로그인에 실패했습니다.:', error);
+      alert('카카오 로그인에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   if (!isOpen || (modalType !== 'login' && modalType !== 'signup')) return null;

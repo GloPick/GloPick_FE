@@ -4,7 +4,6 @@ import { jwtDecode } from 'jwt-decode';
 interface User {
   name: string;
   email: string;
-  provider: 'local' | 'kakao';
 }
 
 interface AuthState {
