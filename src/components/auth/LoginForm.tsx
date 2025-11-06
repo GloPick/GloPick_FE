@@ -21,7 +21,10 @@ export default function LoginForm() {
     try {
       const res = await postLogin(form);
       if (res.code === 201 && res.data) {
-        login(res.data.token, { name: res.data.name, email: res.data.email });
+        login(res.data.token, {
+          name: res.data.name,
+          email: res.data.email,
+        });
         closeModal();
         alert('로그인 되었습니다.');
         navigate('/');

@@ -10,66 +10,96 @@ interface AuthState {
   token: string | null;
   user: User | null;
   hasHydrated: boolean;
+  isAuthenticated: boolean;
   login: (token: string, user: User) => void;
   logout: () => void;
   hydrate: () => void;
+  isTokenExpired: () => boolean;
 }
 
 interface JwtPayload {
-  exp: number;
+  exp?: number;
+  iat?: number;
+  sub?: string;
 }
 
 let logoutTimer: ReturnType<typeof setTimeout> | null = null;
 
-export const useAuthStore = create<AuthState>((set) => ({
-  token: null,
-  user: null,
-  hasHydrated: false,
+function clearLogoutTimer() {
+  if (logoutTimer) {
+    clearTimeout(logoutTimer);
+    logoutTimer = null;
+  }
+}
 
-  login: (token, user) => {
-    set({ token, user });
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
-
-    // 자동 로그아웃 타이머 설정
+function setupLogoutTimer(token: string, set: (partial: Partial<AuthState>) => void) {
+  try {
     const decoded = jwtDecode<JwtPayload>(token);
+    if (!decoded.exp) return;
     const expiresInMs = decoded.exp * 1000 - Date.now();
-
-    if (logoutTimer) clearTimeout(logoutTimer);
+    if (expiresInMs <= 0) {
+      set({ token: null, user: null });
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      alert('로그인 세션이 만료되었습니다.');
+      return;
+    }
+    clearLogoutTimer();
     logoutTimer = setTimeout(() => {
       set({ token: null, user: null });
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       alert('로그인 세션이 만료되었습니다.');
     }, expiresInMs);
+  } catch (error) {
+    console.error('유효하지 않은 토큰:', error);
+    set({ token: null, user: null, isAuthenticated: false });
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    clearLogoutTimer();
+  }
+}
+
+export const useAuthStore = create<AuthState>((set, get) => ({
+  token: null,
+  user: null,
+  hasHydrated: false,
+  isAuthenticated: false,
+
+  login: (token, user) => {
+    set({ token, user, isAuthenticated: true });
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+    setupLogoutTimer(token, set);
   },
 
   logout: () => {
-    set({ token: null, user: null });
+    set({ token: null, user: null, isAuthenticated: false });
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    if (logoutTimer) clearTimeout(logoutTimer);
+    clearLogoutTimer();
   },
 
   hydrate: () => {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
     if (token && user) {
-      set({ token, user: JSON.parse(user), hasHydrated: true });
-
-      // 로그인 유지 중에도 만료 타이머 설정
-      const decoded = jwtDecode<JwtPayload>(token);
-      const expiresInMs = decoded.exp * 1000 - Date.now();
-
-      if (logoutTimer) clearTimeout(logoutTimer);
-      logoutTimer = setTimeout(() => {
-        set({ token: null, user: null });
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        alert('로그인 세션이 만료되었습니다.');
-      }, expiresInMs);
+      set({ token, user: JSON.parse(user), hasHydrated: true, isAuthenticated: true });
+      setupLogoutTimer(token, set);
     } else {
-      set({ hasHydrated: true });
+      set({ hasHydrated: true, isAuthenticated: false });
+    }
+  },
+
+  isTokenExpired: () => {
+    const token = get().token;
+    if (!token) return true;
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+      if (!decoded.exp) return true;
+      return decoded.exp * 1000 <= Date.now();
+    } catch {
+      return true;
     }
   },
 }));

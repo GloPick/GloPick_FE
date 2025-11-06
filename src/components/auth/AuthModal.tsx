@@ -4,6 +4,9 @@ import { X } from 'lucide-react';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import { useAuthStore } from '@/store/authStore';
+import { KakaoIcon } from '@/assets/icon/KakaoIcon';
+import { SocialDivider } from './SocialDivider';
+import { getKakaoAuthUrl } from '@/api/auth';
 
 export default function AuthModal() {
   const { modalType, isOpen, openModal, closeModal } = useModalStore();
@@ -13,7 +16,8 @@ export default function AuthModal() {
   // 모달 외부 클릭 시 닫기
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+      if (!modalRef.current) return;
+      if (!modalRef.current.contains(e.target as Node)) {
         closeModal();
       }
     };
@@ -36,6 +40,17 @@ export default function AuthModal() {
       return;
     }
     openModal(type);
+  };
+
+  const handleKakaoLogin = async () => {
+    try {
+      const url = await getKakaoAuthUrl();
+      window.location.href = url;
+      return;
+    } catch (error) {
+      console.error('카카오 로그인에 실패했습니다.:', error);
+      alert('카카오 로그인에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   if (!isOpen || (modalType !== 'login' && modalType !== 'signup')) return null;
@@ -63,6 +78,17 @@ export default function AuthModal() {
           {modalType === 'login' ? (
             <>
               <LoginForm />
+
+              <SocialDivider />
+              <button
+                type="button"
+                onClick={handleKakaoLogin}
+                className="w-full py-3 flex items-center justify-center bg-[#FEE500] text-black text-sm font-semibold rounded-md hover:bg-opacity-90 transition"
+              >
+                <KakaoIcon />
+                <span className="ml-2">카카오 로그인</span>
+              </button>
+
               <div className="text-sm mt-4 text-center">
                 계정이 없으신가요?{' '}
                 <span
@@ -76,6 +102,16 @@ export default function AuthModal() {
           ) : (
             <>
               <SignupForm />
+
+              <SocialDivider />
+              <button
+                type="button"
+                onClick={handleKakaoLogin}
+                className="w-full py-3 flex items-center justify-center bg-[#FEE500] text-black text-sm font-semibold rounded-md hover:bg-opacity-90 transition"
+              >
+                <KakaoIcon />
+                <span className="ml-2">카카오 로그인</span>
+              </button>
               <div className="text-sm mt-4 text-center">
                 이미 계정이 있으신가요?{' '}
                 <span

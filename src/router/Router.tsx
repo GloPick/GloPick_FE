@@ -11,7 +11,7 @@ import Guest from '@/pages/guest/Guest';
 import AccessRoute from './AccessRoute';
 import InputPage from '@/pages/profile/InputPage';
 import CountryRecommendationPage from '@/pages/recommendation/CountryRecommendationPage';
-//import ProfileWrapper from '@/pages/profile/ProfileWrapper';
+import KakaoCallback from '@/components/auth/KakaoCallback';
 
 interface RouterProps {
   children?: ReactNode;
@@ -23,6 +23,7 @@ export default function Router({ children }: RouterProps) {
       <Routes>
         {/* 공개 라우트 */}
         <Route path="/" element={<Main />} />
+        <Route path="/oauth/kakao" element={<KakaoCallback />} />
 
         {/* 레이아웃 제외 & 로그인 전용 */}
         <Route element={<AccessRoute access="private" />}>
