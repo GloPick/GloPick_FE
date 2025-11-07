@@ -4,6 +4,8 @@ import {
   PostCityRecommendationResponse,
   PostCountryRecommendationPayload,
   PostCountryRecommendationResponse,
+  PostSimulationPayload,
+  PostSimulationResponse,
 } from '@/types/profile';
 import { apiInstance } from './index';
 
@@ -49,5 +51,19 @@ export const postCityRecommendation = async (
       },
     },
   );
+  return response.data;
+};
+
+// 선택한 도시 기반 시뮬레이션
+export const postSimulation = async (
+  inputId: string,
+  data: PostSimulationPayload,
+  token: string,
+): Promise<PostSimulationResponse> => {
+  const response = await apiInstance.post(`/simulation/${inputId}/generate`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };

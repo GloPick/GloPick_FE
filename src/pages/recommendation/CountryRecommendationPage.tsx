@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Loading } from '@/components/shared';
 import { useNavigate } from 'react-router-dom';
-import { COUNTRY_CODE_MAP } from '@/constants';
 import { useRecommendationStore } from '@/store/recommendationStore';
 import { CountryRecommendation } from '@/types/profile';
 import { useModalStore } from '@/store/modalStore';
@@ -9,12 +8,20 @@ import ScoreDetailModal from '../../components/recommendation/ScoreDetailModal';
 import { postCityRecommendation } from '@/api/profile';
 import { MessageCircleQuestionIcon, Search } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
+import { getFlagUrl } from '@/utils/formatters';
 
 const CountryRecommendationPage = () => {
   const navigate = useNavigate();
   const { openModal, isOpen, modalType } = useModalStore();
-  const { profileId, recommendationId, countries, selectedCountry, setSelectedCountry, setCities } =
-    useRecommendationStore();
+  const {
+    profileId,
+    recommendationId,
+    countries,
+    selectedCountry,
+    setSelectedCountry,
+    setCities,
+    setInputId,
+  } = useRecommendationStore();
   const { token } = useAuthStore();
 
   const [loading, setLoading] = useState(false);
@@ -32,12 +39,6 @@ const CountryRecommendationPage = () => {
 
   const topCountry = countries[0];
   const otherCountries = countries.slice(1);
-
-  // 국기 코드 변환 함수
-  const getFlagUrl = (code: string, size: number) => {
-    const alpha2 = COUNTRY_CODE_MAP[code] || code.slice(0, 2).toLowerCase();
-    return `https://flagcdn.com/w${size}/${alpha2}.png`;
-  };
 
   const handleOpenDetailModal = (item: CountryRecommendation) => {
     setSelectedCountry(item);
@@ -69,6 +70,7 @@ const CountryRecommendationPage = () => {
         return;
       }
       setCities(response.data.recommendedCities);
+      setInputId(response.data.inputId);
       navigate('/cities');
     } catch (error) {
       console.error('도시 추천 오류:', error);
