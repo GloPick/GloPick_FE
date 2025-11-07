@@ -3,8 +3,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Test from '@/pages/test';
 import Layout from '@/components/layout/Layout';
 import Main from '@/pages/main/Main';
-import MyPage from '@/pages/mypage';
-import SimulationSummary from '@/components/mypage/SimulationSummarySection';
 import GuestResult from '@/pages/guest/GuestResult';
 import Guest from '@/pages/guest/Guest';
 import AccessRoute from './AccessRoute';
@@ -13,6 +11,7 @@ import CountryRecommendationPage from '@/pages/recommendation/CountryRecommendat
 import KakaoCallback from '@/components/auth/KakaoCallback';
 import CityRecommendationPage from '@/pages/recommendation/CityRecommendationPage';
 import SimulationInputPage from '@/pages/simulation/SimulationInputPage';
+import SimulationResultPage from '@/pages/simulation/SimulationResultPage';
 
 interface RouterProps {
   children?: ReactNode;
@@ -32,6 +31,7 @@ export default function Router({ children }: RouterProps) {
           <Route path="/countries" element={<CountryRecommendationPage />} />
           <Route path="/cities" element={<CityRecommendationPage />} />
           <Route path="/simulation/input" element={<SimulationInputPage />} />
+          <Route path="/simulation/result" element={<SimulationResultPage />} />
         </Route>
 
         {/* 공통 레이아웃 */}
@@ -47,7 +47,6 @@ export default function Router({ children }: RouterProps) {
           {/* 로그인 전용 라우트 */}
           <Route element={<AccessRoute access="private" />}>
             {/* <Route path="/mypage" element={<MyPage />} /> */}
-            {/* <Route path="/simulation/:simulationId" element={<SimulationSummary />} /> */}
           </Route>
         </Route>
       </Routes>
