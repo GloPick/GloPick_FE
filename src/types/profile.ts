@@ -115,16 +115,82 @@ export interface PostCityRecommendationResponse {
 // ========== 시뮬레이션 관련 타입 ==========
 // 시뮬레이션 결과 요청 - 3단계
 export interface PostSimulationPayload {
-  countryCode: string;
-  cityName: string;
+  selectedCityIndex: number;
+  initialBudget: string;
+  requiredFacilities: string[];
+  departureAirport: string;
+}
+
+// (1) 필수 시설 및 생활 정보
+export interface LocalInfo {
+  essentialFacilities: string[];
+  publicTransport: string;
+  safetyLevel: string;
+  climateSummary: string;
+  koreanCommunity: string;
+  culturalTips: string;
+  warnings: string;
+}
+
+// (2) 예상 월 생활비
+export interface EstimatedMonthlyCost {
+  housing: string;
+  food: string;
+  transportation: string;
+  etc: string;
+  total: string;
+  oneYearCost: string;
+  costCuttingTips: string;
+  cpi: string;
+}
+
+// (3) 초기 정착 관련 정보
+export interface InitialSetup {
+  shortTermHousingOptions: string[];
+  longTermHousingPlatforms: string[];
+  mobilePlan: string;
+  bankAccount: string;
+}
+
+// (4) 취업 관련 현실 정보
+export interface JobReality {
+  jobSearchPlatforms: string[];
+  languageRequirement: string;
+  visaLimitationTips: string;
+}
+
+// (5) 문화 적응 및 커뮤니티 정보
+export interface CulturalIntegration {
+  koreanPopulationRate: string;
+  foreignResidentRatio: string;
+  koreanResourcesLinks: string[];
+}
+
+// (6) 전체 시뮬레이션 결과
+export interface SimulationResult {
+  country: string;
+  recommendedCity: string;
+  localInfo: LocalInfo;
+  estimatedMonthlyCost: EstimatedMonthlyCost;
+  initialSetup: InitialSetup;
+  jobReality: JobReality;
+  culturalIntegration: CulturalIntegration;
+}
+
+// (7) 항공권 관련 링크
+export interface FlightLinks {
+  googleFlights: string;
+  skyscanner: string;
 }
 
 export interface PostSimulationResponseData {
-  monthlyCost: number; // 월 생활비 (KRW)
+  simulationId: string;
+  result: SimulationResult;
+  flightLinks: FlightLinks;
 }
 
 export interface PostSimulationResponse {
-  success: boolean;
+  code: number;
   message: string;
   data: PostSimulationResponseData;
 }

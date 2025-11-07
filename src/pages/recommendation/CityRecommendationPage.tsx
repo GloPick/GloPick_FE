@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const CityRecommendationPage = () => {
   const navigate = useNavigate();
-  const { profileId, selectedCountry, cities } = useRecommendationStore();
+  const { selectedCountry, cities } = useRecommendationStore();
 
   if (!cities || cities.length === 0 || !selectedCountry) {
     return (
@@ -45,11 +45,9 @@ const CityRecommendationPage = () => {
               key={city.name}
               className="relative border border-gray-200 rounded-2xl p-6 bg-white hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer flex flex-col text-left"
               onClick={() => {
-                navigate('/simulation-input', {
+                navigate('/simulation/input', {
                   state: {
-                    country: selectedCountry.country.name,
-                    city: city.name,
-                    profileId: profileId,
+                    selectedCity: city.name,
                   },
                 });
               }}

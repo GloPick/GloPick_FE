@@ -12,6 +12,7 @@ import InputPage from '@/pages/profile/InputPage';
 import CountryRecommendationPage from '@/pages/recommendation/CountryRecommendationPage';
 import KakaoCallback from '@/components/auth/KakaoCallback';
 import CityRecommendationPage from '@/pages/recommendation/CityRecommendationPage';
+import SimulationInputPage from '@/pages/simulation/SimulationInputPage';
 
 interface RouterProps {
   children?: ReactNode;
@@ -30,6 +31,7 @@ export default function Router({ children }: RouterProps) {
           <Route path="/profile" element={<InputPage />} />
           <Route path="/countries" element={<CountryRecommendationPage />} />
           <Route path="/cities" element={<CityRecommendationPage />} />
+          <Route path="/simulation/input" element={<SimulationInputPage />} />
         </Route>
 
         {/* 공통 레이아웃 */}
