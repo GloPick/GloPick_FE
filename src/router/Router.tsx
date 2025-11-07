@@ -46,8 +46,8 @@ export default function Router({ children }: RouterProps) {
 
           {/* 로그인 전용 라우트 */}
           <Route element={<AccessRoute access="private" />}>
-            <Route path="/mypage" element={<MyPage />} />
-            <Route path="/simulation/:simulationId" element={<SimulationSummary />} />
+            {/* <Route path="/mypage" element={<MyPage />} /> */}
+            {/* <Route path="/simulation/:simulationId" element={<SimulationSummary />} /> */}
           </Route>
         </Route>
       </Routes>

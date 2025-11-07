@@ -1,10 +1,23 @@
 import { useRecommendationStore } from '@/store/recommendationStore';
+import { CityRecommendation } from '@/types/profile';
 import { Button } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
 
 const CityRecommendationPage = () => {
   const navigate = useNavigate();
-  const { selectedCountry, cities } = useRecommendationStore();
+  const { profileId, inputId, selectedCountry, cities } = useRecommendationStore();
+
+  const handleClickCity = (clickedCity: CityRecommendation) => {
+    navigate('/simulation/input', {
+      state: {
+        profileId: profileId,
+        inputId: inputId,
+        cities: cities,
+        selectedCountry: selectedCountry,
+        selectedCity: clickedCity.name,
+      },
+    });
+  };
 
   if (!cities || cities.length === 0 || !selectedCountry) {
     return (
@@ -44,13 +57,7 @@ const CityRecommendationPage = () => {
             <div
               key={city.name}
               className="relative border border-gray-200 rounded-2xl p-6 bg-white hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer flex flex-col text-left"
-              onClick={() => {
-                navigate('/simulation/input', {
-                  state: {
-                    selectedCity: city.name,
-                  },
-                });
-              }}
+              onClick={() => handleClickCity(city)}
             >
               <h4 className="text-lg font-bold text-gray-900">{city.name}</h4>
               <p className="text-sm text-gray-600 mt-2 flex-grow">{city.summary}</p>

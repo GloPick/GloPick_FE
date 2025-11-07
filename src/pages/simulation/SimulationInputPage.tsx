@@ -4,8 +4,7 @@ import MultiSelectDropdown from '@/components/shared/MultiSelectButton';
 import SelectDropdown from '@/components/shared/SelectDropdown';
 import { AIRPORT_OPTIONS, BUDGET_OPTIONS, FacilityValue } from '@/constants';
 import { useAuthStore } from '@/store/authStore';
-import { useRecommendationStore } from '@/store/recommendationStore';
-import { PostSimulationPayload } from '@/types/profile';
+import { CityRecommendation, PostSimulationPayload } from '@/types/profile';
 import { Button } from '@headlessui/react';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -13,9 +12,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const SimulationInputPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { selectedCountry, cities, profileId, inputId } = useRecommendationStore();
-  const { selectedCity } = location.state || {};
   const { token } = useAuthStore();
+  const { profileId, inputId, selectedCountry, cities, selectedCity } = location.state || {};
 
   // 1. 폼 상태 관리
   const [initialBudget, setInitialBudget] = useState('');
@@ -44,7 +42,8 @@ const SimulationInputPage = () => {
       return;
     }
 
-    const selectedCityIndex = cities?.findIndex((c) => c.name === selectedCity) ?? -1;
+    const selectedCityIndex =
+      cities?.findIndex((c: CityRecommendation) => c.name === selectedCity) ?? -1;
 
     if (
       selectedCityIndex === null ||
@@ -62,9 +61,10 @@ const SimulationInputPage = () => {
       });
       return;
     }
+    setErrors({}); // 오류 초기화
 
     if (selectedCityIndex === -1) {
-      console.error('선택된 도시를 스토어에서 찾을 수 없습니다.');
+      console.error('선택된 도시를 location.state의 cities 배열에서 찾을 수 없습니다.');
       return;
     }
 
@@ -102,8 +102,14 @@ const SimulationInputPage = () => {
     return <Loading message="시뮬레이션 생성 중..." />;
   }
 
-  if (!selectedCity || !selectedCountry || !profileId) {
-    console.log('필수 정보 누락:', { selectedCity, selectedCountry, profileId });
+  if (!selectedCity || !selectedCountry || !profileId || !inputId || !cities) {
+    console.log('필수 정보 누락:', {
+      selectedCity,
+      selectedCountry,
+      profileId,
+      inputId,
+      cities,
+    });
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] text-gray-600">
         <p className="text-lg">잘못된 접근입니다 😢</p>
