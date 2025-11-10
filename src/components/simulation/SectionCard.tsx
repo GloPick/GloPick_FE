@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface SectionCardProps {
   title: string;
   icon: React.ReactNode;

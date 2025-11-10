@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface ListRowProps {
   label: string;
   items: string[];
@@ -12,8 +14,8 @@ const ListRow = ({ label, items, icon }: ListRowProps) => (
     </dt>
     <dd className="mt-1 text-base text-gray-800">
       <ul className="list-disc list-inside space-y-1">
-        {items.map((item) => (
-          <li key={item}>{item}</li>
+        {items.map((item, index) => (
+          <li key={`${item}-${index}`}>{item}</li>
         ))}
       </ul>
     </dd>

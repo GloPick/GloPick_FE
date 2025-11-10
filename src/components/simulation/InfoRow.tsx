@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface InfoRowProps {
   label: string;
   icon?: React.ReactNode;
