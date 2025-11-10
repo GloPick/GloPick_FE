@@ -88,6 +88,7 @@ const SimulationInputPage = () => {
           simulation: response.data.result,
           flightLinks: response.data.flightLinks,
           simulationId: response.data.simulationId,
+          requiredFacilities: payload.requiredFacilities,
         },
       });
     } catch (error) {
