@@ -19,18 +19,36 @@ import {
   BookOpen,
   LinkIcon,
   ImageIcon,
-  Printer,
 } from 'lucide-react';
 import SectionCard from '@/components/simulation/SectionCard';
 import InfoRow from '@/components/simulation/InfoRow';
 import ListRow from '@/components/simulation/ListRow';
 import { FlightLinks, SimulationResult } from '@/types/profile';
 import { getFacilityLabel } from '@/constants';
+import { useRef } from 'react';
+import { toPng } from 'html-to-image';
+import download from 'downloadjs';
 
 const SimulationResultPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const printRef = useRef<HTMLDivElement>(null); // pdf/캡처 위한 Ref
 
+  const handleCaptureImage = () => {
+    if (!printRef.current) {
+      console.error('캡처 대상(printRef.current)을 찾을 수 없습니다.');
+      return;
+    }
+
+    toPng(printRef.current, { cacheBust: true })
+      .then((dataUrl) => {
+        download(dataUrl, `${simulation?.recommendedCity}_정착_시뮬레이션_결과.png`);
+      })
+      .catch((err) => {
+        console.error('이미지 캡처 실패:', err);
+        alert('이미지 캡처에 실패했습니다. 다시 시도해주세요.');
+      });
+  };
   const { simulation, flightLinks, simulationId, requiredFacilities } = (location.state || {}) as {
     simulation: SimulationResult;
     flightLinks: FlightLinks;
@@ -61,7 +79,7 @@ const SimulationResultPage = () => {
 
   return (
     <div className="bg-gray-50/50">
-      <div className="max-w-4xl mx-auto px-4 py-12 space-y-10">
+      <div ref={printRef} className="max-w-4xl mx-auto px-4 py-12 space-y-10">
         {/* Hero 섹션 */}
         <section className="relative bg-white border border-gray-200 rounded-3xl shadow-lg overflow-hidden py-12 px-8">
           <div className="relative z-10">
@@ -96,7 +114,6 @@ const SimulationResultPage = () => {
           title="월 예상 생활비 상세"
           icon={<DollarSign className="w-6 h-6 text-blue-600" />}
         >
-          {/* ⬇️ 월 총계를 카드의 맨 위로 이동 ⬇️ */}
           <div className="bg-blue-50 p-6 rounded-lg text-center mb-6">
             <p className="text-lg font-semibold text-blue-800">월 예상 총계</p>
             <p className="text-5xl font-extrabold text-blue-600 my-1">
@@ -227,7 +244,7 @@ const SimulationResultPage = () => {
         {/* 다음 단계 */}
         <section className="text-center">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">더 자세히 알아보기</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <a
               href={flightLinks.googleFlights}
               target="_blank"
@@ -247,14 +264,7 @@ const SimulationResultPage = () => {
             </a>
 
             <Button
-              onClick={() => {}}
-              className="py-3 px-4 text-sm font-bold text-gray-700 bg-gray-100 rounded-lg shadow-sm border border-gray-300 hover:bg-gray-200 transition duration-300 flex items-center justify-center gap-2"
-            >
-              <Printer className="w-4 h-4" /> PDF로 저장
-            </Button>
-
-            <Button
-              onClick={() => {}}
+              onClick={handleCaptureImage}
               className="py-3 px-4 text-sm font-bold text-gray-700 bg-gray-100 rounded-lg shadow-sm border border-gray-300 hover:bg-gray-200 transition duration-300 flex items-center justify-center gap-2"
             >
               <ImageIcon className="w-4 h-4" /> 이미지로 캡처
