@@ -32,7 +32,7 @@ const UserInfoSection = ({ data, onUpdate }: UserInfoSectionProps) => {
     if (!token) return;
 
     try {
-      const response = await putUserInfo(formData, token);
+      await putUserInfo(formData, token);
       alert('정보가 수정되었습니다.');
       await onUpdate();
       setIsEditOpen(false);

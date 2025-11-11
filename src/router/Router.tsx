@@ -22,7 +22,7 @@ export default function Router({ children }: RouterProps) {
     <BrowserRouter>
       <Routes>
         {/* 공개 라우트 */}
-        <Route path="/" element={<Main />} />
+        {/* <Route path="/" element={<Main />} /> */}
         <Route path="/oauth/kakao" element={<KakaoCallback />} />
 
         {/* 레이아웃 제외 & 로그인 전용 */}
@@ -36,6 +36,7 @@ export default function Router({ children }: RouterProps) {
 
         {/* 공통 레이아웃 */}
         <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Main />} />
           <Route path="/test" element={<Test />} />
 
           {/* 비로그인 전용 라우트 */}
