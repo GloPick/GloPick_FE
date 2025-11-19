@@ -25,14 +25,20 @@ import InfoRow from '@/components/simulation/InfoRow';
 import ListRow from '@/components/simulation/ListRow';
 import { FlightLinks, SimulationResult } from '@/types/recommendation';
 import { getFacilityLabel } from '@/constants';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toPng } from 'html-to-image';
 import download from 'downloadjs';
+import { MapRequestPayload, MapResponseData } from '@/types/map';
+import { postMapData } from '@/api/map';
+import FacilityMap from '@/components/simulation/FacilityMap';
 
 const SimulationResultPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const printRef = useRef<HTMLDivElement>(null); // pdf/캡처 위한 Ref
+
+  const [mapData, setMapData] = useState<MapResponseData | null>(null);
+  const [isMapLoading, setIsMapLoading] = useState(false);
 
   const handleCaptureImage = () => {
     if (!printRef.current) {
@@ -55,6 +61,32 @@ const SimulationResultPage = () => {
     simulationId: string;
     requiredFacilities: string[];
   };
+
+  // 지도 데이터 호출
+  useEffect(() => {
+    if (!simulation || !simulation.country || !requiredFacilities) return;
+
+    const fetchMapLocations = async () => {
+      setIsMapLoading(true);
+
+      const payload: MapRequestPayload = {
+        city: simulation.recommendedCity,
+        country: simulation.country,
+        facilities: requiredFacilities,
+      };
+
+      try {
+        const response = await postMapData(payload);
+        setMapData(response.data);
+      } catch (error) {
+        console.error('지도 데이터 로드 실패:', error);
+      } finally {
+        setIsMapLoading(false);
+      }
+    };
+
+    fetchMapLocations();
+  }, [simulation.country, simulation.recommendedCity, requiredFacilities]);
 
   if (!simulation) {
     return (
@@ -175,6 +207,22 @@ const SimulationResultPage = () => {
           </div>
         </SectionCard>
 
+        {/* 지도 렌더링 섹션 (새로 추가) */}
+        <SectionCard title="선택 시설 위치" icon={<MapPin className="w-6 h-6 text-blue-600" />}>
+          {isMapLoading && (
+            <div className="p-10 text-center text-gray-500">지도 데이터 로딩 중...</div>
+          )}
+
+          {/* 지도 컴포넌트 렌더링 */}
+          {mapData && !isMapLoading ? (
+            <FacilityMap apiResponseData={mapData} />
+          ) : (
+            !isMapLoading && (
+              <div className="p-10 text-center text-gray-500">지도를 표시할 수 없습니다.</div>
+            )
+          )}
+        </SectionCard>
+
         {/* 초기 정착 가이드 */}
         <SectionCard title="초기 정착 가이드" icon={<Home className="w-6 h-6 text-blue-600" />}>
           <dl>
@@ -274,7 +322,7 @@ const SimulationResultPage = () => {
             이 시뮬레이션 결과(ID: {simulationId})는 내 프로필에 자동 저장되었습니다.
           </p>
           <Button
-            onClick={() => navigate('/mypage/simulations')}
+            onClick={() => navigate('/mypage')}
             className="mt-2 text-sm font-semibold text-blue-600 hover:underline"
           >
             내 프로필에서 확인하기 →
