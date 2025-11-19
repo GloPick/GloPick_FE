@@ -23,7 +23,7 @@ import {
 import SectionCard from '@/components/simulation/SectionCard';
 import InfoRow from '@/components/simulation/InfoRow';
 import ListRow from '@/components/simulation/ListRow';
-import { FlightLinks, SimulationResult } from '@/types/profile';
+import { FlightLinks, SimulationResult } from '@/types/recommendation';
 import { getFacilityLabel } from '@/constants';
 import { useRef } from 'react';
 import { toPng } from 'html-to-image';

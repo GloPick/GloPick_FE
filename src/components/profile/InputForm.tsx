@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { JOB_OPTIONS, LANGUAGE_OPTIONS } from '@/constants';
-import { InputFormState } from '@/types/profile';
+import { InputFormState } from '@/types/recommendation';
 import SelectDropdown from '@/components/shared/SelectDropdown';
 
 interface InputFormProps extends InputFormState {

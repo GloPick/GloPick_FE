@@ -1,6 +1,6 @@
 import { Button } from '@/components/shared';
 import { useModalStore } from '@/store/modalStore';
-import { CountryRecommendation } from '@/types/profile';
+import { CountryRecommendation } from '@/types/recommendation';
 import { X } from 'lucide-react';
 
 interface ScoreDetailModalProps {

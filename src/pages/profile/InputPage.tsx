@@ -2,13 +2,13 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WeightInputGroup from '../../components/profile/WeightInputGroup';
 import InputForm from '@/components/profile/InputForm';
-import { getCountryRecommendation, postCountryRecommendation } from '@/api/profile';
+import { getCountryRecommendation, postCountryRecommendation } from '@/api/recommendation';
 import { useAuthStore } from '@/store/authStore';
 import { Button, Loading } from '@/components/shared';
 import QOLWeightInputGroup from '@/components/profile/QOLWeightInputGroup';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useProfileStore } from '@/store/profileStore';
-import { PostCountryRecommendationPayload } from '@/types/profile';
+import { PostCountryRecommendationPayload } from '@/types/recommendation';
 import { useRecommendationStore } from '@/store/recommendationStore';
 
 const steps = [
@@ -57,7 +57,7 @@ const InputPage = () => {
       return;
     }
 
-    const profileRequestData: PostCountryRecommendationPayload = {
+    const postProfileRequestData: PostCountryRecommendationPayload = {
       language: data.language,
       desiredJob: data.jobField,
       qualityOfLifeWeights: qol,
@@ -69,7 +69,7 @@ const InputPage = () => {
     setLoading(true);
     // 1단계 API 호출: 국가 추천 리스트 받기
     try {
-      const profileResponse = await postCountryRecommendation(profileRequestData, token);
+      const profileResponse = await postCountryRecommendation(postProfileRequestData, token);
 
       if (!profileResponse || !profileResponse.data?.profileId) {
         throw new Error('국가 추천 결과를 불러오는 데 실패했습니다.');

@@ -1,4 +1,4 @@
-import { InputFormState, QualityOfLifeWeights, Weights } from '@/types/profile';
+import { InputFormState, QualityOfLifeWeights, Weights } from '@/types/recommendation';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 

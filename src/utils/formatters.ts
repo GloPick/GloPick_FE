@@ -1,5 +1,5 @@
 import { COUNTRY_CODE_MAP, JOB_OPTIONS } from '@/constants';
-import { ISCOJobField } from '@/types/profile';
+import { ISCOJobField } from '@/types/recommendation';
 
 /**
  * 한국어 직무명을 받아 ISCOJobField 객체로 변환

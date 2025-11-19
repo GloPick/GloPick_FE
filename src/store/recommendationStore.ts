@@ -1,4 +1,4 @@
-import { CityRecommendation, CountryRecommendation } from '@/types/profile';
+import { CityRecommendation, CountryRecommendation } from '@/types/recommendation';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 

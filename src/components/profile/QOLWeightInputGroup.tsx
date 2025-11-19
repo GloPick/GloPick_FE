@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { QualityOfLifeWeights } from '@/types/profile';
+import { QualityOfLifeWeights } from '@/types/recommendation';
 
 interface QOLWeightInputGroupProps {
   qol: QualityOfLifeWeights;
