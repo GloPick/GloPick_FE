@@ -91,7 +91,6 @@ export interface SimulationResultDetailData {
     foreignResidentRatio: string;
     koreanResourcesLinks: string[];
   };
-  facilityLocations: any; // 위치 정보 상세 (빈 객체로 가정)
 }
 
 // 시뮬레이션 요약 리스트 조회

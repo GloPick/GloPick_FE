@@ -3,6 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import SectionCard from './SectionCard';
 import { Button } from '../shared';
+import { FileQuestion } from 'lucide-react';
 
 interface SimulationListSectionProps {
   simulations: GetSimulationResponseData[];
@@ -19,23 +20,35 @@ const SimulationList = ({ simulations }: SimulationListSectionProps) => {
     };
     // SimulationResultPage가 기대하는 state 구조로 데이터를 매핑
     const statePayload = {
-      // ResultPage에서 'simulation' 키로 기대하는 상세 결과 객체
       simulation: simulation.result,
 
-      // Hero 섹션 번역에 필요한 원본 요청 시설 목록
       requiredFacilities: simulation.input.requiredFacilities,
 
-      // ID 및 FlightLinks
       simulationId: simulation._id,
       flightLinks: flightLinksPlaceholder,
     };
 
-    // 상세 결과 페이지로 이동 (ID는 URL에 포함, 데이터는 state에 포함)
-    // 이렇게 하면 ResultPage는 API 호출 없이 즉시 렌더링됩니다.
     navigate(`/simulation/result/${simulation._id}`, {
       state: statePayload,
     });
   };
+
+  if (!simulations || simulations.length === 0) {
+    return (
+      <SectionCard title="저장된 시뮬레이션">
+        <div className="flex flex-col items-center justify-center py-12 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+          <FileQuestion className="w-10 h-10 text-gray-300 mb-3" />
+          <p className="text-gray-500 font-medium mb-1">아직 저장된 시뮬레이션 결과가 없습니다.</p>
+          <p className="text-sm text-gray-400 mb-6">
+            나에게 딱 맞는 국가와 도시를 찾고 시뮬레이션을 시작해보세요!
+          </p>
+          <Button variant="primary" onClick={() => navigate('/profile')} className="text-sm px-6">
+            국가 추천 받으러 가기
+          </Button>
+        </div>
+      </SectionCard>
+    );
+  }
 
   return (
     <SectionCard title="저장된 시뮬레이션">

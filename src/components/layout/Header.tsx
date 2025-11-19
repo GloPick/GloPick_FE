@@ -48,10 +48,7 @@ const Header = () => {
     ? 'bg-primary text-white hover:opacity-90'
     : 'bg-white text-blue-700 hover:bg-white/90';
 
-  const navItems = [
-    { name: 'FAQ', to: '/faq' },
-    { name: token ? '마이페이지' : '체험하기', to: token ? '/mypage' : '/guest-login' },
-  ];
+  const navItems = [{ name: token ? '마이페이지' : '체험하기', to: token ? '/mypage' : '/guest' }];
 
   const handleLogout = () => {
     logout();
