@@ -1,5 +1,5 @@
 import { useRecommendationStore } from '@/store/recommendationStore';
-import { CityRecommendation } from '@/types/profile';
+import { CityRecommendation } from '@/types/recommendation';
 import { Button } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
 

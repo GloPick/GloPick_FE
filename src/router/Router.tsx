@@ -12,6 +12,7 @@ import KakaoCallback from '@/components/auth/KakaoCallback';
 import CityRecommendationPage from '@/pages/recommendation/CityRecommendationPage';
 import SimulationInputPage from '@/pages/simulation/SimulationInputPage';
 import SimulationResultPage from '@/pages/simulation/SimulationResultPage';
+import MyPage from '@/pages/mypage/MyPage';
 
 interface RouterProps {
   children?: ReactNode;
@@ -22,7 +23,7 @@ export default function Router({ children }: RouterProps) {
     <BrowserRouter>
       <Routes>
         {/* 공개 라우트 */}
-        <Route path="/" element={<Main />} />
+        {/* <Route path="/" element={<Main />} /> */}
         <Route path="/oauth/kakao" element={<KakaoCallback />} />
 
         {/* 레이아웃 제외 & 로그인 전용 */}
@@ -32,10 +33,12 @@ export default function Router({ children }: RouterProps) {
           <Route path="/cities" element={<CityRecommendationPage />} />
           <Route path="/simulation/input" element={<SimulationInputPage />} />
           <Route path="/simulation/result" element={<SimulationResultPage />} />
+          <Route path="/simulation/result/:simulationId" element={<SimulationResultPage />} />
         </Route>
 
         {/* 공통 레이아웃 */}
         <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Main />} />
           <Route path="/test" element={<Test />} />
 
           {/* 비로그인 전용 라우트 */}
@@ -46,7 +49,7 @@ export default function Router({ children }: RouterProps) {
 
           {/* 로그인 전용 라우트 */}
           <Route element={<AccessRoute access="private" />}>
-            {/* <Route path="/mypage" element={<MyPage />} /> */}
+            <Route path="/mypage" element={<MyPage />} />
           </Route>
         </Route>
       </Routes>

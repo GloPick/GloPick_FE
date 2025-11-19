@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { Weights } from '@/types/profile';
+import { Weights } from '@/types/recommendation';
 
 interface WeightInputGroupProps {
   weights: Weights;

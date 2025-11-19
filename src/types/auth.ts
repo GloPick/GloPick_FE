@@ -26,7 +26,7 @@ export interface SignupData {
 }
 
 export interface GetUserInfoResponseData {
-  _id: string;
+  userId: string;
   name: string;
   email: string;
   birth: string;

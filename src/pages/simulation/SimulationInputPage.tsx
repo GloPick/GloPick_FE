@@ -1,10 +1,10 @@
-import { postSimulation } from '@/api/profile';
+import { postSimulation } from '@/api/recommendation';
 import { Loading } from '@/components/shared';
 import MultiSelectDropdown from '@/components/shared/MultiSelectButton';
 import SelectDropdown from '@/components/shared/SelectDropdown';
 import { AIRPORT_OPTIONS, BUDGET_OPTIONS, FacilityValue } from '@/constants';
 import { useAuthStore } from '@/store/authStore';
-import { CityRecommendation, PostSimulationPayload } from '@/types/profile';
+import { CityRecommendation, PostSimulationPayload } from '@/types/recommendation';
 import { Button } from '@headlessui/react';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
