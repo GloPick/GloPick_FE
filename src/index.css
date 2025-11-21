@@ -1,3 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes fade-in {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+.section {
+  @apply bg-gray-50 p-5 rounded-xl border border-gray-200;
+}
+
+.title {
+  @apply font-semibold text-xl text-gray-800 mb-3 flex items-center gap-2;
+}
+
+.icon {
+  @apply mt-0.5;
+}
+
+.list {
+  @apply text-base text-gray-700 space-y-3;
+}
+
+.item {
+  @apply flex items-start gap-2;
+}
+.text {
+  @apply font-semibold;
+}
