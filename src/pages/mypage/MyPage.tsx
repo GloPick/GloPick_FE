@@ -21,15 +21,20 @@ const MyPage = () => {
     if (!token) return;
     try {
       setLoading(true);
-      const [accountRes, simulationRes] = await Promise.all([
-        getUserInfo(token),
-        getSimulations(token),
-      ]);
+
+      const accountRes = await getUserInfo(token);
       setUserInfo(accountRes.data);
-      setSimulations(simulationRes.data);
+
+      try {
+        const simulationRes = await getSimulations(token);
+        setSimulations(simulationRes.data || []); // null/undefined 처리
+      } catch (simulationError) {
+        console.warn('시뮬레이션 데이터 로딩 실패:', simulationError);
+        setSimulations([]); // 빈 배열로 설정
+      }
     } catch (error) {
-      console.error('데이터 로딩 실패', error);
-      alert('데이터를 불러오는 데 실패했습니다.');
+      console.error('유저 정보 로딩 실패', error);
+      alert('사용자 정보를 불러오는 데 실패했습니다.');
     } finally {
       setLoading(false);
     }
@@ -44,7 +49,17 @@ const MyPage = () => {
   }
 
   if (!userInfo) {
-    return <div>데이터를 불러올 수 없습니다.</div>;
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-16 text-center">
+        <p className="text-lg text-gray-600">사용자 정보를 불러올 수 없습니다.</p>
+        <button
+          onClick={fetchData}
+          className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          다시 시도
+        </button>
+      </div>
+    );
   }
 
   return (

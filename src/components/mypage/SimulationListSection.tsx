@@ -9,7 +9,7 @@ interface SimulationListSectionProps {
   simulations: GetSimulationResponseData[];
 }
 
-const SimulationList = ({ simulations }: SimulationListSectionProps) => {
+const SimulationListSection = ({ simulations }: SimulationListSectionProps) => {
   const navigate = useNavigate();
 
   const handleViewResult = (simulation: GetSimulationResponseData) => {
@@ -33,6 +33,21 @@ const SimulationList = ({ simulations }: SimulationListSectionProps) => {
     });
   };
 
+  const renderEmptyState = () => (
+    <div className="flex flex-col items-center justify-center py-12 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+      <FileQuestion className="w-16 h-16 text-gray-300 mb-4" />
+      <p className="text-gray-700 font-semibold text-lg mb-2">
+        아직 저장된 시뮬레이션 결과가 없습니다
+      </p>
+      <p className="text-sm text-gray-500 mb-6 text-center max-w-md">
+        나에게 딱 맞는 국가와 도시를 찾고 시뮬레이션을 시작해보세요!
+      </p>
+      <Button variant="primary" onClick={() => navigate('/profile')} className="px-6 py-3">
+        국가 추천 받으러 가기 →
+      </Button>
+    </div>
+  );
+
   if (!simulations || simulations.length === 0) {
     return (
       <SectionCard title="저장된 시뮬레이션">
@@ -42,39 +57,41 @@ const SimulationList = ({ simulations }: SimulationListSectionProps) => {
           <p className="text-sm text-gray-400 mb-6">
             나에게 딱 맞는 국가와 도시를 찾고 시뮬레이션을 시작해보세요!
           </p>
-          <Button variant="primary" onClick={() => navigate('/profile')} className="text-sm px-6">
+          <button
+            onClick={() => navigate('/profile')}
+            className="px-4 py-2 rounded-md bg-primary text-white text-center font-semibold hover:bg-primary/90 transition"
+          >
             국가 추천 받으러 가기
-          </Button>
+          </button>
         </div>
       </SectionCard>
     );
   }
 
+  const renderSimulationList = () => (
+    <div className="space-y-4">
+      {simulations.map((simulation) => (
+        <div
+          key={simulation._id}
+          className="p-4 border rounded-lg flex justify-between items-center hover:shadow-md hover:border-blue-500 cursor-pointer transition-all"
+          onClick={() => handleViewResult(simulation)}
+        >
+          <div>
+            {/* 요약 정보 */}
+            <h4 className="font-bold text-lg text-gray-800">
+              {simulation.input.selectedCity}, {simulation.input.selectedCountry}
+            </h4>
+          </div>
+          <Button onClick={() => handleViewResult(simulation)}>결과 보기 &rarr;</Button>
+        </div>
+      ))}
+    </div>
+  );
   return (
-    <SectionCard title="저장된 시뮬레이션">
-      <div className="space-y-4">
-        {simulations.length > 0 ? (
-          simulations.map((simulation) => (
-            <div
-              key={simulation._id}
-              className="p-4 border rounded-lg flex justify-between items-center hover:shadow-md hover:border-blue-500 cursor-pointer transition-all"
-              onClick={() => handleViewResult(simulation)}
-            >
-              <div>
-                {/* 요약 정보 */}
-                <h4 className="font-bold text-lg text-gray-800">
-                  {simulation.input.selectedCity}, {simulation.input.selectedCountry}
-                </h4>
-              </div>
-              <Button onClick={() => handleViewResult(simulation)}>결과 보기 &rarr;</Button>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-500 text-center">저장된 시뮬레이션 결과가 없습니다.</p>
-        )}
-      </div>
+    <SectionCard title="📊 저장된 시뮬레이션">
+      {!simulations || simulations.length === 0 ? renderEmptyState() : renderSimulationList()}
     </SectionCard>
   );
 };
 
-export default SimulationList;
+export default SimulationListSection;
