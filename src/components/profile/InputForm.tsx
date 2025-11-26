@@ -39,11 +39,20 @@ const InputForm: React.FC<InputFormProps> = ({
 
       {/* 직무 설명 표시 */}
       {selectedJob && (
-        <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-gray-700 italic">
+        <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-gray-700 italic whitespace-pre-line">
           <span className="font-semibold text-blue-800 block mb-1">
             선택된 분야: {selectedJob.nameKo}
           </span>
-          {selectedJob.description}
+          {/* {selectedJob.description} */}
+          {selectedJob.descriptionList ? (
+            <ul className="list-disc pl-5 space-y-1">
+              {selectedJob.descriptionList.map((desc, idx) => (
+                <li key={idx}>{desc}</li>
+              ))}
+            </ul>
+          ) : (
+            <span>{selectedJob.description}</span>
+          )}
         </div>
       )}
       {/* 언어 선택 */}

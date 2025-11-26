@@ -83,61 +83,76 @@ export const JOB_OPTIONS = [
     code: '1',
     nameKo: '관리자',
     nameEn: 'Managers',
-    description: '기업, 정부, 기타 조직의 정책 수립 및 계획 수립, 조정, 감독',
+    description:
+      'CEO(최고경영자) / 부장 / 팀장 / 공공기관 관리자 / 스타트업 대표 / 매니저 / 공무원 간부 / 정치인 / 국회의원',
   },
   {
     code: '2',
     nameKo: '전문가',
     nameEn: 'Professionals',
-    description: '과학, 공학, 의학, 교육, 법률, 사회과학, 인문학 등 전문 분야',
+    descriptionList: [
+      '과학·공학 전문직: 연구원 / 데이터 사이언티스트 / AI 엔지니어 / 소프트웨어 개발자 / 시스템 엔지니어 / 네트워크 엔지니어 / 품질관리 전문가 / 기계 설계자 / 전자공학 엔지니어',
+      '보건 전문직: 의사 / 치과의사 / 약사 / 수의사 / 간호사 / 물리치료사 / 임상병리사',
+      '교육 전문직: 대학교수 / 교사(초·중·고) / 학원강사 / 유치원교사 / 온라인 강의 제작자',
+      '경영 관리 전문직: 회계사 / 세무사 / 금융분석가 / 경영컨설턴트 / 인사전문가',
+      '정보통신기술 전문직: 백엔드 개발자 / 프론트엔드 개발자 / 풀스택 개발자 / 시스템 관리자 / 클라우드 아키텍트 / 데이터 엔지니어 / 보안 전문가',
+      '법무·사회·문화 전문직: 변호사 / 판사 / 기자 / 번역가 / 디자이너 / 작가 / 큐레이터 / 심리상담사',
+    ],
   },
   {
     code: '3',
     nameKo: '기술자 및 준전문가',
     nameEn: 'Technicians and Associate Professionals',
-    description: '기술적 업무 수행 및 전문가 지원 업무',
+    description:
+      'CAD 기술자 / 전산실 기술자 / 임상시험코디네이터 / 간호조무사 / 보험심사원 / 행정 실무자 / 사회복지사 / 경찰 / 소방관 / 방송기술자 / IT 지원 기술자 / 통신기술자 / 전자기기 수리기사',
   },
   {
     code: '4',
     nameKo: '사무종사자',
     nameEn: 'Clerical Support Workers',
-    description: '사무, 회계, 고객서비스 등 일반 사무 업무',
+    description:
+      '사무보조 / 회계사무원 / 인사·총무 사무원 / 비서 / 마케팅 사무원 / 영업지원 / 데이터 입력원 / 콜센터 상담원 / 고객응대 사무직',
   },
   {
     code: '5',
     nameKo: '서비스 및 판매 종사자',
     nameEn: 'Service and Sales Workers',
-    description: '개인서비스, 보안서비스, 판매 업무',
+    description:
+      '요리사 / 제과제빵사 / 바리스타 / 미용사 / 피부관리사 / 간병인 / 호텔리어 / 승무원 / 헬스트레이너 / 판매원 / 카페 매니저 / 백화점 직원 / 보안요원 / 경호원 / 안내원',
   },
   {
     code: '6',
     nameKo: '농림어업 숙련 종사자',
     nameEn: 'Skilled Agricultural, Forestry and Fishery Workers',
-    description: '농업, 임업, 어업 분야 숙련 업무',
+    description:
+      '농부 / 과수농 / 축산농 / 임업인 / 어부 / 양식업 종사자 / 조경사 / 원예사 / 화훼 재배자',
   },
   {
     code: '7',
-    nameKo: '기능원 및 관련 기능 종사자',
+    nameKo: '기능원 및 관련 기능 조립 종사자',
     nameEn: 'Craft and Related Trades Workers',
-    description: '건설, 금속가공, 기계, 전기 등 기능 업무',
+    description:
+      '건설 기능공 / 목수 / 배관공 / 용접공 / 자동차 정비사 / 기계 조립공 / 전기기사 / 전자기기 수리공 / 인쇄공 / 가구 제작자 / 제화공 / 의류제작 기능공 / 식품가공 기술자',
   },
   {
     code: '8',
     nameKo: '설비·기계 조작 및 조립 종사자',
     nameEn: 'Plant and Machine Operators and Assemblers',
-    description: '산업기계 및 설비 조작, 운송장비 운전, 조립 업무',
+    description:
+      '지게차 운전사 / 버스 운전기사 / 트럭 운전기사 / 택시 기사 / 크레인 기사 / 생산기계 조작원 / 반도체 장비 조작원 / 플랜트 조작원',
   },
   {
     code: '9',
     nameKo: '단순노무 종사자',
     nameEn: 'Elementary Occupations',
-    description: '청소, 건설보조, 제조업 단순작업 등',
+    description:
+      '청소원 / 환경미화원 / 경비원 / 택배 상하차원 / 음식 배달원 / 주방보조 / 건설현장 인부 / 포장·조립 보조원 / 식당 아르바이트생 / 세탁소 종사자',
   },
   {
     code: '0',
     nameKo: '군인',
     nameEn: 'Armed Forces Occupations',
-    description: '국방 및 군사 업무',
+    description: '사관 / 하사관 / 장교 / 부사관 / 병사 / ROTC / 군무원',
   },
 ];
 
