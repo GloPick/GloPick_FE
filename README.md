@@ -1,4 +1,4 @@
- # 🚀 Git Convention
+# 🚀 Git Convention
 
 팀 협업을 원활하게 진행하기 위해 Git 컨벤션을 아래와 같이 정합니다.
 
@@ -36,6 +36,7 @@ Type: Subject (#이슈번호)
 | refactor | 코드 리팩토링 (기능 변경 없음) |
 | test | 테스트 코드 추가 |
 | chore | 기타 작업 (빌드 설정 변경, 패키지 설치 등) |
+| QA | 테스트 케이스 작성 및 관련 기능 |
 
 ---
 
@@ -116,3 +117,25 @@ Type: Subject (#이슈번호)
 
 - 작업 단위별 커밋 (기능이 완성되면 커밋)
 - 작업 완료 후 PR 작성, 코드 리뷰 요청
+
+---
+
+## 📌 QA Strategy
+
+### Test Design
+- 기능 기반 테스트 케이스 설계
+- 경계값 및 예외 처리 포함
+- Severity / Priority 분류
+
+### Test Types
+- Manual Test Case Design
+- E2E Test (Playwright 예정)
+- API Validation
+
+### Artifacts
+- `/docs/login-testcases.md`
+- `/e2e/`
+- GitHub Issues 기반 버그 관리
+
+### CI Plan
+- PR 시 자동 테스트 실행 예정
